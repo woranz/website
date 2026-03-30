@@ -1,9 +1,22 @@
 import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import localFont from 'next/font/local'
+import { VisualEditing } from 'next-sanity'
+import { draftMode } from 'next/headers'
 import './globals.css'
-import { Geist } from "next/font/google";
-import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+const noeDisplay = localFont({
+  src: '../public/fonts/fonnts.com-NoeDisplay-Bold.ttf',
+  variable: '--font-noe',
+  weight: '700',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'Woranz - Accidentes Personales | Seguro 100% Online',
@@ -11,15 +24,25 @@ export const metadata: Metadata = {
   keywords: ['seguro', 'accidentes personales', 'woranz', 'seguro online', 'argentina'],
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const isDev = process.env.NODE_ENV === 'development'
+  const dm = await draftMode()
+  let content = children
+
+  if (isDev) {
+    const { PruneEditorRoot } = await import('@patio/prune-editor')
+    content = <PruneEditorRoot>{children}</PruneEditorRoot>
+  }
+
   return (
-    <html lang="es" className={cn("font-sans", geist.variable)}>
-      <body className="bg-white">
-        {children}
+    <html lang="es">
+      <body className={`${inter.variable} ${noeDisplay.variable} bg-background`}>
+        {content}
+        {dm.isEnabled && <VisualEditing />}
       </body>
     </html>
   )

@@ -79,20 +79,20 @@ export function Carousel({
           <button
             onClick={scrollPrev}
             disabled={prevBtnDisabled}
-            className={`flex items-center justify-center w-14 h-14 border-2 border-[#2E3547] rounded-full transition-opacity ${
-              prevBtnDisabled ? "opacity-40 cursor-not-allowed" : "hover:bg-gray-50"
+            className={`flex h-14 w-14 items-center justify-center rounded-full border-2 border-woranz-slate bg-white text-woranz-slate transition-opacity ${
+              prevBtnDisabled ? "cursor-not-allowed opacity-40" : "hover:bg-woranz-warm-1"
             }`}
           >
-            <ChevronLeft className="w-7 h-7 text-[#2E3547]" />
+            <ChevronLeft className="h-7 w-7" />
           </button>
           <button
             onClick={scrollNext}
             disabled={nextBtnDisabled}
-            className={`flex items-center justify-center w-14 h-14 bg-white rounded-full shadow-sm transition-opacity ${
-              nextBtnDisabled ? "opacity-40 cursor-not-allowed" : "hover:bg-gray-50"
+            className={`flex h-14 w-14 items-center justify-center rounded-full bg-white text-woranz-slate shadow-button transition-opacity ${
+              nextBtnDisabled ? "cursor-not-allowed opacity-40" : "hover:bg-woranz-warm-1"
             }`}
           >
-            <ChevronRight className="w-7 h-7 text-[#2E3547]" />
+            <ChevronRight className="h-7 w-7" />
           </button>
         </div>
       )}
@@ -147,31 +147,31 @@ export function CarouselWithHeader({
     <div className={`flex flex-col gap-6 md:gap-10 ${className}`}>
       {/* Header with title and arrows */}
       <div className={`flex items-center justify-between w-full ${fullWidth ? 'carousel-header-centered' : 'pr-6 md:pr-20'}`}>
-        <h2 className="text-[28px] md:text-[44px] font-bold text-[#2E3547] tracking-tight font-noe">
+        <h2 className="section-title text-woranz-slate">
           {title}
         </h2>
         <div className="hidden md:flex items-center gap-3">
           <button
             onClick={scrollPrev}
             disabled={prevBtnDisabled}
-            className={`flex items-center justify-center w-14 h-14 bg-white rounded-full shadow-sm transition-all ${
+            className={`flex h-14 w-14 items-center justify-center rounded-full bg-white text-woranz-slate shadow-button transition-all ${
               prevBtnDisabled
-                ? "opacity-40 cursor-not-allowed"
-                : "hover:bg-gray-50 active:scale-95"
+                ? "cursor-not-allowed opacity-40"
+                : "hover:bg-woranz-warm-1 active:scale-95"
             }`}
           >
-            <ChevronLeft className="w-7 h-7 text-[#2E3547]" />
+            <ChevronLeft className="h-7 w-7" />
           </button>
           <button
             onClick={scrollNext}
             disabled={nextBtnDisabled}
-            className={`flex items-center justify-center w-14 h-14 bg-white rounded-full shadow-sm transition-all ${
+            className={`flex h-14 w-14 items-center justify-center rounded-full bg-white text-woranz-slate shadow-button transition-all ${
               nextBtnDisabled
-                ? "opacity-40 cursor-not-allowed"
-                : "hover:bg-gray-50 active:scale-95"
+                ? "cursor-not-allowed opacity-40"
+                : "hover:bg-woranz-warm-1 active:scale-95"
             }`}
           >
-            <ChevronRight className="w-7 h-7 text-[#2E3547]" />
+            <ChevronRight className="h-7 w-7" />
           </button>
         </div>
       </div>
