@@ -286,6 +286,28 @@ function StepColumnItem({
   )
 }
 
+function ExplanationSection({
+  section,
+}: {
+  section: Extract<ProductPageSection, { type: "explanation" }>
+}) {
+  return (
+    <section className="page-shell px-page-mobile py-section-mobile md:px-page-wide md:py-section">
+      <div className="mx-auto w-full max-w-content rounded-2xl bg-woranz-warm-1 px-8 py-10 md:px-16 md:py-14">
+        <div className="flex flex-col gap-4 md:gap-5">
+          <h2 className="text-lg font-bold text-woranz-slate md:text-2xl">
+            {section.title}
+          </h2>
+          <p className="text-body leading-relaxed text-woranz-text md:text-lg md:leading-8">
+            <span className="hidden md:inline whitespace-pre-line">{section.body}</span>
+            <span className="md:hidden whitespace-pre-line">{section.bodyMobile ?? section.body}</span>
+          </p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function CoverageSection({
   section,
 }: {
@@ -788,6 +810,8 @@ function renderSection(section: ProductPageSection) {
   switch (section.type) {
     case "quote":
       return <QuoteSection section={section} />
+    case "explanation":
+      return <ExplanationSection section={section} />
     case "variants":
       return <VariantsSection section={section} />
     case "requirements":

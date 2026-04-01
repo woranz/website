@@ -16,25 +16,21 @@ export const productoByRouteQuery = groq`
     headline,
     subtitulo,
     heroImage,
-    cotizador,
-    variantes,
-    requisitos,
-    coberturas,
-    pasos,
-    faqs,
-    ctaTitulo,
-    ctaSubtitulo,
-    ctaBoton,
     ctaPrimario,
     ctaSecundario,
-    productosRelacionados[]->{
-      _id,
-      nombre,
-      segmento,
-      slug,
-      headline,
-      heroImage,
-      pendientesValidacion
+    secciones[] {
+      _type,
+      ...,
+      "productos": productos[]-> {
+        _id,
+        nombre,
+        segmento,
+        slug,
+        heroImage,
+        headline,
+        subtitulo,
+        pendientesValidacion
+      }
     },
     pendientesValidacion
   }
