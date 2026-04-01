@@ -1,0 +1,201 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "Woranz" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - img "Woranz" [ref=e6]
+        - generic [ref=e8]:
+          - navigation [ref=e9]:
+            - list [ref=e10]:
+              - listitem [ref=e11]:
+                - button "Coberturas" [ref=e12] [cursor=pointer]:
+                  - text: Coberturas
+                  - img [ref=e13]
+              - listitem [ref=e15]:
+                - link "Nosotros" [ref=e16] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e17]:
+                - link "Contacto" [ref=e18] [cursor=pointer]:
+                  - /url: "#"
+          - link "Ingresar" [ref=e19] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e20]
+            - generic [ref=e23]: Ingresar
+    - main [ref=e24]:
+      - generic [ref=e25]:
+        - navigation [ref=e26]:
+          - generic [ref=e27]:
+            - link "Personas" [ref=e28] [cursor=pointer]:
+              - /url: /
+            - link "Empresas" [ref=e29] [cursor=pointer]:
+              - /url: /empresas
+            - link "Productores" [ref=e30] [cursor=pointer]:
+              - /url: /productores
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - heading "Avanzá tranquilo, nosotros te cubrimos." [level=1] [ref=e33]
+            - paragraph [ref=e34]: Seguros 100% digitales para que cotices, elijas tu plan y controles todo desde tu celu. Sin papeles, sin vueltas.
+          - generic [ref=e35]:
+            - link "Ver seguros" [ref=e36] [cursor=pointer]:
+              - /url: "#coberturas"
+            - button "Hablar con alguien →" [ref=e37] [cursor=pointer]
+          - generic [ref=e38]:
+            - generic [ref=e39]:
+              - img [ref=e40]
+              - generic [ref=e43]: Prestacional
+            - generic [ref=e44]:
+              - img [ref=e45]
+              - generic [ref=e47]: Orientación al instante
+            - generic [ref=e48]:
+              - img [ref=e49]
+              - generic [ref=e51]: Pagos online
+        - img "Woranz personas" [ref=e53]
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - heading "Estamos en cada momento" [level=2] [ref=e58]
+          - generic [ref=e59]:
+            - button [disabled] [ref=e60]:
+              - img [ref=e61]
+            - button [ref=e63] [cursor=pointer]:
+              - img [ref=e64]
+        - generic [ref=e67]:
+          - link "Caución de Alquiler Caución de Alquiler" [ref=e69] [cursor=pointer]:
+            - /url: /personas/coberturas/caucion-alquiler
+            - generic [ref=e70]:
+              - img "Caución de Alquiler" [ref=e71]
+              - generic [ref=e73]:
+                - generic [ref=e74]: Caución de Alquiler
+                - img [ref=e75]
+          - link "Seguro de Hogar Seguro de Hogar" [ref=e78] [cursor=pointer]:
+            - /url: /personas/coberturas/seguro-de-hogar
+            - generic [ref=e79]:
+              - img "Seguro de Hogar" [ref=e80]
+              - generic [ref=e82]:
+                - generic [ref=e83]: Seguro de Hogar
+                - img [ref=e84]
+          - link "Accidentes Personales Accidentes Personales" [ref=e87] [cursor=pointer]:
+            - /url: /personas/coberturas/accidentes-personales
+            - generic [ref=e88]:
+              - img "Accidentes Personales" [ref=e89]
+              - generic [ref=e91]:
+                - generic [ref=e92]: Accidentes Personales
+                - img [ref=e93]
+          - link "Robo de Celular Robo de Celular" [ref=e96] [cursor=pointer]:
+            - /url: /personas/coberturas/robo-celular
+            - generic [ref=e97]:
+              - img "Robo de Celular" [ref=e98]
+              - generic [ref=e100]:
+                - generic [ref=e101]: Robo de Celular
+                - img [ref=e102]
+          - link "Caución Turismo Estudiantil Caución Turismo Estudiantil" [ref=e105] [cursor=pointer]:
+            - /url: /personas/coberturas/caucion-turismo-estudiantil
+            - generic [ref=e106]:
+              - img "Caución Turismo Estudiantil" [ref=e107]
+              - generic [ref=e109]:
+                - generic [ref=e110]: Caución Turismo Estudiantil
+                - img [ref=e111]
+      - generic [ref=e116]:
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - generic [ref=e119]: "01"
+            - generic [ref=e120]: Cotizá online
+            - paragraph [ref=e121]: Elegí tu cobertura y recibí tu precio en segundos. Sin formularios ni datos personales.
+          - separator
+        - generic [ref=e122]:
+          - generic [ref=e123]:
+            - generic [ref=e124]: "02"
+            - generic [ref=e125]: Contratá
+            - paragraph [ref=e126]: "Pagá como quieras: tarjeta, débito o transferencia. Todo por Mercado Pago."
+          - separator
+        - generic [ref=e128]:
+          - generic [ref=e129]: "03"
+          - generic [ref=e130]: Listo, te cubrimos
+          - paragraph [ref=e131]: Tu póliza llega al toque a tu celu. Siempre disponible en tu cuenta Woranz.
+      - generic [ref=e134]:
+        - generic [ref=e135]:
+          - heading "Seguros pensados para vos." [level=2] [ref=e136]
+          - generic [ref=e137]:
+            - button [disabled] [ref=e138]:
+              - img [ref=e139]
+            - button [ref=e141] [cursor=pointer]:
+              - img [ref=e142]
+        - generic [ref=e145]:
+          - paragraph [ref=e149]: Cotizá y gestioná todo online, cuando quieras.
+          - paragraph [ref=e153]: Siempre cerca tuyo, siempre a un mensaje.
+          - paragraph [ref=e157]: El mejor precio, el mejor producto. Sin vueltas.
+          - paragraph [ref=e161]: Simple, online y con la mejor experiencia.
+      - generic [ref=e165]:
+        - generic [ref=e166]:
+          - heading "¿Tenés dudas? Hablemos." [level=2] [ref=e167]
+          - paragraph [ref=e168]: No somos un call center. Somos personas reales que te acompañan en cada paso.
+        - generic [ref=e169]:
+          - generic [ref=e170]:
+            - img "Carolina" [ref=e172]
+            - img "Charlie" [ref=e174]
+            - img "Gonzalo" [ref=e176]
+            - img "Martina" [ref=e178]
+            - generic [ref=e179]: "+21"
+          - generic [ref=e180]: personas cuidando de vos
+        - generic [ref=e181]:
+          - link "Ver seguros" [ref=e182] [cursor=pointer]:
+            - /url: "#coberturas"
+          - button "Hablá con nosotros →" [ref=e183] [cursor=pointer]
+    - contentinfo [ref=e184]:
+      - generic [ref=e185]:
+        - link "Woranz" [ref=e187] [cursor=pointer]:
+          - /url: /
+          - img "Woranz" [ref=e188]
+        - generic [ref=e191]:
+          - generic [ref=e192]:
+            - generic [ref=e193]: Productos
+            - link "Accidentes Personales" [ref=e194] [cursor=pointer]:
+              - /url: /personas/coberturas/accidentes-personales
+            - link "Cauciones" [ref=e195] [cursor=pointer]:
+              - /url: /personas/coberturas/caucion-alquiler
+            - link "Seguro de Vida" [ref=e196] [cursor=pointer]:
+              - /url: "#"
+            - link "Seguro de Sepelio" [ref=e197] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=e198]:
+            - generic [ref=e199]: Empresa
+            - link "Nosotros" [ref=e200] [cursor=pointer]:
+              - /url: "#"
+            - link "Blog" [ref=e201] [cursor=pointer]:
+              - /url: "#"
+            - link "Trabajá con nosotros" [ref=e202] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=e203]:
+            - generic [ref=e204]: Soporte
+            - link "Centro de ayuda" [ref=e205] [cursor=pointer]:
+              - /url: "#"
+            - link "Contacto" [ref=e206] [cursor=pointer]:
+              - /url: "#"
+            - link "FAQ" [ref=e207] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=e208]:
+            - generic [ref=e209]: Legal
+            - link "Términos" [ref=e210] [cursor=pointer]:
+              - /url: "#"
+            - link "Privacidad" [ref=e211] [cursor=pointer]:
+              - /url: "#"
+            - link "SSN" [ref=e212] [cursor=pointer]:
+              - /url: "#"
+        - separator
+        - generic [ref=e213]:
+          - paragraph [ref=e214]: "La entidad aseguradora dispone de un Servicio de Atención al Asegurado que atenderá las consultas y reclamos que presenten los tomadores de seguros, asegurados, beneficiarios y/o derechohabientes. El Servicio de Atención al Asegurado está integrado por: RESPONSABLE: Gonzalo Oyarzabal – Tel.: 0800-266-4240 SUPLENTE: Anabella Calderan – Tel.: 0800-266-4240. En caso de que el reclamo no haya sido resuelto o haya sido desestimado, total o parcialmente, o que haya sido denegada su admisión, podrá comunicarse con la Superintendencia de Seguros de la Nación por teléfono al 0800-666-8400, correo electrónico a denuncias@ssn.gob.ar o formulario web a través de www.argentina.gob.ar/ssn"
+          - img "SSN QR" [ref=e215]
+        - separator
+        - generic [ref=e216]:
+          - generic [ref=e217]: © 2026 Woranz. Todos los derechos reservados.
+          - generic [ref=e218]:
+            - link [ref=e219] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e220]
+            - link [ref=e223] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e224]
+            - link [ref=e228] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e229]
+  - alert [ref=e231]

@@ -80,7 +80,7 @@ function FooterColumn({ title, links }: FooterColumnProps) {
 function SiteFooter() {
   return (
     <footer className="w-full bg-woranz-warm-1">
-      <div className="page-shell gap-8 px-page-mobile py-10 md:gap-10 md:px-page !bg-transparent">
+      <div className="page-shell gap-8 px-page-mobile py-10 md:gap-10 md:px-page-wide !bg-transparent">
         <div className="md:hidden">
           <Logo size="small" />
         </div>

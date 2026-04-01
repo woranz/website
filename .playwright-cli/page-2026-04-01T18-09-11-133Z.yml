@@ -1,0 +1,309 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "Woranz" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - img "Woranz" [ref=e6]
+        - generic [ref=e8]:
+          - navigation [ref=e9]:
+            - list [ref=e10]:
+              - listitem [ref=e11]:
+                - button "Coberturas" [ref=e12] [cursor=pointer]:
+                  - text: Coberturas
+                  - img [ref=e13]
+              - listitem [ref=e15]:
+                - link "Nosotros" [ref=e16] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e17]:
+                - link "Contacto" [ref=e18] [cursor=pointer]:
+                  - /url: "#"
+          - link "Ingresar" [ref=e19] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e20]
+            - generic [ref=e23]: Ingresar
+    - main [ref=e24]:
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]: Caución de Alquiler
+          - generic [ref=e28]:
+            - heading "La garantía de alquiler más completa, al mejor precio" [level=1] [ref=e29]
+            - paragraph [ref=e30]: Resolvés tu alquiler con una póliza real, aceptada por el mercado y lista en horas.
+          - generic [ref=e31]:
+            - button "Cotizá tu garantía" [ref=e32] [cursor=pointer]
+            - button "Hablá con nosotros →" [ref=e33] [cursor=pointer]
+        - img "Caución de Alquiler" [ref=e35]
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - heading "Calculá tu precio" [level=2] [ref=e40]
+            - paragraph [ref=e41]: Cotizador online en woranz.com/alquileres. El precio que ves es el final, sin nada oculto ni extra.
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - generic [ref=e46]:
+                - generic [ref=e47]: Provincia
+                - generic [ref=e48]: Los impuestos varían según tu provincia
+              - combobox [ref=e49] [cursor=pointer]:
+                - generic [ref=e50]: Buenos Aires
+                - img
+            - generic [ref=e51]:
+              - generic [ref=e52]:
+                - generic [ref=e53]: Precio del alquiler
+                - generic [ref=e54]: El valor de tu primer mes de alquiler
+              - generic [ref=e55]:
+                - generic [ref=e56]: $
+                - textbox [ref=e57]: "500.000"
+            - generic [ref=e58]:
+              - generic [ref=e59]:
+                - generic [ref=e60]: Duración del contrato
+                - generic [ref=e61]: ¿Por cuántos meses vas a firmar el contrato?
+              - generic [ref=e62]:
+                - button "12 meses" [ref=e63] [cursor=pointer]
+                - button "24 meses" [ref=e64] [cursor=pointer]
+                - button "36 meses" [ref=e65] [cursor=pointer]
+            - generic [ref=e66]:
+              - generic [ref=e67]:
+                - generic [ref=e68]: Modo de pago
+                - generic [ref=e69]: 10% descuento al contado o con tarjeta en 6 cuotas sin interés :)
+              - generic [ref=e70]:
+                - button "Contado" [ref=e71] [cursor=pointer]
+                - button "6 cuotas" [ref=e72] [cursor=pointer]
+            - generic [ref=e73]:
+              - generic [ref=e74]:
+                - generic [ref=e75]: $ 93.150
+                - generic [ref=e76]: final por mes
+              - button "Contratar ahora →" [ref=e77] [cursor=pointer]
+        - generic [ref=e79]:
+          - generic [ref=e80]:
+            - generic [ref=e81]: "01"
+            - generic [ref=e82]: Preaprobación
+            - paragraph [ref=e83]: Completás tus datos y subís los recibos de sueldo en woranz.com/alquileres. Sin obligación de compra. En 2 horas hábiles te respondemos.
+          - separator
+          - generic [ref=e84]:
+            - generic [ref=e85]: "02"
+            - generic [ref=e86]: Contrato
+            - paragraph [ref=e87]: Nos mandás el borrador del contrato de alquiler para poder emitir la póliza.
+          - separator
+          - generic [ref=e88]:
+            - generic [ref=e89]: "03"
+            - generic [ref=e90]: Pago y listo
+            - paragraph [ref=e91]: Pagás con tarjeta o transferencia. En 24 horas tenés la póliza en tu mail y en el del propietario o inmobiliaria.
+      - generic [ref=e94]:
+        - heading "Variantes" [level=2] [ref=e96]
+        - generic [ref=e98]:
+          - generic [ref=e101]:
+            - heading "Alquiler de Vivienda" [level=3] [ref=e102]
+            - paragraph [ref=e103]: Para inquilinos que alquilan una propiedad residencial.
+          - link "Alquiler Comercial Para alquilar un local, oficina o inmueble comercial. Ver cobertura" [ref=e104] [cursor=pointer]:
+            - /url: /empresas/coberturas/caucion-alquiler-comercial
+            - generic [ref=e105]:
+              - generic [ref=e106]:
+                - heading "Alquiler Comercial" [level=3] [ref=e107]
+                - paragraph [ref=e108]: Para alquilar un local, oficina o inmueble comercial.
+              - generic [ref=e109]:
+                - text: Ver cobertura
+                - img [ref=e110]
+          - link "Beneficios Corporativos Para empresas que ofrecen la garantía como beneficio a sus empleados. Precio preferencial + pre aprobación inmediata. Ver cobertura" [ref=e112] [cursor=pointer]:
+            - /url: /empresas/coberturas/caucion-alquiler-beneficios-corporativos
+            - generic [ref=e113]:
+              - generic [ref=e114]:
+                - heading "Beneficios Corporativos" [level=3] [ref=e115]
+                - paragraph [ref=e116]: Para empresas que ofrecen la garantía como beneficio a sus empleados. Precio preferencial + pre aprobación inmediata.
+              - generic [ref=e117]:
+                - text: Ver cobertura
+                - img [ref=e118]
+      - generic [ref=e121]:
+        - heading "Requisitos" [level=2] [ref=e122]
+        - generic [ref=e123]:
+          - region [ref=e124]:
+            - heading "El alquiler no puede superar el 40% del ingreso del inquilino y su grupo familiar." [level=3] [ref=e126]:
+              - button "El alquiler no puede superar el 40% del ingreso del inquilino y su grupo familiar." [ref=e127] [cursor=pointer]:
+                - generic [ref=e128]: El alquiler no puede superar el 40% del ingreso del inquilino y su grupo familiar.
+                - img [ref=e129]
+            - heading "No deben existir deudas relevantes en BCRA, Veraz o Nosis." [level=3] [ref=e132]:
+              - button "No deben existir deudas relevantes en BCRA, Veraz o Nosis." [ref=e133] [cursor=pointer]:
+                - generic [ref=e134]: No deben existir deudas relevantes en BCRA, Veraz o Nosis.
+                - img [ref=e135]
+            - heading "DNI del titular del contrato." [level=3] [ref=e138]:
+              - button "DNI del titular del contrato." [ref=e139] [cursor=pointer]:
+                - generic [ref=e140]: DNI del titular del contrato.
+                - img [ref=e141]
+            - 'heading "Relación de dependencia: últimos 3 recibos de sueldo." [level=3] [ref=e144]':
+              - 'button "Relación de dependencia: últimos 3 recibos de sueldo." [ref=e145] [cursor=pointer]':
+                - generic [ref=e146]: "Relación de dependencia: últimos 3 recibos de sueldo."
+                - img [ref=e147]
+          - region [ref=e149]:
+            - 'heading "Monotributista: certificación de ingresos y facturación de los últimos 12 meses." [level=3] [ref=e151]':
+              - 'button "Monotributista: certificación de ingresos y facturación de los últimos 12 meses." [ref=e152] [cursor=pointer]':
+                - generic [ref=e153]: "Monotributista: certificación de ingresos y facturación de los últimos 12 meses."
+                - img [ref=e154]
+            - 'heading "Responsable inscripto: DDJJ de Ganancias." [level=3] [ref=e157]':
+              - 'button "Responsable inscripto: DDJJ de Ganancias." [ref=e158] [cursor=pointer]':
+                - generic [ref=e159]: "Responsable inscripto: DDJJ de Ganancias."
+                - img [ref=e160]
+            - heading "Contrato preliminar con domicilio, datos de las partes y fechas de vigencia." [level=3] [ref=e163]:
+              - button "Contrato preliminar con domicilio, datos de las partes y fechas de vigencia." [ref=e164] [cursor=pointer]:
+                - generic [ref=e165]: Contrato preliminar con domicilio, datos de las partes y fechas de vigencia.
+                - img [ref=e166]
+      - generic [ref=e169]:
+        - heading "Qué cubre" [level=2] [ref=e170]
+        - generic [ref=e171]:
+          - region [ref=e172]:
+            - heading "Alquiler impago" [level=3] [ref=e174]:
+              - button "Alquiler impago" [ref=e175] [cursor=pointer]:
+                - generic [ref=e176]: Alquiler impago
+                - img [ref=e177]
+            - heading "Expensas" [level=3] [ref=e180]:
+              - button "Expensas" [ref=e181] [cursor=pointer]:
+                - generic [ref=e182]: Expensas
+                - img [ref=e183]
+          - region [ref=e185]:
+            - heading "Servicios e impuestos" [level=3] [ref=e187]:
+              - button "Servicios e impuestos" [ref=e188] [cursor=pointer]:
+                - generic [ref=e189]: Servicios e impuestos
+                - img [ref=e190]
+            - heading "Restitución de la propiedad" [level=3] [ref=e193]:
+              - button "Restitución de la propiedad" [ref=e194] [cursor=pointer]:
+                - generic [ref=e195]: Restitución de la propiedad
+                - img [ref=e196]
+      - generic [ref=e199]:
+        - heading "Preguntas frecuentes" [level=2] [ref=e200]
+        - generic [ref=e201]:
+          - region [ref=e203]:
+            - heading "¿Puedo alquilar sin garante?" [level=3] [ref=e205]:
+              - button "¿Puedo alquilar sin garante?" [ref=e206] [cursor=pointer]:
+                - generic [ref=e207]: ¿Puedo alquilar sin garante?
+                - img [ref=e208]
+            - heading "¿Cuánto tarda en emitirse?" [level=3] [ref=e211]:
+              - button "¿Cuánto tarda en emitirse?" [ref=e212] [cursor=pointer]:
+                - generic [ref=e213]: ¿Cuánto tarda en emitirse?
+                - img [ref=e214]
+            - heading "¿El precio que veo es el final?" [level=3] [ref=e217]:
+              - button "¿El precio que veo es el final?" [ref=e218] [cursor=pointer]:
+                - generic [ref=e219]: ¿El precio que veo es el final?
+                - img [ref=e220]
+            - heading "¿Quién paga el seguro, el inquilino o el propietario?" [level=3] [ref=e223]:
+              - button "¿Quién paga el seguro, el inquilino o el propietario?" [ref=e224] [cursor=pointer]:
+                - generic [ref=e225]: ¿Quién paga el seguro, el inquilino o el propietario?
+                - img [ref=e226]
+            - heading "¿Cómo pago?" [level=3] [ref=e229]:
+              - button "¿Cómo pago?" [ref=e230] [cursor=pointer]:
+                - generic [ref=e231]: ¿Cómo pago?
+                - img [ref=e232]
+          - region [ref=e235]:
+            - heading "¿El propietario tiene que aceptarlo?" [level=3] [ref=e237]:
+              - button "¿El propietario tiene que aceptarlo?" [ref=e238] [cursor=pointer]:
+                - generic [ref=e239]: ¿El propietario tiene que aceptarlo?
+                - img [ref=e240]
+            - heading "¿Y si el inquilino no devuelve las llaves?" [level=3] [ref=e243]:
+              - button "¿Y si el inquilino no devuelve las llaves?" [ref=e244] [cursor=pointer]:
+                - generic [ref=e245]: ¿Y si el inquilino no devuelve las llaves?
+                - img [ref=e246]
+            - heading "¿Cuándo me pagan si el inquilino no paga?" [level=3] [ref=e249]:
+              - button "¿Cuándo me pagan si el inquilino no paga?" [ref=e250] [cursor=pointer]:
+                - generic [ref=e251]: ¿Cuándo me pagan si el inquilino no paga?
+                - img [ref=e252]
+            - heading "¿Woranz está regulada?" [level=3] [ref=e255]:
+              - button "¿Woranz está regulada?" [ref=e256] [cursor=pointer]:
+                - generic [ref=e257]: ¿Woranz está regulada?
+                - img [ref=e258]
+            - heading "¿Trabajan con mi inmobiliaria?" [level=3] [ref=e261]:
+              - button "¿Trabajan con mi inmobiliaria?" [ref=e262] [cursor=pointer]:
+                - generic [ref=e263]: ¿Trabajan con mi inmobiliaria?
+                - img [ref=e264]
+      - generic [ref=e268]:
+        - generic [ref=e269]:
+          - heading "Más opciones para vos" [level=2] [ref=e270]
+          - generic [ref=e271]:
+            - button [disabled] [ref=e272]:
+              - img [ref=e273]
+            - button [disabled] [ref=e275]:
+              - img [ref=e276]
+        - generic [ref=e279]:
+          - link "Seguro de Hogar Seguro de Hogar" [ref=e281] [cursor=pointer]:
+            - /url: /personas/coberturas/seguro-de-hogar
+            - generic [ref=e282]:
+              - img "Seguro de Hogar" [ref=e283]
+              - generic [ref=e285]:
+                - generic [ref=e286]: Seguro de Hogar
+                - img [ref=e287]
+          - link "Caución de Alquiler Comercial Caución de Alquiler Comercial" [ref=e290] [cursor=pointer]:
+            - /url: /empresas/coberturas/caucion-alquiler-comercial
+            - generic [ref=e291]:
+              - img "Caución de Alquiler Comercial" [ref=e292]
+              - generic [ref=e294]:
+                - generic [ref=e295]: Caución de Alquiler Comercial
+                - img [ref=e296]
+      - generic [ref=e301]:
+        - generic [ref=e302]:
+          - heading "Tu próximo alquiler, sin vueltas." [level=2] [ref=e303]
+          - paragraph [ref=e304]: Cotizás online, presentás la póliza y seguís con la mudanza.
+        - generic [ref=e305]:
+          - generic [ref=e306]:
+            - img "Carolina" [ref=e308]
+            - img "Charlie" [ref=e310]
+            - img "Gonzalo" [ref=e312]
+            - img "Martina" [ref=e314]
+            - generic [ref=e315]: 4+
+          - generic [ref=e316]: personas acompañándote del otro lado
+        - generic [ref=e317]:
+          - button "Cotizá tu garantía" [ref=e318] [cursor=pointer]
+          - button "Hablá con nosotros →" [ref=e319] [cursor=pointer]
+    - contentinfo [ref=e320]:
+      - generic [ref=e321]:
+        - link "Woranz" [ref=e323] [cursor=pointer]:
+          - /url: /
+          - img "Woranz" [ref=e324]
+        - generic [ref=e327]:
+          - generic [ref=e328]:
+            - generic [ref=e329]: Productos
+            - link "Accidentes Personales" [ref=e330] [cursor=pointer]:
+              - /url: /personas/coberturas/accidentes-personales
+            - link "Cauciones" [ref=e331] [cursor=pointer]:
+              - /url: /personas/coberturas/caucion-alquiler
+            - link "Seguro de Vida" [ref=e332] [cursor=pointer]:
+              - /url: "#"
+            - link "Seguro de Sepelio" [ref=e333] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=e334]:
+            - generic [ref=e335]: Empresa
+            - link "Nosotros" [ref=e336] [cursor=pointer]:
+              - /url: "#"
+            - link "Blog" [ref=e337] [cursor=pointer]:
+              - /url: "#"
+            - link "Trabajá con nosotros" [ref=e338] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=e339]:
+            - generic [ref=e340]: Soporte
+            - link "Centro de ayuda" [ref=e341] [cursor=pointer]:
+              - /url: "#"
+            - link "Contacto" [ref=e342] [cursor=pointer]:
+              - /url: "#"
+            - link "FAQ" [ref=e343] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=e344]:
+            - generic [ref=e345]: Legal
+            - link "Términos" [ref=e346] [cursor=pointer]:
+              - /url: "#"
+            - link "Privacidad" [ref=e347] [cursor=pointer]:
+              - /url: "#"
+            - link "SSN" [ref=e348] [cursor=pointer]:
+              - /url: "#"
+        - separator
+        - generic [ref=e349]:
+          - paragraph [ref=e350]: "La entidad aseguradora dispone de un Servicio de Atención al Asegurado que atenderá las consultas y reclamos que presenten los tomadores de seguros, asegurados, beneficiarios y/o derechohabientes. El Servicio de Atención al Asegurado está integrado por: RESPONSABLE: Gonzalo Oyarzabal – Tel.: 0800-266-4240 SUPLENTE: Anabella Calderan – Tel.: 0800-266-4240. En caso de que el reclamo no haya sido resuelto o haya sido desestimado, total o parcialmente, o que haya sido denegada su admisión, podrá comunicarse con la Superintendencia de Seguros de la Nación por teléfono al 0800-666-8400, correo electrónico a denuncias@ssn.gob.ar o formulario web a través de www.argentina.gob.ar/ssn"
+          - img "SSN QR" [ref=e351]
+        - separator
+        - generic [ref=e352]:
+          - generic [ref=e353]: © 2026 Woranz. Todos los derechos reservados.
+          - generic [ref=e354]:
+            - link [ref=e355] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e356]
+            - link [ref=e359] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e360]
+            - link [ref=e364] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e365]
+  - alert [ref=e367]

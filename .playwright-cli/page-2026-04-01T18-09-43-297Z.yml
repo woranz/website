@@ -1,0 +1,188 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "Woranz" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - img "Woranz" [ref=e6]
+        - generic [ref=e8]:
+          - navigation [ref=e9]:
+            - list [ref=e10]:
+              - listitem [ref=e11]:
+                - button "Coberturas" [ref=e12] [cursor=pointer]:
+                  - text: Coberturas
+                  - img [ref=e13]
+              - listitem [ref=e15]:
+                - link "Nosotros" [ref=e16] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e17]:
+                - link "Contacto" [ref=e18] [cursor=pointer]:
+                  - /url: "#"
+          - link "Ingresar" [ref=e19] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e20]
+            - generic [ref=e23]: Ingresar
+    - main [ref=e24]:
+      - generic [ref=e25]:
+        - navigation [ref=e26]:
+          - generic [ref=e27]:
+            - link "Personas" [ref=e28] [cursor=pointer]:
+              - /url: /
+            - link "Empresas" [ref=e29] [cursor=pointer]:
+              - /url: /empresas
+            - link "Productores" [ref=e30] [cursor=pointer]:
+              - /url: /productores
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - heading "Tu operación no se puede frenar." [level=1] [ref=e33]
+            - paragraph [ref=e34]: Nosotros nos ocupamos de las coberturas para que vos sigas avanzando.
+          - generic [ref=e35]:
+            - button "Hablar con un especialista" [ref=e36] [cursor=pointer]
+            - button "Ver coberturas →" [ref=e37] [cursor=pointer]
+          - generic [ref=e38]:
+            - generic [ref=e39]:
+              - img [ref=e40]
+              - generic [ref=e43]: Coberturas corporativas
+            - generic [ref=e44]:
+              - img [ref=e45]
+              - generic [ref=e47]: Emisión en 24hs
+            - generic [ref=e48]:
+              - img [ref=e49]
+              - generic [ref=e54]: Equipo dedicado
+        - img "Woranz empresas" [ref=e56]
+      - generic [ref=e59]:
+        - heading "Nuestras coberturas" [level=2] [ref=e60]
+        - generic [ref=e61]:
+          - link "Accidentes Personales - Empresas Accidentes Personales - Empresas" [ref=e62] [cursor=pointer]:
+            - /url: /empresas/coberturas/accidentes-personales
+            - generic [ref=e63]:
+              - img "Accidentes Personales - Empresas" [ref=e64]
+              - generic [ref=e66]: Accidentes Personales - Empresas
+          - link "Caución Turismo Estudiantil - Agencias Caución Turismo Estudiantil - Agencias" [ref=e67] [cursor=pointer]:
+            - /url: /empresas/coberturas/caucion-turismo-estudiantil-agencias
+            - generic [ref=e68]:
+              - img "Caución Turismo Estudiantil - Agencias" [ref=e69]
+              - generic [ref=e71]: Caución Turismo Estudiantil - Agencias
+          - link "Cauciones Tradicionales Cauciones Tradicionales" [ref=e72] [cursor=pointer]:
+            - /url: /empresas/coberturas/cauciones-tradicionales
+            - generic [ref=e73]:
+              - img "Cauciones Tradicionales" [ref=e74]
+              - generic [ref=e76]: Cauciones Tradicionales
+          - link "Caución de Alquiler Comercial Caución de Alquiler Comercial" [ref=e77] [cursor=pointer]:
+            - /url: /empresas/coberturas/caucion-alquiler-comercial
+            - generic [ref=e78]:
+              - img "Caución de Alquiler Comercial" [ref=e79]
+              - generic [ref=e81]: Caución de Alquiler Comercial
+          - link "Seguro de Vida Colectivo Seguro de Vida Colectivo" [ref=e82] [cursor=pointer]:
+            - /url: /empresas/coberturas/seguro-de-vida-empresas
+            - generic [ref=e83]:
+              - img "Seguro de Vida Colectivo" [ref=e84]
+              - generic [ref=e86]: Seguro de Vida Colectivo
+          - link "Seguro de Sepelio Seguro de Sepelio" [ref=e87] [cursor=pointer]:
+            - /url: /empresas/coberturas/seguro-de-sepelio
+            - generic [ref=e88]:
+              - img "Seguro de Sepelio" [ref=e89]
+              - generic [ref=e91]: Seguro de Sepelio
+          - link "Integral de Consorcio Integral de Consorcio" [ref=e92] [cursor=pointer]:
+            - /url: /empresas/coberturas/integral-de-consorcio
+            - generic [ref=e93]:
+              - img "Integral de Consorcio" [ref=e94]
+              - generic [ref=e96]: Integral de Consorcio
+          - link "Integral de Comercio Integral de Comercio" [ref=e97] [cursor=pointer]:
+            - /url: /empresas/coberturas/integral-de-comercio
+            - generic [ref=e98]:
+              - img "Integral de Comercio" [ref=e99]
+              - generic [ref=e101]: Integral de Comercio
+          - link "Responsabilidad Civil Responsabilidad Civil" [ref=e102] [cursor=pointer]:
+            - /url: /empresas/coberturas/responsabilidad-civil
+            - generic [ref=e103]:
+              - img "Responsabilidad Civil" [ref=e104]
+              - generic [ref=e106]: Responsabilidad Civil
+          - link "Incendio - Empresas Incendio - Empresas" [ref=e107] [cursor=pointer]:
+            - /url: /empresas/coberturas/incendio
+            - generic [ref=e108]:
+              - img "Incendio - Empresas" [ref=e109]
+              - generic [ref=e111]: Incendio - Empresas
+          - link "Aeronavegación Aeronavegación" [ref=e112] [cursor=pointer]:
+            - /url: /empresas/coberturas/aeronavegacion
+            - generic [ref=e113]:
+              - img "Aeronavegación" [ref=e114]
+              - generic [ref=e116]: Aeronavegación
+          - link "Hecho por Humanos Hecho por Humanos" [ref=e117] [cursor=pointer]:
+            - /url: /empresas/coberturas/hecho-por-humanos
+            - generic [ref=e118]:
+              - img "Hecho por Humanos" [ref=e119]
+              - generic [ref=e121]: Hecho por Humanos
+      - generic [ref=e125]:
+        - generic [ref=e126]:
+          - heading "Tu empresa crece. Su cobertura también." [level=2] [ref=e127]
+          - paragraph [ref=e128]: Empresas de todos los tamaños eligen Woranz para operar tranquilas.
+        - generic [ref=e129]:
+          - generic [ref=e130]:
+            - img "Carolina" [ref=e132]
+            - img "Charlie" [ref=e134]
+            - img "Gonzalo" [ref=e136]
+            - img "Martina" [ref=e138]
+            - generic [ref=e139]: "+9"
+          - generic [ref=e140]: personas para ayudarte
+        - generic [ref=e141]:
+          - button "Pedí tu propuesta" [ref=e142] [cursor=pointer]
+          - button "Agendá una llamada →" [ref=e143] [cursor=pointer]
+    - contentinfo [ref=e144]:
+      - generic [ref=e145]:
+        - link "Woranz" [ref=e147] [cursor=pointer]:
+          - /url: /
+          - img "Woranz" [ref=e148]
+        - generic [ref=e151]:
+          - generic [ref=e152]:
+            - generic [ref=e153]: Productos
+            - link "Accidentes Personales" [ref=e154] [cursor=pointer]:
+              - /url: /personas/coberturas/accidentes-personales
+            - link "Cauciones" [ref=e155] [cursor=pointer]:
+              - /url: /personas/coberturas/caucion-alquiler
+            - link "Seguro de Vida" [ref=e156] [cursor=pointer]:
+              - /url: "#"
+            - link "Seguro de Sepelio" [ref=e157] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=e158]:
+            - generic [ref=e159]: Empresa
+            - link "Nosotros" [ref=e160] [cursor=pointer]:
+              - /url: "#"
+            - link "Blog" [ref=e161] [cursor=pointer]:
+              - /url: "#"
+            - link "Trabajá con nosotros" [ref=e162] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=e163]:
+            - generic [ref=e164]: Soporte
+            - link "Centro de ayuda" [ref=e165] [cursor=pointer]:
+              - /url: "#"
+            - link "Contacto" [ref=e166] [cursor=pointer]:
+              - /url: "#"
+            - link "FAQ" [ref=e167] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=e168]:
+            - generic [ref=e169]: Legal
+            - link "Términos" [ref=e170] [cursor=pointer]:
+              - /url: "#"
+            - link "Privacidad" [ref=e171] [cursor=pointer]:
+              - /url: "#"
+            - link "SSN" [ref=e172] [cursor=pointer]:
+              - /url: "#"
+        - separator
+        - generic [ref=e173]:
+          - paragraph [ref=e174]: "La entidad aseguradora dispone de un Servicio de Atención al Asegurado que atenderá las consultas y reclamos que presenten los tomadores de seguros, asegurados, beneficiarios y/o derechohabientes. El Servicio de Atención al Asegurado está integrado por: RESPONSABLE: Gonzalo Oyarzabal – Tel.: 0800-266-4240 SUPLENTE: Anabella Calderan – Tel.: 0800-266-4240. En caso de que el reclamo no haya sido resuelto o haya sido desestimado, total o parcialmente, o que haya sido denegada su admisión, podrá comunicarse con la Superintendencia de Seguros de la Nación por teléfono al 0800-666-8400, correo electrónico a denuncias@ssn.gob.ar o formulario web a través de www.argentina.gob.ar/ssn"
+          - img "SSN QR" [ref=e175]
+        - separator
+        - generic [ref=e176]:
+          - generic [ref=e177]: © 2026 Woranz. Todos los derechos reservados.
+          - generic [ref=e178]:
+            - link [ref=e179] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e180]
+            - link [ref=e183] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e184]
+            - link [ref=e188] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e189]
+  - alert [ref=e191]
