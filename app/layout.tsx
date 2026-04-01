@@ -4,6 +4,7 @@ import localFont from 'next/font/local'
 import { VisualEditing } from 'next-sanity'
 import { draftMode } from 'next/headers'
 import { AgentationDevtools } from '@/components/agentation-devtools'
+import { PruneEditorRoot } from '@patio/prune-editor'
 import './globals.css'
 
 const inter = Inter({
@@ -36,7 +37,7 @@ export default async function RootLayout({
   return (
     <html lang="es">
       <body className={`${inter.variable} ${noeDisplay.variable} bg-background`}>
-        {children}
+        <PruneEditorRoot>{children}</PruneEditorRoot>
         <AgentationDevtools />
         {(dm.isEnabled || isVercelPreview) && <VisualEditing />}
       </body>

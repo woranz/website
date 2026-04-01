@@ -1,3 +1,7 @@
+import { createRequire } from "node:module"
+import { withPruneEditor } from "@patio/prune-editor/next"
+
+const require = createRequire(import.meta.url)
 const productCatalog = require("./data/product-catalog.json")
 
 const legacyProductRedirects = productCatalog.flatMap((product) =>
@@ -31,4 +35,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+export default withPruneEditor(nextConfig)
