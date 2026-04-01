@@ -31,8 +31,4 @@ const nextConfig = {
   },
 }
 
-module.exports = async () => {
-  const { withPruneEditor } = await import("@patio/prune-editor/next")
-
-  return withPruneEditor(nextConfig)
-}
+module.exports = nextConfig

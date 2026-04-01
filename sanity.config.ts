@@ -18,7 +18,11 @@ export default defineConfig({
   plugins: [
     structureTool(),
     presentationTool({
-      previewUrl: '/api/draft-mode/enable?redirect=/',
+      previewUrl: {
+        draftMode: {
+          enable: '/api/draft-mode/enable',
+        },
+      },
     }),
   ],
 
