@@ -188,7 +188,7 @@ function QuoteSection({ section }: { section: Extract<ProductPageSection, { type
         <SectionHeader title={section.title} description={section.description} />
         <Card
           className={cn(
-            "quote-card w-full border-none px-0 py-0 shadow-panel ring-0",
+            "quote-card w-full border-none px-0 py-0 ring-0",
             section.maxWidth === "wide"
               ? "max-w-quoter md:max-w-quoter"
               : "max-w-quoter-mobile md:max-w-none"
@@ -529,6 +529,8 @@ function FaqAccordion({
 }
 
 function CtaSection({ section }: { section: Extract<ProductPageSection, { type: "cta" }> }) {
+  const secondaryHref = section.secondaryCtaHref ?? "/contacto"
+
   return (
     <section className="page-shell px-page-mobile py-section-mobile md:px-page-wide md:py-section">
       <div className="surface-cta px-8 py-10 md:px-16 md:py-16">
@@ -575,8 +577,8 @@ function CtaSection({ section }: { section: Extract<ProductPageSection, { type: 
               label={section.primaryCta}
             />
             <ActionButton
-              className="btn-link-brand px-0 text-sm md:text-base"
-              href={section.secondaryCtaHref}
+              className="btn-secondary-outline w-full md:w-auto"
+              href={secondaryHref}
               label={section.secondaryCta}
             />
           </div>

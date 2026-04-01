@@ -18,6 +18,7 @@ import {
 } from "@/lib/product-pages"
 import { draftMode } from "next/headers"
 import { client, previewClient, urlFor } from "@/sanity/lib/client"
+import { stegaClean } from "next-sanity"
 import {
   productoByRouteQuery,
   productosQuery,
@@ -34,6 +35,7 @@ type SanityCtaLink = {
 }
 
 type SanityRelatedProduct = {
+  cardImage?: SanityImageSource
   heroImage?: SanityImageSource
   headline?: string
   nombre?: string
@@ -52,6 +54,7 @@ type SanitySectionBlock = {
   pasos?: Array<{ descripcion?: string; numero?: string; titulo?: string }>
   // seccionCobertura, seccionFaq, seccionVariantes
   items?: Array<{
+    _type?: string
     descripcion?: string
     descripcionMobile?: string
     cta?: "button" | "link"
@@ -108,6 +111,14 @@ const DEFAULT_DESCRIPTION =
 const DEFAULT_PRIMARY_CTA = "Cotizá ahora"
 const DEFAULT_SECONDARY_CTA = "Hablá con nosotros →"
 const SANITY_REVALIDATE_SECONDS = 60
+
+function cleanStegaString<T extends string>(value: T | undefined) {
+  if (!value) {
+    return undefined
+  }
+
+  return stegaClean(value).trim() as T
+}
 
 function isSanityConfigured() {
   return Boolean(
@@ -244,11 +255,13 @@ function resolveSanityImageUrl(image: SanityImageSource | undefined) {
 function inferQuoter(
   mode?: "contacto" | "inline-accidentes" | "inline-caucion"
 ) {
-  if (mode === "inline-caucion") {
+  const cleanedMode = cleanStegaString(mode)
+
+  if (cleanedMode === "inline-caucion") {
     return "caucion" as const
   }
 
-  if (mode === "inline-accidentes") {
+  if (cleanedMode === "inline-accidentes") {
     return "accidentes" as const
   }
 
@@ -269,11 +282,11 @@ function mapRelatedSanityProducts(
 
       return {
         title:
-          product.headline?.trim() ||
           product.nombre?.trim() ||
+          product.headline?.trim() ||
           "Producto Woranz",
         href: buildProductPath(segment, slug),
-        imageSrc: resolveHeroImage(product.heroImage),
+        imageSrc: resolveHeroImage(product.cardImage ?? product.heroImage),
       }
     })
 }
@@ -292,13 +305,21 @@ function mapProductGridItems(
 
       return {
         title:
-          product.headline?.trim() ||
           product.nombre?.trim() ||
+          product.headline?.trim() ||
           "Producto Woranz",
         href: buildProductPath(segment, slug),
-        imageSrc: resolveHeroImage(product.heroImage),
+        imageSrc: resolveHeroImage(product.cardImage ?? product.heroImage),
       }
     })
+}
+
+function mapRequirementItems(
+  items: SanitySectionBlock["items"] | string[] | undefined
+) {
+  return (items ?? [])
+    .map((item) => (typeof item === "string" ? item.trim() : item?.titulo?.trim() || ""))
+    .filter(Boolean)
 }
 
 function transformSectionBlock(
@@ -316,7 +337,7 @@ function transformSectionBlock(
         title: block.titulo?.trim() || "Cotizá tu cobertura",
         description: block.descripcion?.trim() || "Completá el flujo y recibí una propuesta en segundos.",
         quoter,
-        maxWidth: block.maxWidth === "wide" ? "wide" : "default",
+        maxWidth: cleanStegaString(block.maxWidth) === "wide" ? "wide" : "default",
         mobileSteps: block.mostrarPasosMobile ?? false,
         steps: mapStepItems(block.pasos),
       }
@@ -364,13 +385,12 @@ function transformSectionBlock(
     }
 
     case "seccionRequisitos": {
-      const reqItems = (block.items ?? [])
-        .map((i) => i.titulo?.trim() || "")
-        .filter(Boolean)
+      const reqItems = mapRequirementItems(block.items)
       if (reqItems.length === 0) return null
       return {
         type: "requirements",
         title: block.titulo?.trim() || "Requisitos",
+        description: block.descripcion?.trim(),
         items: reqItems,
       }
     }
@@ -416,11 +436,11 @@ function transformSectionBlock(
       const items: PackageCarouselItem[] = (block.items ?? [])
         .filter((i) => i.titulo)
         .map((i) => ({
-          icon: (i.icono as PackageCarouselItem["icon"]) || "user",
+          icon: (cleanStegaString(i.icono) as PackageCarouselItem["icon"]) || "user",
           title: i.titulo?.trim() || "Paquete",
           description: i.descripcion?.trim() || "",
           descriptionMobile: i.descripcionMobile?.trim(),
-          cta: (i.cta as PackageCarouselItem["cta"]) || "link",
+          cta: (cleanStegaString(i.cta) as PackageCarouselItem["cta"]) || "link",
         }))
       if (items.length === 0) return null
       return {
@@ -485,6 +505,13 @@ function transformSanityProduct(
   const sections = (product.secciones ?? [])
     .map((block) => transformSectionBlock(block, settings))
     .filter((s): s is ProductPageSection => s !== null)
+
+  // Ensure the quoter section always appears first
+  const quoteIndex = sections.findIndex((s) => s.type === "quote")
+  if (quoteIndex > 0) {
+    const [quoteSection] = sections.splice(quoteIndex, 1)
+    sections.unshift(quoteSection)
+  }
 
   if (sections.length === 0) {
     return undefined

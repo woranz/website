@@ -8,6 +8,7 @@
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { buildProductSectionsFromLegacy } from './lib/product-sections.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -60,77 +61,20 @@ function mapProduct(p) {
     headline: p.headline,
     subtitulo: p.subtitulo || undefined,
     badge: p.badge || undefined,
+    secciones: buildProductSectionsFromLegacy({
+      ...p,
+      productosRelacionados: (p.productosRelacionados ?? []).map((key, i) => ({
+        _key: `producto-relacionado-${i}`,
+        _type: 'reference',
+        _ref: `producto-${key.replace('/', '-')}`,
+      })),
+    }),
   };
 
   // destacado & orden
   if (p.destacado !== undefined) doc.destacado = p.destacado;
   if (p.orden !== undefined) doc.orden = p.orden;
 
-  // cotizador
-  if (p.cotizador) {
-    doc.cotizador = {
-      modo: p.cotizador.modo,
-      titulo: p.cotizador.titulo,
-      descripcion: p.cotizador.descripcion,
-      ctaLabel: p.cotizador.ctaLabel,
-    };
-    if (p.cotizador.ctaHref) doc.cotizador.ctaHref = p.cotizador.ctaHref;
-  }
-
-  // variantes
-  if (p.variantes && p.variantes.length > 0) {
-    doc.variantes = addSanityKeys(p.variantes.map((v, i) => {
-      const variant = {
-        _key: `variante-${i}`,
-        titulo: v.titulo,
-        descripcion: v.descripcion,
-      };
-      if (v.items) variant.items = v.items;
-      if (v.href) variant.href = v.href;
-      return variant;
-    }));
-  }
-
-  // requisitos
-  if (p.requisitos) {
-    doc.requisitos = {
-      titulo: p.requisitos.titulo,
-      descripcion: p.requisitos.descripcion,
-      items: p.requisitos.items,
-    };
-  }
-
-  // coberturas
-  if (p.coberturas && p.coberturas.length > 0) {
-    doc.coberturas = p.coberturas.map((c, i) => ({
-      _key: `cobertura-${i}`,
-      titulo: c.titulo,
-      descripcion: c.descripcion,
-    }));
-  }
-
-  // pasos
-  if (p.pasos && p.pasos.length > 0) {
-    doc.pasos = p.pasos.map((paso, i) => ({
-      _key: `paso-${i}`,
-      numero: paso.numero,
-      titulo: paso.titulo,
-      descripcion: paso.descripcion,
-    }));
-  }
-
-  // faqs
-  if (p.faqs && p.faqs.length > 0) {
-    doc.faqs = p.faqs.map((f, i) => ({
-      _key: `faq-${i}`,
-      pregunta: f.pregunta,
-      respuesta: f.respuesta,
-    }));
-  }
-
-  // CTA fields
-  if (p.ctaTitulo) doc.ctaTitulo = p.ctaTitulo;
-  if (p.ctaSubtitulo) doc.ctaSubtitulo = p.ctaSubtitulo;
   if (p.ctaBoton) doc.ctaBoton = p.ctaBoton;
 
   if (p.ctaPrimario) {
@@ -165,12 +109,88 @@ function buildHomePages() {
       heroSubtitulo: 'Seguros 100% digitales para que cotices, elijas tu plan y manejes todo desde tu celu. Sin papeles, sin vueltas.',
       heroSubtituloMobile: 'Seguros 100% digitales. Cotiz\u00e1, eleg\u00ed tu plan y manej\u00e1 todo desde tu celu.',
       heroFeatures: [
-        { _key: 'feat-0', icon: 'shield-check', label: 'Prestacional' },
-        { _key: 'feat-1', icon: 'zap', label: 'Orientaci\u00f3n al instante' },
-        { _key: 'feat-2', icon: 'credit-card', label: 'Pagos online' },
+        { _key: 'feat-0', icono: 'shield-check', texto: 'Prestacional' },
+        { _key: 'feat-1', icono: 'zap', texto: 'Orientaci\u00f3n al instante' },
+        { _key: 'feat-2', icono: 'credit-card', texto: 'Pagos online' },
       ],
       ctaPrimario: { label: 'Ver seguros', href: '#coberturas' },
       ctaSecundario: { label: 'Hablar con alguien \u2192' },
+      secciones: [
+        {
+          _key: 'prods001',
+          _type: 'seccionCarouselProductos',
+          titulo: 'Estamos en cada momento',
+          productos: [
+            { _key: 'r1', _ref: 'producto-personas-caucion-alquiler', _type: 'reference' },
+            { _key: 'r2', _ref: 'producto-personas-seguro-de-hogar', _type: 'reference' },
+            { _key: 'r3', _ref: 'producto-personas-accidentes-personales', _type: 'reference' },
+            { _key: 'r4', _ref: 'producto-personas-robo-celular', _type: 'reference' },
+            { _key: 'r5', _ref: 'producto-personas-caucion-turismo-estudiantil', _type: 'reference' },
+          ],
+        },
+        {
+          _key: 'steps001',
+          _type: 'seccionPasos',
+          pasos: [
+            {
+              _key: 'p1',
+              numero: '01',
+              titulo: 'Cotiz\u00e1 online',
+              descripcion: 'Eleg\u00ed tu cobertura y recib\u00ed tu precio en segundos. Sin formularios ni datos personales.',
+            },
+            {
+              _key: 'p2',
+              numero: '02',
+              titulo: 'Contrat\u00e1',
+              descripcion: 'Pag\u00e1 como quieras: tarjeta, d\u00e9bito o transferencia. Todo por Mercado Pago.',
+            },
+            {
+              _key: 'p3',
+              numero: '03',
+              titulo: 'Listo, te cubrimos',
+              descripcion: 'Tu p\u00f3liza llega al toque a tu celu. Siempre disponible en tu cuenta Woranz.',
+            },
+          ],
+        },
+        {
+          _key: 'feat001',
+          _type: 'seccionCarouselFeatures',
+          titulo: 'Seguros pensados para vos.',
+          items: [
+            {
+              _key: 'i1',
+              texto: 'Cotiz\u00e1 y gestion\u00e1 todo online, cuando quieras.',
+              textoMobile: 'Cotiz\u00e1 y consult\u00e1 tus p\u00f3lizas online 24/7.',
+            },
+            {
+              _key: 'i2',
+              texto: 'Siempre cerca tuyo, siempre a un mensaje.',
+              textoMobile: 'Siempre cerca tuyo ayud\u00e1ndote a avanzar.',
+            },
+            {
+              _key: 'i3',
+              texto: 'El mejor precio, el mejor producto. Sin vueltas.',
+              textoMobile: 'El mejor precio, sin vueltas.',
+            },
+            {
+              _key: 'i4',
+              texto: 'Simple, online y con la mejor experiencia.',
+              textoMobile: 'Simple, online y con la mejor experiencia.',
+            },
+          ],
+        },
+        {
+          _key: 'cta001',
+          _type: 'seccionCta',
+          titulo: '\u00bfTen\u00e9s dudas? Hablemos.',
+          tituloMobile: 'Cuando lo necesites, estamos.',
+          descripcion: 'No somos un call center. Somos personas reales que te acompa\u00f1an en cada paso.',
+          teamCount: '+21',
+          teamLabel: 'personas cuidando de vos',
+          ctaPrimario: { label: 'Ver seguros', href: '#coberturas' },
+          ctaSecundario: { label: 'Habl\u00e1 con nosotros \u2192' },
+        },
+      ],
       metaTitulo: 'Woranz \u2014 Seguros para Personas',
       metaDescripcion: 'Seguros 100% online con personas reales del otro lado.',
     },
@@ -182,12 +202,44 @@ function buildHomePages() {
       heroSubtitulo: 'Nosotros nos ocupamos de las coberturas para que vos sigas avanzando.',
       heroSubtituloMobile: 'Nos ocupamos de las coberturas para que vos sigas avanzando.',
       heroFeatures: [
-        { _key: 'feat-0', icon: 'building', label: 'Coberturas corporativas' },
-        { _key: 'feat-1', icon: 'zap', label: 'Emisi\u00f3n en 24hs' },
-        { _key: 'feat-2', icon: 'users', label: 'Equipo dedicado' },
+        { _key: 'feat-0', icono: 'building', texto: 'Coberturas corporativas' },
+        { _key: 'feat-1', icono: 'zap', texto: 'Emisi\u00f3n en 24hs' },
+        { _key: 'feat-2', icono: 'users', texto: 'Equipo dedicado' },
       ],
       ctaPrimario: { label: 'Hablar con un especialista' },
       ctaSecundario: { label: 'Ver coberturas \u2192' },
+      secciones: [
+        {
+          _key: 'grid001',
+          _type: 'seccionGridProductos',
+          titulo: 'Nuestras coberturas',
+          productos: [
+            { _key: 'r1', _ref: 'producto-empresas-accidentes-personales', _type: 'reference' },
+            { _key: 'r2', _ref: 'producto-empresas-caucion-turismo-estudiantil-agencias', _type: 'reference' },
+            { _key: 'r3', _ref: 'producto-empresas-cauciones-tradicionales', _type: 'reference' },
+            { _key: 'r4', _ref: 'producto-empresas-caucion-alquiler-comercial', _type: 'reference' },
+            { _key: 'r5', _ref: 'producto-empresas-seguro-de-vida-empresas', _type: 'reference' },
+            { _key: 'r6', _ref: 'producto-empresas-seguro-de-sepelio', _type: 'reference' },
+            { _key: 'r7', _ref: 'producto-empresas-integral-de-consorcio', _type: 'reference' },
+            { _key: 'r8', _ref: 'producto-empresas-integral-de-comercio', _type: 'reference' },
+            { _key: 'r9', _ref: 'producto-empresas-responsabilidad-civil', _type: 'reference' },
+            { _key: 'r10', _ref: 'producto-empresas-incendio', _type: 'reference' },
+            { _key: 'r11', _ref: 'producto-empresas-aeronavegacion', _type: 'reference' },
+            { _key: 'r12', _ref: 'producto-empresas-hecho-por-humanos', _type: 'reference' },
+          ],
+        },
+        {
+          _key: 'cta001',
+          _type: 'seccionCta',
+          titulo: 'Tu empresa crece. Su cobertura tambi\u00e9n.',
+          tituloMobile: 'Tu empresa crece. Su cobertura tambi\u00e9n.',
+          descripcion: 'Empresas de todos los tama\u00f1os eligen Woranz para operar tranquilas.',
+          teamCount: '+9',
+          teamLabel: 'personas para ayudarte',
+          ctaPrimario: { label: 'Ped\u00ed tu propuesta' },
+          ctaSecundario: { label: 'Agend\u00e1 una llamada \u2192' },
+        },
+      ],
       metaTitulo: 'Woranz \u2014 Seguros para Empresas',
       metaDescripcion: 'Tu operaci\u00f3n no se puede frenar. Nosotros nos ocupamos de las coberturas.',
     },
@@ -199,12 +251,25 @@ function buildHomePages() {
       heroSubtitulo: 'Cotiz\u00e1, emit\u00ed y gestion\u00e1 todas tus coberturas desde un solo lugar. Sin Excel, sin papel, sin drama.',
       heroSubtituloMobile: 'Gestion\u00e1 coberturas desde un solo lugar. Sin Excel, sin drama.',
       heroFeatures: [
-        { _key: 'feat-0', icon: 'briefcase', label: 'Portal para productores' },
-        { _key: 'feat-1', icon: 'zap', label: 'Comisiones al instante' },
-        { _key: 'feat-2', icon: 'credit-card', label: 'Pagos online' },
+        { _key: 'feat-0', icono: 'briefcase', texto: 'Portal para productores' },
+        { _key: 'feat-1', icono: 'zap', texto: 'Comisiones al instante' },
+        { _key: 'feat-2', icono: 'credit-card', texto: 'Pagos online' },
       ],
       ctaPrimario: { label: 'Empezar gratis' },
       ctaSecundario: { label: 'Conoc\u00e9 el portal \u2192' },
+      secciones: [
+        {
+          _key: 'cta001',
+          _type: 'seccionCta',
+          titulo: 'Tu cartera, en un solo lugar.',
+          tituloMobile: 'Tu cartera en un solo lugar.',
+          descripcion: 'Cotiz\u00e1 para tus clientes en segundos. Gestion\u00e1 renovaciones, emisiones y cobranzas sin complicaciones.',
+          teamCount: '+21',
+          teamLabel: 'personas apoy\u00e1ndote',
+          ctaPrimario: { label: 'Empezar gratis' },
+          ctaSecundario: { label: 'Habl\u00e1 con nosotros \u2192' },
+        },
+      ],
       metaTitulo: 'Woranz \u2014 Productores',
       metaDescripcion: 'Cotiz\u00e1, emit\u00ed y gestion\u00e1 coberturas desde un solo lugar.',
     },

@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "agentation:server": "npx -y agentation-mcp server",
     "sanity:import-products": "node scripts/import-product-catalog.mjs",
     "sanity:import-products:dry": "node scripts/import-product-catalog.mjs --dry-run"
   },
@@ -43,6 +44,7 @@
     "@types/node": "^20.0.0",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
+    "agentation": "^3.0.2",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
     "sharp": "^0.34.5",

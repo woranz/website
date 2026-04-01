@@ -3,6 +3,7 @@ import os from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { createClient } from "@sanity/client"
+import { buildProductSectionsFromLegacy } from "./lib/product-sections.mjs"
 
 const API_VERSION = "2024-01-01"
 const BATCH_SIZE = 20
@@ -80,7 +81,7 @@ function getWriteToken() {
 }
 
 function createDocId(segmento, slug) {
-  return `producto.${segmento}.${slug}`
+  return `producto-${segmento}-${slug}`
 }
 
 function mapReference(key) {
@@ -160,30 +161,13 @@ async function mapProduct(client, product, assetCache, shouldUploadAssets) {
     headline: product.headline,
     subtitulo: product.subtitulo,
     heroImage,
-    cotizador: product.cotizador,
-    variantes: product.variantes,
-    requisitos: product.requisitos,
-    coberturas: (product.coberturas ?? []).map((item) => ({
-      _type: "object",
-      titulo: item.titulo,
-      descripcion: item.descripcion,
-    })),
-    pasos: (product.pasos ?? []).map((item) => ({
-      _type: "object",
-      numero: item.numero,
-      titulo: item.titulo,
-      descripcion: item.descripcion,
-    })),
-    faqs: (product.faqs ?? []).map((item) => ({
-      _type: "object",
-      pregunta: item.pregunta,
-      respuesta: item.respuesta,
-    })),
-    ctaTitulo: product.ctaTitulo,
-    ctaSubtitulo: product.ctaSubtitulo,
+    ...(heroImage ? { cardImage: heroImage } : {}),
     ctaPrimario: product.ctaPrimario,
     ctaSecundario: product.ctaSecundario,
-    productosRelacionados: (product.productosRelacionados ?? []).map(mapReference),
+    secciones: buildProductSectionsFromLegacy({
+      ...product,
+      productosRelacionados: (product.productosRelacionados ?? []).map(mapReference),
+    }),
     pendientesValidacion: product.pendientesValidacion ?? [],
   }
 }

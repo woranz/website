@@ -95,6 +95,15 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'cardImage',
+      title: 'Imagen de card',
+      description: 'Se usa en carruseles y grillas de productos. Si falta, el frontend usa la hero.',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
       name: 'ctaPrimario',
       title: 'CTA primario (hero)',
       type: 'object',

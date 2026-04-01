@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import localFont from 'next/font/local'
 import { VisualEditing } from 'next-sanity'
 import { draftMode } from 'next/headers'
+import { AgentationDevtools } from '@/components/agentation-devtools'
 import './globals.css'
 
 const inter = Inter({
@@ -36,6 +37,7 @@ export default async function RootLayout({
     <html lang="es">
       <body className={`${inter.variable} ${noeDisplay.variable} bg-background`}>
         {children}
+        <AgentationDevtools />
         {(dm.isEnabled || isVercelPreview) && <VisualEditing />}
       </body>
     </html>

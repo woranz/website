@@ -81,6 +81,7 @@ type VariantsSection = {
 
 type RequirementsSection = {
   columns?: CoverageItem[][]
+  description?: string
   items?: string[]
   title: string
   type: "requirements"

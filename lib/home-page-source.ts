@@ -24,7 +24,9 @@ type SanityCtaLink = {
 }
 
 type SanityHeroFeature = {
+  icon?: string
   icono?: string
+  label?: string
   texto?: string
 }
 
@@ -36,6 +38,7 @@ type SanityPaso = {
 
 type SanityProductRef = {
   _id: string
+  cardImage?: SanityImageSource
   heroImage?: SanityImageSource
   headline?: string
   nombre?: string
@@ -125,9 +128,9 @@ function mapProductRef(product: SanityProductRef): ProductCarouselItem | null {
   if ((product.pendientesValidacion?.length ?? 0) > 0) return null
 
   return {
-    title: product.headline?.trim() || product.nombre?.trim() || "Producto Woranz",
+    title: product.nombre?.trim() || product.headline?.trim() || "Producto Woranz",
     href: buildProductPath(segment, slug),
-    imageSrc: resolveImage(product.heroImage, "/images/hero.png"),
+    imageSrc: resolveImage(product.cardImage ?? product.heroImage, "/images/hero.png"),
   }
 }
 
@@ -248,10 +251,10 @@ function transformSanityHome(
         "Seguros 100% online con personas reales del otro lado.",
       descriptionMobile: data.heroSubtituloMobile?.trim(),
       features: (data.heroFeatures ?? [])
-        .filter((f) => f.texto)
+        .filter((f) => f.texto || f.label)
         .map((f) => ({
-          icon: f.icono?.trim() || "shield-check",
-          label: f.texto?.trim() || "",
+          icon: f.icono?.trim() || f.icon?.trim() || "shield-check",
+          label: f.texto?.trim() || f.label?.trim() || "",
         })),
       primaryCta: data.ctaPrimario?.label?.trim() || "Ver seguros",
       primaryCtaHref: data.ctaPrimario?.href?.trim(),
@@ -284,17 +287,7 @@ export async function getHomePageData(
     )
 
     if (data) {
-      const transformed = transformSanityHome(data, segment)
-      // Only use Sanity data if it has ALL key sections (steps, carousel, faq, cta)
-      // Otherwise fall through to local fallback which has complete content
-      const hasSteps = transformed.sections.some((s) => s.type === "steps")
-      const hasCta = transformed.sections.some((s) => s.type === "cta")
-      const hasFaq = transformed.sections.some((s) => s.type === "faq")
-      if (hasSteps && hasCta && hasFaq) {
-        return transformed
-      }
-      // Sanity data is incomplete — return null so caller uses local fallback
-      return null
+      return transformSanityHome(data, segment)
     }
   } catch {
     // Fall through — caller uses hardcoded fallback

@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from "react"
 
 import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
@@ -45,6 +46,7 @@ const MODOS_PAGO = [
 ]
 
 const TASA_BASE = 0.045
+const PREAPPROVAL_HREF = "/personas/coberturas/caucion-alquiler/preaprobacion"
 
 function AnimatedPrice({
   className,
@@ -200,9 +202,9 @@ function PriceAction({
           {mode === "cuotas" ? "final por mes" : "final"}
         </span>
       </div>
-        <button type="button" className="btn-primary-form hidden px-6 md:inline-flex">
+        <Link href={PREAPPROVAL_HREF} className="btn-primary-form hidden px-6 md:inline-flex">
           {buttonLabel}
-        </button>
+        </Link>
     </div>
   )
 }
@@ -283,9 +285,9 @@ function CaucionQuoterMobile() {
       />
 
       <div className="px-5 pb-5">
-        <button type="button" className="btn-primary-form flex w-full justify-center">
+        <Link href={PREAPPROVAL_HREF} className="btn-primary-form flex w-full justify-center">
           Contratar ahora →
-        </button>
+        </Link>
       </div>
     </div>
   )

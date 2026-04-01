@@ -16,6 +16,7 @@ export const productoByRouteQuery = groq`
     headline,
     subtitulo,
     heroImage,
+    cardImage,
     ctaPrimario,
     ctaSecundario,
     secciones[] {
@@ -27,6 +28,7 @@ export const productoByRouteQuery = groq`
         segmento,
         slug,
         heroImage,
+        cardImage,
         headline,
         subtitulo,
         pendientesValidacion
@@ -47,7 +49,8 @@ export const productosQuery = groq`
     nombre,
     slug,
     badge,
-    heroImage
+    heroImage,
+    cardImage
   }
 `
 
@@ -58,27 +61,6 @@ export const equipoQuery = groq`
     nombre,
     rol,
     foto
-  }
-`
-
-// Cards de productos por categoría
-export const productoCardsByCategoriaQuery = groq`
-  *[_type == "productoCard" && categoria == $categoria] | order(orden asc) {
-    _id,
-    titulo,
-    imagen,
-    link
-  }
-`
-
-// Todas las cards de productos
-export const productoCardsQuery = groq`
-  *[_type == "productoCard"] | order(orden asc) {
-    _id,
-    titulo,
-    imagen,
-    link,
-    categoria
   }
 `
 
@@ -116,6 +98,7 @@ export const paginaHomeQuery = groq`
         segmento,
         slug,
         heroImage,
+        cardImage,
         headline,
         subtitulo,
         pendientesValidacion
