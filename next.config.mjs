@@ -1,5 +1,4 @@
 import { createRequire } from "node:module"
-import { withPruneEditor } from "@patio/prune-editor/next"
 
 const require = createRequire(import.meta.url)
 const productCatalog = require("./data/product-catalog.json")
@@ -35,4 +34,4 @@ const nextConfig = {
   },
 }
 
-export default withPruneEditor(nextConfig)
+export default nextConfig
