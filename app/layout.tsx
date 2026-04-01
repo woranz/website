@@ -29,20 +29,14 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const isDev = process.env.NODE_ENV === 'development'
   const dm = await draftMode()
-  let content = children
-
-  if (isDev) {
-    const { PruneEditorRoot } = await import('@patio/prune-editor')
-    content = <PruneEditorRoot>{children}</PruneEditorRoot>
-  }
+  const isVercelPreview = process.env.VERCEL_ENV === 'preview'
 
   return (
     <html lang="es">
       <body className={`${inter.variable} ${noeDisplay.variable} bg-background`}>
-        {content}
-        {dm.isEnabled && <VisualEditing />}
+        {children}
+        {(dm.isEnabled || isVercelPreview) && <VisualEditing />}
       </body>
     </html>
   )

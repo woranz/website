@@ -23,7 +23,8 @@ import {
   type ProductStep,
   type VariantItem,
 } from "@/lib/product-pages"
-import { client, urlFor } from "@/sanity/lib/client"
+import { draftMode } from "next/headers"
+import { client, previewClient, urlFor } from "@/sanity/lib/client"
 import {
   productoByRouteQuery,
   productosQuery,
@@ -609,10 +610,15 @@ async function fetchSanityProduct(segment: ProductSegment, slug: string) {
   }
 
   try {
-    return await client.fetch<SanityProduct | null>(
+    const dm = await draftMode()
+    const sanityClient = dm.isEnabled ? previewClient : client
+
+    return await sanityClient.fetch<SanityProduct | null>(
       productoByRouteQuery,
       { segment, segmento: segment, slug },
-      { next: { revalidate: SANITY_REVALIDATE_SECONDS } }
+      dm.isEnabled
+        ? { perspective: "previewDrafts" }
+        : { next: { revalidate: SANITY_REVALIDATE_SECONDS } }
     )
   } catch {
     return undefined
@@ -625,10 +631,15 @@ async function fetchSettings() {
   }
 
   try {
-    return await client.fetch<SanitySettings | null>(
+    const dm = await draftMode()
+    const sanityClient = dm.isEnabled ? previewClient : client
+
+    return await sanityClient.fetch<SanitySettings | null>(
       settingsQuery,
       {},
-      { next: { revalidate: SANITY_REVALIDATE_SECONDS } }
+      dm.isEnabled
+        ? { perspective: "previewDrafts" }
+        : { next: { revalidate: SANITY_REVALIDATE_SECONDS } }
     )
   } catch {
     return undefined
