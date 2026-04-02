@@ -1,10 +1,11 @@
 "use client"
 
 import Link from "next/link"
-import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from "react"
+import { type Dispatch, type ReactNode, type SetStateAction, useCallback, useEffect, useRef, useState } from "react"
 
-import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
 import { Input } from "@/components/ui/input"
+import { ArrowRight, ChevronDown, Loader2 } from "lucide-react"
+
 import { cn } from "@/lib/utils"
 
 const PROVINCIAS: Array<ComboboxOption & { impuesto: number }> = [
@@ -46,7 +47,20 @@ const MODOS_PAGO = [
 ]
 
 const TASA_BASE = 0.045
-const PREAPPROVAL_HREF = "/personas/coberturas/caucion-alquiler/preaprobacion"
+function buildPreapprovalHref(params: {
+  provincia: string
+  alquiler: number
+  duracion: string
+  modoPago: string
+}) {
+  const search = new URLSearchParams({
+    provincia: params.provincia,
+    alquiler: params.alquiler.toString(),
+    duracion: params.duracion,
+    modoPago: params.modoPago,
+  })
+  return `/personas/coberturas/caucion-alquiler/preaprobacion?${search.toString()}`
+}
 
 function AnimatedPrice({
   className,
@@ -182,12 +196,125 @@ function SegmentSelector({
   )
 }
 
+// ── Provincia Search (georef API) ─────────────────────────────────────
+
+function ProvinciaSearch({
+  value,
+  onChange,
+  className,
+}: {
+  value: string
+  onChange: (slug: string) => void
+  className?: string
+}) {
+  const selected = PROVINCIAS.find((p) => p.value === value)
+  const [query, setQuery] = useState(selected?.label ?? "")
+  const [options, setOptions] = useState<Array<{ id: string; nombre: string }>>([])
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>()
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const search = useCallback(async (q: string) => {
+    if (q.length < 2) {
+      setOptions([])
+      return
+    }
+    setLoading(true)
+    try {
+      const res = await fetch(
+        `https://apis.datos.gob.ar/georef/api/provincias?nombre=${encodeURIComponent(q)}&max=8&campos=id,nombre`
+      )
+      const data = await res.json()
+      setOptions(data.provincias ?? [])
+    } catch {
+      setOptions([])
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => search(query), 300)
+    return () => clearTimeout(debounceRef.current)
+  }, [query, search])
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClick)
+    return () => document.removeEventListener("mousedown", handleClick)
+  }, [])
+
+  // Match georef name to local PROVINCIAS slug
+  function matchProvincia(nombre: string): string | undefined {
+    const normalized = nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    return PROVINCIAS.find((p) => {
+      const pNorm = p.label.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      return pNorm === normalized
+    })?.value
+  }
+
+  return (
+    <div ref={containerRef} className={cn("relative", className)}>
+      <div className="flex items-center rounded-field bg-woranz-warm-2">
+        <Input
+          type="text"
+          placeholder="Buscá tu provincia..."
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value)
+            setOpen(true)
+            if (e.target.value !== selected?.label) onChange("buenos-aires")
+          }}
+          onFocus={() => {
+            setQuery("")
+            setOpen(true)
+            search("")
+          }}
+          className="border-0 bg-transparent shadow-none"
+        />
+        {loading && (
+          <Loader2 className="mr-3 h-4 w-4 shrink-0 animate-spin text-woranz-muted" />
+        )}
+      </div>
+      {open && (options.length > 0 || loading) && (
+        <div className="absolute z-50 mt-1 w-full rounded-xl border border-woranz-border bg-white shadow-panel">
+          {options.map((opt) => {
+            const slug = matchProvincia(opt.nombre)
+            return (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => {
+                  setQuery(opt.nombre)
+                  if (slug) onChange(slug)
+                  setOpen(false)
+                }}
+                className="flex w-full items-center px-4 py-3 text-left text-sm text-woranz-slate transition-colors first:rounded-t-xl last:rounded-b-xl hover:bg-woranz-warm-1"
+              >
+                <span className="font-medium">{opt.nombre}</span>
+              </button>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function PriceAction({
   buttonLabel,
+  href,
   mode,
   value,
 }: {
-  buttonLabel: string
+  buttonLabel: ReactNode
+  href: string
   mode: string
   value: number
 }) {
@@ -202,7 +329,7 @@ function PriceAction({
           {mode === "cuotas" ? "final por mes" : "final"}
         </span>
       </div>
-        <Link href={PREAPPROVAL_HREF} className="btn-primary-form hidden px-6 md:inline-flex">
+        <Link href={href} className="btn-primary-form hidden px-6 md:inline-flex">
           {buttonLabel}
         </Link>
     </div>
@@ -222,6 +349,8 @@ function CaucionQuoterMobile() {
     provincia,
   })
 
+  const preapprovalHref = buildPreapprovalHref({ provincia, alquiler, duracion, modoPago })
+
   return (
     <div className="flex flex-col md:hidden">
       <div className="flex items-center justify-between gap-4 border-b border-woranz-warm-4 p-5">
@@ -229,11 +358,8 @@ function CaucionQuoterMobile() {
           title="Provincia"
           description="Los impuestos varían según tu provincia"
         />
-        <Combobox
-          className="h-10 min-w-field border-0"
-          contentClassName="max-w-xs"
-          options={PROVINCIAS}
-          searchPlaceholder="Buscar provincia..."
+        <ProvinciaSearch
+          className="min-w-field"
           value={provincia}
           onChange={setProvincia}
         />
@@ -279,14 +405,15 @@ function CaucionQuoterMobile() {
       </div>
 
       <PriceAction
-        buttonLabel="Contratar ahora →"
+        buttonLabel={<>Contratar ahora <ArrowRight className="ml-2 h-4 w-4" /></>}
+        href={preapprovalHref}
         mode={modoPago}
         value={price}
       />
 
       <div className="px-5 pb-5">
-        <Link href={PREAPPROVAL_HREF} className="btn-primary-form flex w-full justify-center">
-          Contratar ahora →
+        <Link href={preapprovalHref} className="btn-primary-form flex w-full justify-center">
+          Contratar ahora <ArrowRight className="ml-2 h-4 w-4" />
         </Link>
       </div>
     </div>
@@ -306,6 +433,8 @@ function CaucionQuoterDesktop() {
     provincia,
   })
 
+  const preapprovalHref = buildPreapprovalHref({ provincia, alquiler, duracion, modoPago })
+
   return (
     <div className="hidden w-full flex-col md:flex">
       <div className="flex items-center justify-between gap-6 border-b border-woranz-warm-4 px-6 py-5">
@@ -313,11 +442,8 @@ function CaucionQuoterDesktop() {
           title="Provincia"
           description="Los impuestos varían según tu provincia"
         />
-        <Combobox
-          className="w-full max-w-field-lg border-0"
-          contentClassName="max-w-sm"
-          options={PROVINCIAS}
-          searchPlaceholder="Buscar provincia..."
+        <ProvinciaSearch
+          className="w-full max-w-field-lg"
           value={provincia}
           onChange={setProvincia}
         />
@@ -363,7 +489,8 @@ function CaucionQuoterDesktop() {
       </div>
 
       <PriceAction
-        buttonLabel="Contratar ahora →"
+        buttonLabel={<>Contratar ahora <ArrowRight className="ml-2 h-4 w-4" /></>}
+        href={preapprovalHref}
         mode={modoPago}
         value={price}
       />
