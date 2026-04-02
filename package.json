@@ -20,6 +20,7 @@
     "@sanity/presentation": "^2.0.0",
     "@sanity/vision": "^5.16.0",
     "@sanity/visual-editing": "^2.15.4",
+    "@sendgrid/mail": "^8.1.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",

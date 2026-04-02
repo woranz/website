@@ -2,7 +2,7 @@
 
 import { addDays, format } from "date-fns"
 import { es } from "date-fns/locale"
-import { CalendarIcon } from "lucide-react"
+import { ArrowRight, CalendarIcon } from "lucide-react"
 import { type Dispatch, type SetStateAction, useState } from "react"
 import { type DateRange } from "react-day-picker"
 
@@ -168,7 +168,7 @@ function QuoterMobile() {
 
       <div className="px-6 pb-6 pt-5">
         <button type="button" className="btn-primary-form flex w-full justify-center">
-          Cotizar ahora →
+          Cotizar ahora <ArrowRight className="ml-2 h-4 w-4" />
         </button>
       </div>
     </div>
@@ -221,7 +221,7 @@ function QuoterDesktop() {
         </div>
 
         <button type="button" className="btn-primary-form flex h-12 flex-1 justify-center px-8 text-lg">
-          Cotizá ahora →
+          Cotizá ahora <ArrowRight className="ml-2 h-4 w-4" />
         </button>
       </div>
     </div>

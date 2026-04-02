@@ -4,6 +4,7 @@ import { MusicNote03Icon } from "hugeicons-react"
 import {
   Briefcase,
   Building,
+  ArrowRight,
   ChevronRight,
   CreditCard,
   ShieldCheck,
@@ -63,17 +64,25 @@ function ActionButton({
   href?: string
   label: string
 }) {
+  const hasArrow = label.includes("→")
+  const text = hasArrow ? label.replace(/\s*→\s*$/, "") : label
+  const content = hasArrow ? (
+    <>{text} <ArrowRight className="ml-2 h-4 w-4" /></>
+  ) : (
+    text
+  )
+
   if (href) {
     return (
       <Link href={href} className={className}>
-        {label}
+        {content}
       </Link>
     )
   }
 
   return (
     <button type="button" className={className}>
-      {label}
+      {content}
     </button>
   )
 }
@@ -616,7 +625,7 @@ function PackageCard({ item }: { item: PackageCarouselItem }) {
           </button>
         ) : (
           <span className="btn-link-brand mt-6 w-fit px-0 md:mt-8">
-            Hablá con nosotros →
+            Hablá con nosotros <ArrowRight className="ml-2 h-4 w-4" />
           </span>
         )}
       </CardContent>
