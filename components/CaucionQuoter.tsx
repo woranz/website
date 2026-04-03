@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { ArrowRight, ChevronDown, Loader2 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import {ComboboxOption} from "@/components/ui/combobox";
 
 const PROVINCIAS: Array<ComboboxOption & { impuesto: number }> = [
   { value: "caba", label: "CABA", impuesto: 0.03 },
