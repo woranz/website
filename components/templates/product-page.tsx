@@ -20,13 +20,7 @@ import { SiteFooter } from "@/components/site/footer"
 import { SiteHeader, type SiteNavLink } from "@/components/site/header"
 import { SegmentTabs } from "@/components/site/segment-tabs"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarGroupCount,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import { TeamAvatars } from "@/components/ui/team-avatars"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -46,13 +40,6 @@ import { cn } from "@/lib/utils"
 const SITE_NAVIGATION: SiteNavLink[] = [
   { href: "#", label: "Nosotros" },
   { href: "#", label: "Contacto" },
-]
-
-const TEAM_MEMBERS = [
-  { name: "Carolina", src: "/images/team/carolina.webp" },
-  { name: "Charlie", src: "/images/team/charlie.webp" },
-  { name: "Gonzalo", src: "/images/team/gonzalo.webp" },
-  { name: "Martina", src: "/images/team/martina.webp" },
 ]
 
 function ActionButton({
@@ -558,26 +545,10 @@ function CtaSection({ section }: { section: Extract<ProductPageSection, { type: 
             </p>
           </div>
 
-          <div className="flex flex-col items-center gap-2 md:flex-row md:gap-0">
-            <AvatarGroup>
-              {TEAM_MEMBERS.map((member) => (
-                <Avatar
-                  key={member.name}
-                  size="lg"
-                  className="avatar-stack-item -ml-2 ring-0"
-                >
-                  <AvatarImage src={member.src} alt={member.name} />
-                  <AvatarFallback>{member.name.slice(0, 2)}</AvatarFallback>
-                </Avatar>
-              ))}
-              <AvatarGroupCount className="h-[52px] w-[52px] border-[3px] border-white bg-woranz-yellow text-sm font-bold text-woranz-ink ring-0 md:text-base">
-                {section.teamCount}
-              </AvatarGroupCount>
-            </AvatarGroup>
-            <span className="text-sm font-medium text-woranz-text md:pl-6 md:text-body">
-              {section.teamLabel}
-            </span>
-          </div>
+          <TeamAvatars
+            teamCount={section.teamCount}
+            teamLabel={section.teamLabel}
+          />
 
           <div className="flex w-full flex-col items-center gap-4 md:w-auto md:flex-row md:gap-6">
             <ActionButton
