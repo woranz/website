@@ -220,7 +220,7 @@ function QuoterDesktop() {
           </div>
         </div>
 
-        <button type="button" className="btn-primary-form flex h-12 flex-1 justify-center px-8 text-lg">
+        <button type="button" className="btn-primary-form flex justify-center px-6">
           Cotizá ahora <ArrowRight className="ml-2 h-4 w-4" />
         </button>
       </div>
