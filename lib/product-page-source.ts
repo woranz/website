@@ -640,8 +640,8 @@ export async function getAllProductPageParams() {
 
     return products
       .map((product) => ({
-        segment: product.segmento,
-        slug: product.slug?.current?.trim(),
+        segment: product.segmento?.replace(/[\u200B-\u200D\uFEFF\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u2000-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u206F]/g, "").trim() as ProductSegment | undefined,
+        slug: product.slug?.current?.replace(/[\u200B-\u200D\uFEFF\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u2000-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u206F]/g, "").trim(),
       }))
       .filter(
         (
