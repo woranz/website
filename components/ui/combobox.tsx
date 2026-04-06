@@ -3,7 +3,6 @@
 import * as React from "react"
 import { Check, ChevronDown } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
@@ -47,13 +46,12 @@ function Combobox({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
+        <button
           type="button"
-          variant="outline"
           role="combobox"
           aria-expanded={open}
           className={cn(
-            "field-control h-12 justify-between border-woranz-border bg-woranz-warm-2 px-4 py-3 font-normal text-woranz-slate shadow-none hover:bg-woranz-warm-2 hover:text-woranz-slate",
+            "field-control inline-flex h-12 items-center justify-between border-woranz-border bg-woranz-warm-2 px-4 py-3 text-sm font-normal text-woranz-slate shadow-none",
             className
           )}
         >
@@ -61,12 +59,12 @@ function Combobox({
             {selectedOption?.label ?? placeholder}
           </span>
           <ChevronDown className="h-4 w-4 shrink-0 text-woranz-muted" />
-        </Button>
+        </button>
       </PopoverTrigger>
       <PopoverContent
         align="start"
         className={cn(
-          "min-w-full rounded-xl border-woranz-border bg-white p-0 shadow-panel",
+          "min-w-full rounded-xl border-woranz-border bg-white p-0 shadow-card",
           contentClassName
         )}
         style={{ width: "var(--radix-popover-trigger-width)" }}
