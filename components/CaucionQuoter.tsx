@@ -1,40 +1,13 @@
 "use client"
 
 import Link from "next/link"
-import { type Dispatch, type ReactNode, type SetStateAction, useCallback, useEffect, useRef, useState } from "react"
+import { type Dispatch, type ReactNode, type SetStateAction, useEffect, useRef, useState } from "react"
 
 import { Input } from "@/components/ui/input"
-import { ArrowRight, ChevronDown, Loader2 } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import {ComboboxOption} from "@/components/ui/combobox";
-
-const PROVINCIAS: Array<ComboboxOption & { impuesto: number }> = [
-  { value: "caba", label: "CABA", impuesto: 0.03 },
-  { value: "buenos-aires", label: "Buenos Aires", impuesto: 0.035 },
-  { value: "cordoba", label: "Córdoba", impuesto: 0.04 },
-  { value: "santa-fe", label: "Santa Fe", impuesto: 0.038 },
-  { value: "mendoza", label: "Mendoza", impuesto: 0.035 },
-  { value: "tucuman", label: "Tucumán", impuesto: 0.04 },
-  { value: "entre-rios", label: "Entre Ríos", impuesto: 0.035 },
-  { value: "salta", label: "Salta", impuesto: 0.035 },
-  { value: "misiones", label: "Misiones", impuesto: 0.04 },
-  { value: "chaco", label: "Chaco", impuesto: 0.035 },
-  { value: "corrientes", label: "Corrientes", impuesto: 0.035 },
-  { value: "santiago-del-estero", label: "Santiago del Estero", impuesto: 0.04 },
-  { value: "san-juan", label: "San Juan", impuesto: 0.035 },
-  { value: "jujuy", label: "Jujuy", impuesto: 0.035 },
-  { value: "rio-negro", label: "Río Negro", impuesto: 0.03 },
-  { value: "neuquen", label: "Neuquén", impuesto: 0.03 },
-  { value: "formosa", label: "Formosa", impuesto: 0.035 },
-  { value: "chubut", label: "Chubut", impuesto: 0.03 },
-  { value: "san-luis", label: "San Luis", impuesto: 0.035 },
-  { value: "catamarca", label: "Catamarca", impuesto: 0.035 },
-  { value: "la-rioja", label: "La Rioja", impuesto: 0.035 },
-  { value: "la-pampa", label: "La Pampa", impuesto: 0.03 },
-  { value: "santa-cruz", label: "Santa Cruz", impuesto: 0.03 },
-  { value: "tierra-del-fuego", label: "Tierra del Fuego", impuesto: 0.03 },
-]
+import { PROVINCIAS, ProvinciaSearch } from "@/components/ui/georef-search"
 
 const DURACIONES = [
   { value: 12, label: "12 meses" },
@@ -197,116 +170,6 @@ function SegmentSelector({
   )
 }
 
-// ── Provincia Search (georef API) ─────────────────────────────────────
-
-function ProvinciaSearch({
-  value,
-  onChange,
-  className,
-}: {
-  value: string
-  onChange: (slug: string) => void
-  className?: string
-}) {
-  const selected = PROVINCIAS.find((p) => p.value === value)
-  const [query, setQuery] = useState(selected?.label ?? "")
-  const [options, setOptions] = useState<Array<{ id: string; nombre: string }>>([])
-  const [open, setOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>()
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  const search = useCallback(async (q: string) => {
-    if (q.length < 2) {
-      setOptions([])
-      return
-    }
-    setLoading(true)
-    try {
-      const res = await fetch(
-        `https://apis.datos.gob.ar/georef/api/provincias?nombre=${encodeURIComponent(q)}&max=8&campos=id,nombre`
-      )
-      const data = await res.json()
-      setOptions(data.provincias ?? [])
-    } catch {
-      setOptions([])
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => search(query), 300)
-    return () => clearTimeout(debounceRef.current)
-  }, [query, search])
-
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setOpen(false)
-      }
-    }
-    document.addEventListener("mousedown", handleClick)
-    return () => document.removeEventListener("mousedown", handleClick)
-  }, [])
-
-  // Match georef name to local PROVINCIAS slug
-  function matchProvincia(nombre: string): string | undefined {
-    const normalized = nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    return PROVINCIAS.find((p) => {
-      const pNorm = p.label.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-      return pNorm === normalized
-    })?.value
-  }
-
-  return (
-    <div ref={containerRef} className={cn("relative", className)}>
-      <div className="flex items-center rounded-field bg-woranz-warm-2">
-        <Input
-          type="text"
-          placeholder="Buscá tu provincia..."
-          value={query}
-          onChange={(e) => {
-            setQuery(e.target.value)
-            setOpen(true)
-            if (e.target.value !== selected?.label) onChange("buenos-aires")
-          }}
-          onFocus={() => {
-            setQuery("")
-            setOpen(true)
-            search("")
-          }}
-          className="border-0 bg-transparent shadow-none"
-        />
-        {loading && (
-          <Loader2 className="mr-3 h-4 w-4 shrink-0 animate-spin text-woranz-muted" />
-        )}
-      </div>
-      {open && (options.length > 0 || loading) && (
-        <div className="absolute z-50 mt-1 w-full rounded-xl border border-woranz-border bg-white shadow-panel">
-          {options.map((opt) => {
-            const slug = matchProvincia(opt.nombre)
-            return (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => {
-                  setQuery(opt.nombre)
-                  if (slug) onChange(slug)
-                  setOpen(false)
-                }}
-                className="flex w-full items-center px-4 py-3 text-left text-sm text-woranz-slate transition-colors first:rounded-t-xl last:rounded-b-xl hover:bg-woranz-warm-1"
-              >
-                <span className="font-medium">{opt.nombre}</span>
-              </button>
-            )
-          })}
-        </div>
-      )}
-    </div>
-  )
-}
 
 function PriceAction({
   buttonLabel,

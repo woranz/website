@@ -2,7 +2,7 @@
 
 import { addDays, format } from "date-fns"
 import { es } from "date-fns/locale"
-import { ArrowRight, CalendarIcon } from "lucide-react"
+import { ArrowRight, CalendarIcon, CheckCircle, Loader2 } from "lucide-react"
 import { type Dispatch, type SetStateAction, useState } from "react"
 import { type DateRange } from "react-day-picker"
 
@@ -74,6 +74,38 @@ function handleCantidadInput(
   setCantidad(Math.min(Math.max(numberValue, 1), 700))
 }
 
+async function submitCotizacion(params: {
+  actividad: string
+  dateRange: DateRange | undefined
+  cantidad: number
+}) {
+  const actividadLabel =
+    ACTIVIDADES.find((a) => a.value === params.actividad)?.label ?? params.actividad
+
+  const body = new FormData()
+  body.set("_formType", "accidentes-cotizacion")
+  body.set("actividad", actividadLabel)
+  body.set(
+    "fechaDesde",
+    params.dateRange?.from
+      ? format(params.dateRange.from, "d MMM yyyy", { locale: es })
+      : ""
+  )
+  body.set(
+    "fechaHasta",
+    params.dateRange?.to
+      ? format(params.dateRange.to, "d MMM yyyy", { locale: es })
+      : ""
+  )
+  body.set("cantidad", params.cantidad.toString())
+
+  const res = await fetch("/api/forms/submit", { method: "POST", body })
+  if (!res.ok) {
+    const data = await res.json()
+    throw new Error(data.error ?? "Error al enviar la cotización.")
+  }
+}
+
 function DateField({
   dateRange,
   desktop = false,
@@ -107,6 +139,20 @@ function DateField({
   )
 }
 
+function SuccessMessage() {
+  return (
+    <div className="flex flex-col items-center gap-3 px-6 py-10 text-center">
+      <CheckCircle className="h-10 w-10 text-emerald-500" />
+      <p className="text-lg font-semibold text-woranz-ink">
+        ¡Cotización enviada!
+      </p>
+      <p className="text-sm text-woranz-text">
+        Nos contactamos a la brevedad con tu presupuesto.
+      </p>
+    </div>
+  )
+}
+
 function QuoterMobile() {
   const [actividad, setActividad] = useState("albanil")
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -114,6 +160,28 @@ function QuoterMobile() {
     to: addDays(new Date(), 1),
   })
   const [cantidad, setCantidad] = useState(2)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+
+  async function handleSubmit() {
+    setSubmitting(true)
+    try {
+      await submitCotizacion({ actividad, dateRange, cantidad })
+      setSubmitted(true)
+    } catch {
+      // keep form visible so user can retry
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  if (submitted) {
+    return (
+      <div className="md:hidden">
+        <SuccessMessage />
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col md:hidden">
@@ -167,8 +235,22 @@ function QuoterMobile() {
       </div>
 
       <div className="px-6 pb-6 pt-5">
-        <button type="button" className="btn-primary-form flex w-full justify-center">
-          Cotizar ahora <ArrowRight className="ml-2 h-4 w-4" />
+        <button
+          type="button"
+          disabled={submitting}
+          onClick={handleSubmit}
+          className="btn-primary-form flex w-full justify-center"
+        >
+          {submitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Enviando...
+            </>
+          ) : (
+            <>
+              Cotizar ahora <ArrowRight className="ml-2 h-4 w-4" />
+            </>
+          )}
         </button>
       </div>
     </div>
@@ -182,6 +264,28 @@ function QuoterDesktop() {
     to: addDays(new Date(), 1),
   })
   const [cantidad, setCantidad] = useState(2)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+
+  async function handleSubmit() {
+    setSubmitting(true)
+    try {
+      await submitCotizacion({ actividad, dateRange, cantidad })
+      setSubmitted(true)
+    } catch {
+      // keep form visible so user can retry
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  if (submitted) {
+    return (
+      <div className="hidden md:block">
+        <SuccessMessage />
+      </div>
+    )
+  }
 
   return (
     <div className="hidden w-full flex-col p-8 md:flex">
@@ -220,8 +324,22 @@ function QuoterDesktop() {
           </div>
         </div>
 
-        <button type="button" className="btn-primary-form flex justify-center px-6">
-          Cotizá ahora <ArrowRight className="ml-2 h-4 w-4" />
+        <button
+          type="button"
+          disabled={submitting}
+          onClick={handleSubmit}
+          className="btn-primary-form flex justify-center px-6"
+        >
+          {submitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Enviando...
+            </>
+          ) : (
+            <>
+              Cotizá ahora <ArrowRight className="ml-2 h-4 w-4" />
+            </>
+          )}
         </button>
       </div>
     </div>

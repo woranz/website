@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server"
 
+import { handleAccidentesCotizacion } from "./handlers/accidentes-cotizacion"
 import { handleCaucionPreaprobacion } from "./handlers/caucion-preaprobacion"
 
 const handlers: Record<string, (formData: FormData) => Promise<void>> = {
+  "accidentes-cotizacion": handleAccidentesCotizacion,
   "caucion-preaprobacion": handleCaucionPreaprobacion,
 }
 

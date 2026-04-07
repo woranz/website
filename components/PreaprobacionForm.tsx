@@ -3,9 +3,7 @@
 import {
   type ChangeEvent,
   type FormEvent,
-  useCallback,
   useEffect,
-  useRef,
   useState,
 } from "react"
 import {
@@ -19,6 +17,7 @@ import {
   Loader2,
 } from "lucide-react"
 
+import { CiudadSearch } from "@/components/ui/georef-search"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
@@ -33,12 +32,6 @@ type AvalEntry = {
   loading: boolean
   lookupDone: boolean
   lookupFailed: boolean
-}
-
-type CiudadOption = {
-  id: string
-  nombre: string
-  provincia: string
 }
 
 type QuoterData = {
@@ -215,115 +208,6 @@ function MobileQuoterSummary({ quoter }: { quoter: QuoterData }) {
         </span>
         {" · "}{quoter.duracion} meses · {pago}
       </p>
-    </div>
-  )
-}
-
-// ── Ciudad Search ────────────────────────────────────────────────────
-
-function CiudadSearch({
-  onChange,
-  value,
-}: {
-  onChange: (ciudad: string) => void
-  value: string
-}) {
-  const [query, setQuery] = useState(value)
-  const [options, setOptions] = useState<CiudadOption[]>([])
-  const [open, setOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>()
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  const search = useCallback(async (q: string) => {
-    if (q.length < 2) {
-      setOptions([])
-      return
-    }
-    setLoading(true)
-    try {
-      const res = await fetch(
-        `https://apis.datos.gob.ar/georef/api/localidades?nombre=${encodeURIComponent(q)}&max=8&campos=id,nombre,provincia.nombre`
-      )
-      const data = await res.json()
-      setOptions(
-        (data.localidades ?? []).map(
-          (l: {
-            id: string
-            nombre: string
-            provincia: { nombre: string }
-          }) => ({
-            id: l.id,
-            nombre: l.nombre,
-            provincia: l.provincia.nombre,
-          })
-        )
-      )
-    } catch {
-      setOptions([])
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => search(query), 300)
-    return () => clearTimeout(debounceRef.current)
-  }, [query, search])
-
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
-        setOpen(false)
-      }
-    }
-    document.addEventListener("mousedown", handleClick)
-    return () => document.removeEventListener("mousedown", handleClick)
-  }, [])
-
-  return (
-    <div ref={containerRef} className="relative w-full">
-      <Input
-        type="text"
-        placeholder="Buscá tu ciudad..."
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value)
-          setOpen(true)
-          if (e.target.value !== value) onChange("")
-        }}
-        onFocus={() => query.length >= 2 && setOpen(true)}
-      />
-      {open && (options.length > 0 || loading) && (
-        <div className="absolute z-50 mt-1 w-full rounded-xl border border-woranz-border bg-white shadow-panel">
-          {loading && (
-            <div className="flex items-center gap-2 px-4 py-3 text-sm text-woranz-muted">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Buscando...
-            </div>
-          )}
-          {options.map((opt) => (
-            <button
-              key={opt.id}
-              type="button"
-              onClick={() => {
-                const label = `${opt.nombre}, ${opt.provincia}`
-                setQuery(label)
-                onChange(label)
-                setOpen(false)
-              }}
-              className="flex w-full items-center gap-2 px-4 py-3 text-left text-sm text-woranz-slate transition-colors first:rounded-t-xl last:rounded-b-xl hover:bg-woranz-warm-1"
-            >
-              <span className="font-medium">{opt.nombre}</span>
-              <span className="text-woranz-muted">{opt.provincia}</span>
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   )
 }
