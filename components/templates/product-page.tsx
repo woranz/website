@@ -570,7 +570,7 @@ function CtaSection({ section }: { section: Extract<ProductPageSection, { type: 
 
 function PackageCard({ item }: { item: PackageCarouselItem }) {
   return (
-    <Card className="package-card-frame border-none bg-woranz-warm-1 p-7 shadow-card ring-0 md:p-10">
+    <Card className="package-card-frame border-none bg-woranz-warm-1 p-7 shadow-elevated ring-0 md:p-10">
       <CardContent className="flex h-full flex-col justify-between p-0">
         <div className="flex flex-col gap-4 md:gap-5">
           {item.icon === "music" ? (

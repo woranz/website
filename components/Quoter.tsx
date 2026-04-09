@@ -2,8 +2,9 @@
 
 import { addDays, format } from "date-fns"
 import { es } from "date-fns/locale"
-import { ArrowRight, CalendarIcon, CheckCircle, Loader2 } from "lucide-react"
-import { type Dispatch, type SetStateAction, useState } from "react"
+import { ArrowRight, CalendarIcon, Loader2 } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { type Dispatch, type SetStateAction, useEffect, useState } from "react"
 import { type DateRange } from "react-day-picker"
 
 import { Calendar } from "@/components/ui/calendar"
@@ -11,29 +12,6 @@ import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
-
-const ACTIVIDADES: ComboboxOption[] = [
-  { value: "albanil", label: "Albañil" },
-  { value: "carpintero", label: "Carpintero" },
-  { value: "electricista", label: "Electricista" },
-  { value: "plomero", label: "Plomero" },
-  { value: "pintor", label: "Pintor" },
-  { value: "techista", label: "Techista" },
-  { value: "soldador", label: "Soldador" },
-  { value: "herrero", label: "Herrero" },
-  { value: "jardinero", label: "Jardinero" },
-  { value: "limpieza", label: "Limpieza" },
-  { value: "mudanza", label: "Mudanza" },
-  { value: "delivery", label: "Delivery" },
-  { value: "seguridad", label: "Seguridad" },
-  { value: "mantenimiento", label: "Mantenimiento" },
-  { value: "construccion", label: "Construcción general" },
-  { value: "mecanico", label: "Mecánico" },
-  { value: "chofer", label: "Chofer" },
-  { value: "gasista", label: "Gasista" },
-  { value: "vidriero", label: "Vidriero" },
-  { value: "otro", label: "Otra actividad" },
-]
 
 const CANTIDAD_PRESETS = [
   { value: 1, label: "Solo yo" },
@@ -74,38 +52,6 @@ function handleCantidadInput(
   setCantidad(Math.min(Math.max(numberValue, 1), 700))
 }
 
-async function submitCotizacion(params: {
-  actividad: string
-  dateRange: DateRange | undefined
-  cantidad: number
-}) {
-  const actividadLabel =
-    ACTIVIDADES.find((a) => a.value === params.actividad)?.label ?? params.actividad
-
-  const body = new FormData()
-  body.set("_formType", "accidentes-cotizacion")
-  body.set("actividad", actividadLabel)
-  body.set(
-    "fechaDesde",
-    params.dateRange?.from
-      ? format(params.dateRange.from, "d MMM yyyy", { locale: es })
-      : ""
-  )
-  body.set(
-    "fechaHasta",
-    params.dateRange?.to
-      ? format(params.dateRange.to, "d MMM yyyy", { locale: es })
-      : ""
-  )
-  body.set("cantidad", params.cantidad.toString())
-
-  const res = await fetch("/api/forms/submit", { method: "POST", body })
-  if (!res.ok) {
-    const data = await res.json()
-    throw new Error(data.error ?? "Error al enviar la cotización.")
-  }
-}
-
 function DateField({
   dateRange,
   desktop = false,
@@ -139,46 +85,103 @@ function DateField({
   )
 }
 
-function SuccessMessage() {
-  return (
-    <div className="flex flex-col items-center gap-3 px-6 py-10 text-center">
-      <CheckCircle className="h-10 w-10 text-emerald-500" />
-      <p className="text-lg font-semibold text-woranz-ink">
-        ¡Cotización enviada!
-      </p>
-      <p className="text-sm text-woranz-text">
-        Nos contactamos a la brevedad con tu presupuesto.
-      </p>
-    </div>
-  )
-}
-
-function QuoterMobile() {
-  const [actividad, setActividad] = useState("albanil")
+function useQuoterState() {
+  const router = useRouter()
+  const [actividad, setActividad] = useState("")
+  const [provincia, setProvincia] = useState("")
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
     to: addDays(new Date(), 1),
   })
   const [cantidad, setCantidad] = useState(2)
-  const [submitting, setSubmitting] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
 
-  async function handleSubmit() {
-    setSubmitting(true)
-    try {
-      await submitCotizacion({ actividad, dateRange, cantidad })
-      setSubmitted(true)
-    } catch {
-      // keep form visible so user can retry
-    } finally {
-      setSubmitting(false)
-    }
+  const [ocupaciones, setOcupaciones] = useState<ComboboxOption[]>([])
+  const [provincias, setProvincias] = useState<ComboboxOption[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    Promise.all([
+      fetch("/api/ap/profesiones").then((r) => r.json()),
+      fetch("/api/ap/provincias").then((r) => r.json()),
+    ])
+      .then(([ocup, prov]) => {
+        if (ocup.data) {
+          const opts = ocup.data.map(
+            (o: { idOcupacion: number; descripcion: string }) => ({
+              value: String(o.idOcupacion),
+              label: o.descripcion,
+            })
+          )
+          setOcupaciones(opts)
+          if (opts.length > 0) setActividad(opts[0].value)
+        }
+        if (prov.data) {
+          const opts = prov.data.map(
+            (p: Record<string, unknown>) => ({
+              value: String(p.idProvincia ?? p.IdProvincia),
+              label: String(p.descripcion ?? p.Descripcion ?? ""),
+            })
+          )
+          setProvincias(opts)
+          if (opts.length > 0) setProvincia(opts[0].value)
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
+  const handleSubmit = () => {
+    if (!actividad || !dateRange?.from || !dateRange?.to || !provincia || provincia === "undefined") return
+
+    const params = new URLSearchParams({
+      actividad,
+      desde: format(dateRange.from, "yyyy-MM-dd"),
+      hasta: format(dateRange.to, "yyyy-MM-dd"),
+      cantidad: String(cantidad),
+      provincia,
+    })
+
+    router.push(
+      `/personas/coberturas/accidentes-personales/cotizacion?${params.toString()}`
+    )
   }
 
-  if (submitted) {
+  return {
+    actividad,
+    setActividad,
+    provincia,
+    setProvincia,
+    dateRange,
+    setDateRange,
+    cantidad,
+    setCantidad,
+    ocupaciones,
+    provincias,
+    loading,
+    handleSubmit,
+  }
+}
+
+function QuoterMobile() {
+  const {
+    actividad,
+    setActividad,
+    provincia,
+    setProvincia,
+    dateRange,
+    setDateRange,
+    cantidad,
+    setCantidad,
+    ocupaciones,
+    provincias,
+    loading,
+    handleSubmit,
+  } = useQuoterState()
+
+  if (loading) {
     return (
-      <div className="md:hidden">
-        <SuccessMessage />
+      <div className="flex items-center justify-center py-12 md:hidden">
+        <Loader2 className="h-6 w-6 animate-spin text-woranz-muted" />
       </div>
     )
   }
@@ -190,10 +193,22 @@ function QuoterMobile() {
         <Combobox
           className="w-full"
           emptyText="No se encontró."
-          options={ACTIVIDADES}
+          options={ocupaciones}
           searchPlaceholder="Buscar actividad..."
           value={actividad}
-          onChange={setActividad}
+          onChange={(v) => setActividad(v ?? "")}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1.5 px-6 pt-5">
+        <label className="field-label">Provincia</label>
+        <Combobox
+          className="w-full"
+          emptyText="No se encontró."
+          options={provincias}
+          searchPlaceholder="Buscar provincia..."
+          value={provincia}
+          onChange={(v) => setProvincia(v ?? "")}
         />
       </div>
 
@@ -237,20 +252,10 @@ function QuoterMobile() {
       <div className="px-6 pb-6 pt-5">
         <button
           type="button"
-          disabled={submitting}
           onClick={handleSubmit}
           className="btn-primary-form flex w-full justify-center"
         >
-          {submitting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Enviando...
-            </>
-          ) : (
-            <>
-              Cotizar ahora <ArrowRight className="ml-2 h-4 w-4" />
-            </>
-          )}
+          Cotizá ahora <ArrowRight className="ml-2 h-4 w-4" />
         </button>
       </div>
     </div>
@@ -258,31 +263,25 @@ function QuoterMobile() {
 }
 
 function QuoterDesktop() {
-  const [actividad, setActividad] = useState("albanil")
-  const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: addDays(new Date(), 1),
-  })
-  const [cantidad, setCantidad] = useState(2)
-  const [submitting, setSubmitting] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
+  const {
+    actividad,
+    setActividad,
+    provincia,
+    setProvincia,
+    dateRange,
+    setDateRange,
+    cantidad,
+    setCantidad,
+    ocupaciones,
+    provincias,
+    loading,
+    handleSubmit,
+  } = useQuoterState()
 
-  async function handleSubmit() {
-    setSubmitting(true)
-    try {
-      await submitCotizacion({ actividad, dateRange, cantidad })
-      setSubmitted(true)
-    } catch {
-      // keep form visible so user can retry
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
-  if (submitted) {
+  if (loading) {
     return (
-      <div className="hidden md:block">
-        <SuccessMessage />
+      <div className="hidden items-center justify-center py-12 md:flex">
+        <Loader2 className="h-6 w-6 animate-spin text-woranz-muted" />
       </div>
     )
   }
@@ -295,10 +294,22 @@ function QuoterDesktop() {
           <Combobox
             className="w-full"
             emptyText="No se encontró."
-            options={ACTIVIDADES}
+            options={ocupaciones}
             searchPlaceholder="Buscar actividad..."
             value={actividad}
-            onChange={setActividad}
+            onChange={(v) => setActividad(v ?? "")}
+          />
+        </div>
+
+        <div className="flex flex-1 flex-col gap-1.5">
+          <label className="text-label text-woranz-text">Provincia</label>
+          <Combobox
+            className="w-full"
+            emptyText="No se encontró."
+            options={provincias}
+            searchPlaceholder="Buscar provincia..."
+            value={provincia}
+            onChange={(v) => setProvincia(v ?? "")}
           />
         </div>
 
@@ -326,20 +337,10 @@ function QuoterDesktop() {
 
         <button
           type="button"
-          disabled={submitting}
           onClick={handleSubmit}
           className="btn-primary-form flex justify-center px-6"
         >
-          {submitting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Enviando...
-            </>
-          ) : (
-            <>
-              Cotizá ahora <ArrowRight className="ml-2 h-4 w-4" />
-            </>
-          )}
+          Cotizá ahora <ArrowRight className="ml-2 h-4 w-4" />
         </button>
       </div>
     </div>
