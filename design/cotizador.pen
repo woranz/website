@@ -1,0 +1,65 @@
+{
+  "version": "2.10",
+  "children": [
+    {
+      "type": "frame",
+      "id": "HcggP",
+      "x": 0,
+      "y": 0,
+      "name": "Step 1 — Elegí tu plan",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#FFFFFF",
+      "layout": "vertical"
+    },
+    {
+      "type": "frame",
+      "id": "I9qQt",
+      "x": 1540,
+      "y": 0,
+      "name": "Step 2 — Tus datos",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#FFFFFF",
+      "layout": "vertical"
+    },
+    {
+      "type": "frame",
+      "id": "RzRZk",
+      "x": 3080,
+      "y": 0,
+      "name": "Step 3 — Personas a asegurar",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#FFFFFF",
+      "layout": "vertical"
+    },
+    {
+      "type": "frame",
+      "id": "FFahP",
+      "x": 4620,
+      "y": 0,
+      "name": "Step 4 — Confirma y pagá",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#FFFFFF",
+      "layout": "vertical"
+    },
+    {
+      "type": "frame",
+      "id": "VAP4F",
+      "x": 6160,
+      "y": 0,
+      "name": "Step 5 — Todo listo!",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#FFFFFF",
+      "layout": "vertical"
+    }
+  ]
+}

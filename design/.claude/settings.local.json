@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/personas/coberturas/accidentes-personales/cotizacion)",
+      "Bash(curl -s \"http://localhost:3000/personas/coberturas/accidentes-personales/cotizacion?actividad=1306&desde=2026-04-07&hasta=2026-04-08&cantidad=2&provincia=1\")",
+      "Bash(find /Users/marcos/Sites/woranz-design/website -name APCotizacionForm* -type f)",
+      "Bash(find /Users/marcos/Sites/woranz-design/website -path *accidentes* -type f)",
+      "Bash(find /Users/marcos/Sites/woranz-design/website/.next -path *accidentes* -type f)",
+      "Bash(find /Users/marcos/Sites/woranz-design/website/.next -path *cotizacion* -type f)",
+      "Bash(find /Users/marcos/Sites/woranz-design/website/.next/server -path *accidentes* -o -path *cotizacion*)",
+      "Bash(find /Users/marcos/Sites/woranz-design/website/.next/static/chunks -name *cotizacion* -o -name *accidentes*)",
+      "Bash(python3 -m json.tool)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(k\\) for k in d.get\\(''''pages'''',{}\\)]\")",
+      "Bash(ls /Users/marcos/Sites/woranz-design/website/design/*.pen)",
+      "Read(//Users/marcos/Sites/woranz-design/design/**)"
+    ]
+  }
+}

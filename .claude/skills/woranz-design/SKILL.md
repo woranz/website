@@ -5,6 +5,12 @@ description: "Sistema de diseño Woranz para Pencil. Usá este skill cada vez qu
 
 # Woranz Design System — Pencil Workflow
 
+## Scope & Authority
+
+This skill is the **implementation reference for Pencil** — grid, spacing tokens, component specs, typography scale, color palette, and Pencil workflow.
+
+For **process and judgment** (when something is wrong, what passes to run, what questions to ask, when to reject a proposal), use the agent-contract docs in `docs/agent-contract/`. Those docs have precedence for design decisions and quality gates. This skill has precedence for concrete Pencil values and component construction.
+
 Sistema de diseño extraído de v4.pen. Todas las páginas nuevas deben respetar estas reglas para mantener coherencia visual en todo el sitio.
 
 ## ⚠️ PASO 0 — Obligatorio antes de cualquier acción
