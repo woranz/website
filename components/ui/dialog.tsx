@@ -84,7 +84,15 @@ function DialogFooter({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  return <div className={cn("flex justify-end gap-3 px-6 pb-6", className)} {...props} />
+  return (
+    <div
+      className={cn(
+        "flex justify-end gap-3 px-6 pb-6 [&>[data-slot=button]]:h-11 [&>[data-slot=button]]:px-5 [&>[data-slot=button]]:text-base",
+        className
+      )}
+      {...props}
+    />
+  )
 }
 
 export {
