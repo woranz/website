@@ -17,6 +17,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 
 import { BreadcrumbStepper } from "@/components/ui/breadcrumb-stepper"
 import { Button } from "@/components/ui/button"
+import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
 import {
   Dialog,
   DialogBody,
@@ -72,17 +73,26 @@ type PersonaEntry = {
   dni: string
   nombre: string
   apellido: string
+  razonSocial: string
+  personType: PersonType
   loading: boolean
   lookupDone: boolean
   lookupFailed: boolean
   raw: Record<string, unknown> | null
 }
 
+type PersonType = "FISICO" | "JURIDICO"
+
 type AseguradoItem = {
   dni: string
   nombre: string
   apellido: string
-  documentType: "DNI" | "PASAPORTE"
+  razonSocial: string
+  personType: PersonType
+  documentType: "DNI" | "PASAPORTE" | "CUIT_CUIL"
+  nationality: string
+  gender: string
+  birthDate: string
   valid: boolean
   invalid: boolean
   repeated: boolean
@@ -111,22 +121,28 @@ type ParsedAseguradoValue = ParsedLookupValue & {
 }
 
 type ManualAseguradoDraft = {
+  personType: PersonType
   documentType: "DNI" | "PASAPORTE"
-  dni: string
+  documentNumber: string
   nombre: string
   apellido: string
-}
-
-type ManualNominaDraft = {
   razonSocial: string
   cuit: string
-  numeroDocumento: string
+  nationality: string
+  gender: string
+  birthDate: string
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
 function cleanDni(value: string): string {
   return value.replace(/[^a-zA-Z0-9]/g, "")
+}
+
+function getStringValue(value: unknown): string {
+  if (typeof value === "string") return value
+  if (typeof value === "number") return String(value)
+  return ""
 }
 
 function splitLookupInput(input: string): ParsedLookupValue[] {
@@ -211,6 +227,8 @@ const emptyPersona = (): PersonaEntry => ({
   dni: "",
   nombre: "",
   apellido: "",
+  razonSocial: "",
+  personType: "FISICO",
   loading: false,
   lookupDone: false,
   lookupFailed: false,
@@ -218,17 +236,113 @@ const emptyPersona = (): PersonaEntry => ({
 })
 
 const emptyManualAsegurado = (): ManualAseguradoDraft => ({
+  personType: "FISICO",
   documentType: "DNI",
-  dni: "",
+  documentNumber: "",
   nombre: "",
   apellido: "",
-})
-
-const emptyManualNomina = (): ManualNominaDraft => ({
   razonSocial: "",
   cuit: "",
-  numeroDocumento: "",
+  nationality: "",
+  gender: "",
+  birthDate: "",
 })
+
+function inferPersonType(documentNumber: string, isPassport = false): PersonType {
+  if (isPassport) return "FISICO"
+  return documentNumber.replace(/\D/g, "").length === 11 ? "JURIDICO" : "FISICO"
+}
+
+function getPersonaDisplayName(item: Pick<PersonaEntry, "personType" | "razonSocial" | "nombre" | "apellido">): string {
+  if (item.personType === "JURIDICO") return item.razonSocial.trim() || `${item.nombre} ${item.apellido}`.trim()
+  return `${item.nombre} ${item.apellido}`.trim()
+}
+
+function getAseguradoDisplayName(item: Pick<AseguradoItem, "personType" | "razonSocial" | "nombre" | "apellido">): string {
+  if (item.personType === "JURIDICO") return item.razonSocial.trim() || `${item.nombre} ${item.apellido}`.trim()
+  return `${item.nombre} ${item.apellido}`.trim()
+}
+
+function resolvePersonaData(data: unknown): (Record<string, unknown> & {
+  personType: PersonType
+  nombre: string
+  apellido: string
+  razonSocial: string
+}) | null {
+  const raw = Array.isArray(data) ? data[0] : data
+  if (!raw || typeof raw !== "object") return null
+  const persona = raw as Record<string, unknown>
+  const razonSocial = typeof persona.razonSocial === "string" ? persona.razonSocial.trim() : ""
+  const nombre = typeof persona.nombre === "string" ? persona.nombre.trim() : ""
+  const apellido = typeof persona.apellido === "string" ? persona.apellido.trim() : ""
+  const personType = Boolean(razonSocial) || Number(persona.idTipoPersona) === 2 ? "JURIDICO" : "FISICO"
+  const displayName = personType === "JURIDICO" ? razonSocial || `${nombre} ${apellido}`.trim() : `${nombre} ${apellido}`.trim()
+  if (!displayName) return null
+  return {
+    ...persona,
+    personType,
+    nombre,
+    apellido,
+    razonSocial,
+  }
+}
+
+const COUNTRY_OPTIONS: ComboboxOption[] = [
+  { value: "50000000032", label: "CHILE" },
+  { value: "51000004382", label: "ALEMANIA" },
+  { value: "55000000050", label: "BRASIL" },
+  { value: "55000000042", label: "BOLIVIA" },
+  { value: "55000000018", label: "URUGUAY" },
+  { value: "55000000026", label: "PARAGUAY" },
+  { value: "55000001588", label: "COSTA RICA" },
+  { value: "55000002118", label: "EL SALVADOR" },
+  { value: "55000002150", label: "HAITI" },
+  { value: "50000002051", label: "COLOMBIA" },
+  { value: "55000002169", label: "HONDURAS" },
+  { value: "55000002177", label: "JAMAICA" },
+  { value: "55000002185", label: "MEXICO" },
+  { value: "55000002193", label: "NICARAGUA" },
+  { value: "55000002207", label: "PANAMA" },
+  { value: "55000002223", label: "PERU" },
+  { value: "55000002428", label: "ECUADOR" },
+  { value: "55000004323", label: "YUGOSLAVIA" },
+  { value: "55000003122", label: "FILIPINAS" },
+  { value: "55000003130", label: "TAIWAN" },
+  { value: "55000003153", label: "COREA" },
+  { value: "55000003157", label: "INDIA" },
+  { value: "55000003165", label: "INDONESIA" },
+  { value: "55000003173", label: "IRAK" },
+  { value: "55000002932", label: "IRAN" },
+  { value: "55000003106", label: "CHINA REP.POPULAR" },
+  { value: "55000003300", label: "NEPAL" },
+  { value: "55000003319", label: "EMIRATOS ARABES UNIDOS (Estado independiente)" },
+  { value: "55000003335", label: "SINGAPUR" },
+  { value: "55000003343", label: "SIRIA" },
+  { value: "55000003378", label: "VIETNAM" },
+  { value: "55000002126", label: "ESTADOS UNIDOS" },
+  { value: "55000004102", label: "ESPAÑA" },
+  { value: "55000004110", label: "FINLANDIA" },
+  { value: "55000004129", label: "FRANCIA" },
+  { value: "55000004137", label: "GRECIA" },
+  { value: "55000004145", label: "HUNGRIA" },
+  { value: "55000004153", label: "IRLANDA (EIRE)" },
+  { value: "55000004177", label: "KUWAIT" },
+  { value: "55000004193", label: "LETONIA" },
+  { value: "55000004200", label: "LITUANIA" },
+  { value: "55000004217", label: "MALTA" },
+  { value: "55000004226", label: "NORUEGA" },
+  { value: "55000004234", label: "PAISES BAJOS" },
+  { value: "55000004242", label: "POLONIA" },
+  { value: "55000004250", label: "PORTUGAL" },
+  { value: "55000004258", label: "PRINCIPADO DE ANDORRA" },
+  { value: "55000004266", label: "REINO DE SUECIA" },
+  { value: "55000004269", label: "REINO UNIDO" },
+  { value: "55000004277", label: "RUMANIA" },
+  { value: "50000006014", label: "RUSIA" },
+  { value: "55000004293", label: "SUECIA" },
+  { value: "55000004307", label: "SUIZA" },
+  { value: "55000004315", label: "SANTA SEDE (VATICANO)" },
+]
 
 // ── Shared sub-components ────────────────────────────────────────────
 
@@ -319,10 +433,16 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
   // ── State ──
   const [step, setStep] = useState(1)
   const formRef = useRef<HTMLDivElement>(null)
+  const selectedPlanNameRef = useRef<string | null>(null)
   const [cantidadActual, setCantidadActual] = useState(quoter.cantidad)
   const [desde, setDesde] = useState(quoter.desde)
   const [hasta, setHasta] = useState(quoter.hasta)
   const [editingBar, setEditingBar] = useState(false)
+  const [barSnapshot, setBarSnapshot] = useState({
+    cantidad: quoter.cantidad,
+    desde: quoter.desde,
+    hasta: quoter.hasta,
+  })
 
   const [plans, setPlans] = useState<PlanOption[]>([])
   const [plansLoading, setPlansLoading] = useState(true)
@@ -345,10 +465,10 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
   const [aseguradosInput, setAseguradosInput] = useState("")
   const [aseguradosList, setAseguradosList] = useState<AseguradoItem[]>([])
   const [resolvingAsegurados, setResolvingAsegurados] = useState(false)
+  const [aseguradosExpanded, setAseguradosExpanded] = useState(false)
+  const [resumenAseguradosExpanded, setResumenAseguradosExpanded] = useState(false)
   const [manualAseguradoIdx, setManualAseguradoIdx] = useState<number | null>(null)
   const [manualAsegurado, setManualAsegurado] = useState<ManualAseguradoDraft>(emptyManualAsegurado())
-  const [manualNominaIdx, setManualNominaIdx] = useState<number | null>(null)
-  const [manualNomina, setManualNomina] = useState<ManualNominaDraft>(emptyManualNomina())
   const [mismatchCount, setMismatchCount] = useState<number | null>(null)
 
   const [submitting, setSubmitting] = useState(false)
@@ -359,6 +479,14 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
 
   const selectedPlan = selectedPlanIdx !== null ? plans[selectedPlanIdx] : null
   const dayCount = getDayCount(desde, hasta)
+  const parsedNominaInput = parseNominaInput(nominaInput)
+  const nominaInputHasInvalidValues = nominaInput.trim().length > 0 && (
+    parsedNominaInput.length === 0 || parsedNominaInput.some(({ cleaned }) => !isValidCuit(cleaned))
+  )
+
+  useEffect(() => {
+    selectedPlanNameRef.current = selectedPlan?.nombre ?? null
+  }, [selectedPlan])
 
   useEffect(() => {
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
@@ -366,8 +494,11 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
 
   // ── Fetch plans ──
   useEffect(() => {
+    const preferredPlanName = selectedPlanNameRef.current
     setPlansLoading(true)
     setPlansError("")
+    setPlans([])
+    setSelectedPlanIdx(null)
     fetch("/api/ap/cotizacion/opciones", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -384,11 +515,22 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
         if (json.error) { setPlansError(json.error); return }
         const valid = (json.data ?? []).filter((p: PlanOption) => p.premio && !p.error)
         setPlans(valid)
-        if (valid.length > 0) setSelectedPlanIdx(0)
+        if (valid.length > 0) {
+          const preservedPlanIdx = preferredPlanName
+            ? valid.findIndex((plan: PlanOption) => plan.nombre === preferredPlanName)
+            : -1
+          setSelectedPlanIdx(preservedPlanIdx >= 0 ? preservedPlanIdx : 0)
+        }
       })
       .catch(() => setPlansError("Error al cargar los planes."))
       .finally(() => setPlansLoading(false))
   }, [quoter.actividad, quoter.provincia, desde, hasta, cantidadActual])
+
+  const quoteChangedFromBarSnapshot = (
+    barSnapshot.cantidad !== cantidadActual ||
+    barSnapshot.desde !== desde ||
+    barSnapshot.hasta !== hasta
+  )
 
   // ── DNI lookup ──
   const lookupDni = useCallback(
@@ -403,8 +545,20 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
           body: JSON.stringify({ dni: cleaned }),
         })
         const json = await res.json()
-        if (json.data) {
-          setPersona({ ...persona, dni: cleaned, nombre: json.data.nombre ?? "", apellido: json.data.apellido ?? "", loading: false, lookupDone: true, lookupFailed: false, raw: json.data })
+        const resolvedPersona = resolvePersonaData(json.data)
+        if (resolvedPersona) {
+          setPersona({
+            ...persona,
+            dni: cleaned,
+            nombre: resolvedPersona.nombre,
+            apellido: resolvedPersona.apellido,
+            razonSocial: resolvedPersona.razonSocial,
+            personType: resolvedPersona.personType,
+            loading: false,
+            lookupDone: true,
+            lookupFailed: false,
+            raw: resolvedPersona,
+          })
         } else {
           setPersona({ ...persona, dni: cleaned, loading: false, lookupDone: true, lookupFailed: true, raw: null })
         }
@@ -420,32 +574,22 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
     if (!item) return
     setManualAseguradoIdx(idx)
     setManualAsegurado({
-      documentType: item.documentType,
-      dni: item.dni,
+      personType: item.personType,
+      documentType: item.documentType === "PASAPORTE" ? "PASAPORTE" : "DNI",
+      documentNumber: item.personType === "FISICO" ? item.dni : "",
       nombre: item.nombre,
       apellido: item.apellido,
+      razonSocial: item.razonSocial,
+      cuit: item.personType === "JURIDICO" ? item.dni : "",
+      nationality: item.nationality,
+      gender: item.gender,
+      birthDate: item.birthDate,
     })
   }, [aseguradosList])
 
   const closeManualAsegurado = useCallback(() => {
     setManualAseguradoIdx(null)
     setManualAsegurado(emptyManualAsegurado())
-  }, [])
-
-  const openManualNomina = useCallback((idx: number) => {
-    const item = nomina[idx]
-    if (!item) return
-    setManualNominaIdx(idx)
-    setManualNomina({
-      razonSocial: item.nombre,
-      cuit: item.cuit,
-      numeroDocumento: "",
-    })
-  }, [nomina])
-
-  const closeManualNomina = useCallback(() => {
-    setManualNominaIdx(null)
-    setManualNomina(emptyManualNomina())
   }, [])
 
   // ── Add asegurados ──
@@ -460,14 +604,43 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
       const batch = entries.slice(i, i + 10)
       const results = await Promise.all(
         batch.map(async ({ cleaned, isPassport }) => {
-          if (seen.has(cleaned)) return { dni: cleaned, nombre: "", apellido: "", documentType: (isPassport ? "PASAPORTE" : "DNI") as "DNI" | "PASAPORTE", valid: false, invalid: false, repeated: true, notCoverable: false, manual: false, raw: null }
+          const personType = inferPersonType(cleaned, isPassport)
+          const documentType: AseguradoItem["documentType"] = isPassport
+            ? "PASAPORTE"
+            : personType === "JURIDICO"
+              ? "CUIT_CUIL"
+              : "DNI"
+          if (seen.has(cleaned)) {
+            return {
+              dni: cleaned,
+              nombre: "",
+              apellido: "",
+              razonSocial: "",
+              personType,
+              documentType,
+              nationality: "",
+              gender: "",
+              birthDate: "",
+              valid: false,
+              invalid: false,
+              repeated: true,
+              notCoverable: false,
+              manual: false,
+              raw: null,
+            }
+          }
           seen.add(cleaned)
           if (isPassport) {
             return {
               dni: cleaned,
               nombre: "",
               apellido: "",
+              razonSocial: "",
+              personType: "FISICO" as const,
               documentType: "PASAPORTE" as const,
+              nationality: "",
+              gender: "",
+              birthDate: "",
               valid: false,
               invalid: true,
               repeated: false,
@@ -479,15 +652,100 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
           try {
             const res = await fetch("/api/ap/persona", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ dni: cleaned }) })
             const json = await res.json()
-            if (json.data) {
-              const p = Array.isArray(json.data) ? json.data[0] : json.data
-              const age = getAge(p.fechaNacimiento)
-              if (age !== null && (age < MIN_AGE || age > MAX_AGE)) return { dni: cleaned, nombre: p.nombre ?? "", apellido: p.apellido ?? "", documentType: "DNI" as const, valid: false, invalid: false, repeated: false, notCoverable: true, manual: false, raw: null }
-              return { dni: cleaned, nombre: p.nombre ?? "", apellido: p.apellido ?? "", documentType: "DNI" as const, valid: true, invalid: false, repeated: false, notCoverable: false, manual: false, raw: p as Record<string, unknown> }
+            const p = resolvePersonaData(json.data)
+            if (p) {
+              if (p.personType === "JURIDICO") {
+                return {
+                  dni: cleaned,
+                  nombre: p.nombre,
+                  apellido: p.apellido,
+                  razonSocial: p.razonSocial,
+                  personType: "JURIDICO" as const,
+                  documentType: "CUIT_CUIL" as const,
+                  nationality: "",
+                  gender: "",
+                  birthDate: "",
+                  valid: true,
+                  invalid: false,
+                  repeated: false,
+                  notCoverable: false,
+                  manual: false,
+                  raw: p,
+                }
+              }
+              const age = getAge(getStringValue(p.fechaNacimiento))
+              if (age !== null && (age < MIN_AGE || age > MAX_AGE)) {
+                return {
+                  dni: cleaned,
+                  nombre: p.nombre ?? "",
+                  apellido: p.apellido ?? "",
+                  razonSocial: "",
+                  personType: "FISICO" as const,
+                  documentType: "DNI" as const,
+                  nationality: getStringValue(p.nacionalidad),
+                  gender: getStringValue(p.sexo),
+                  birthDate: getStringValue(p.fechaNacimiento),
+                  valid: false,
+                  invalid: false,
+                  repeated: false,
+                  notCoverable: true,
+                  manual: false,
+                  raw: null,
+                }
+              }
+              return {
+                dni: cleaned,
+                nombre: p.nombre ?? "",
+                apellido: p.apellido ?? "",
+                razonSocial: "",
+                personType: "FISICO" as const,
+                documentType: "DNI" as const,
+                nationality: getStringValue(p.nacionalidad),
+                gender: getStringValue(p.sexo),
+                birthDate: getStringValue(p.fechaNacimiento),
+                valid: true,
+                invalid: false,
+                repeated: false,
+                notCoverable: false,
+                manual: false,
+                raw: p,
+              }
             }
-            return { dni: cleaned, nombre: "", apellido: "", documentType: "DNI" as const, valid: false, invalid: true, repeated: false, notCoverable: false, manual: false, raw: null }
+            return {
+              dni: cleaned,
+              nombre: "",
+              apellido: "",
+              razonSocial: "",
+              personType,
+              documentType,
+              nationality: "",
+              gender: "",
+              birthDate: "",
+              valid: false,
+              invalid: true,
+              repeated: false,
+              notCoverable: false,
+              manual: false,
+              raw: null,
+            }
           } catch {
-            return { dni: cleaned, nombre: "", apellido: "", documentType: "DNI" as const, valid: false, invalid: true, repeated: false, notCoverable: false, manual: false, raw: null }
+            return {
+              dni: cleaned,
+              nombre: "",
+              apellido: "",
+              razonSocial: "",
+              personType,
+              documentType,
+              nationality: "",
+              gender: "",
+              birthDate: "",
+              valid: false,
+              invalid: true,
+              repeated: false,
+              notCoverable: false,
+              manual: false,
+              raw: null,
+            }
           }
         })
       )
@@ -511,32 +769,36 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
   // ── Validation ──
   const errors: Record<string, string> = {}
   if (selectedPlanIdx === null) errors.plan = "Seleccioná un plan"
-  if (!tomador.dni || cleanDni(tomador.dni).length < 7) errors.tomadorDni = "Ingresá un DNI válido"
-  if (tomador.lookupFailed && !tomador.nombre) errors.tomadorNombre = "Ingresá el nombre"
-  if (tomador.lookupFailed && !tomador.apellido) errors.tomadorApellido = "Ingresá el apellido"
+  if (!tomador.dni || cleanDni(tomador.dni).length < 7) errors.tomadorDni = "Ingresá un DNI o CUIT válido"
+  else if (tomador.lookupFailed) errors.tomadorDni = "No encontramos una persona con ese DNI o CUIT"
   if (!isMulti && !esTomador) {
-    if (!asegurado.dni || cleanDni(asegurado.dni).length < 7) errors.aseguradoDni = "Ingresá un DNI válido"
-    if (asegurado.lookupFailed && !asegurado.nombre) errors.aseguradoNombre = "Ingresá el nombre"
-    if (asegurado.lookupFailed && !asegurado.apellido) errors.aseguradoApellido = "Ingresá el apellido"
+    if (!asegurado.dni || cleanDni(asegurado.dni).length < 7) errors.aseguradoDni = "Ingresá un DNI o CUIT válido"
+    else if (asegurado.lookupFailed) errors.aseguradoDni = "No encontramos una persona con ese DNI o CUIT"
   }
   if ((clausulaSubrogacion || clausulaNoRepeticion) && (nomina.length === 0 || !nomina[0]?.cuit || nomina.some((n) => n.invalid)))
-    errors.nomina = nomina.some((n) => n.invalid) ? "Hay CUITs inválidos" : "Agregá al menos una empresa"
+    errors.nomina = nomina.some((n) => n.invalid) ? "Hay CUITs con error o sin resultados" : "Agregá al menos una empresa"
   if (!email || !/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email)) errors.email = "Ingresá un email válido"
   if (!telefonoArea || !/^\d{2,4}$/.test(telefonoArea)) errors.telefonoArea = "Ingresá entre 2 y 4 dígitos"
   if (!telefonoNumero || !/^\d{6,8}$/.test(telefonoNumero)) errors.telefonoNumero = "Ingresá entre 6 y 8 dígitos"
 
   const validAsegurados = aseguradosList.filter((a) => a.valid || a.manual)
   const invalidAsegurados = aseguradosList.filter((a) => a.invalid || a.repeated || a.notCoverable)
+  const validAseguradosIndexed = aseguradosList
+    .map((a, i) => ({ ...a, _idx: i }))
+    .filter((a) => a.valid || a.manual)
+  const invalidAseguradosIndexed = aseguradosList
+    .map((a, i) => ({ ...a, _idx: i }))
+    .filter((a) => a.invalid || a.repeated || a.notCoverable)
 
   // (#2, #10) Asegurados step is not blocking — allow proceeding with at least 1
   const canAdvance = (s: number) => {
     const id = stepId(s)
     if (id === "plan") return selectedPlanIdx !== null
     if (id === "datos") {
-      const tomadorOk = tomador.dni.length >= 7 && tomador.lookupDone && (!tomador.lookupFailed || (!!tomador.nombre && !!tomador.apellido))
+      const tomadorOk = cleanDni(tomador.dni).length >= 7 && tomador.lookupDone && !tomador.lookupFailed
       if (!tomadorOk) return false
       if (!isMulti && !esTomador) {
-        const aseguradoOk = asegurado.dni.length >= 7 && asegurado.lookupDone && (!asegurado.lookupFailed || (!!asegurado.nombre && !!asegurado.apellido))
+        const aseguradoOk = cleanDni(asegurado.dni).length >= 7 && asegurado.lookupDone && !asegurado.lookupFailed
         if (!aseguradoOk) return false
       }
       if ((clausulaSubrogacion || clausulaNoRepeticion) && (nomina.length === 0 || !nomina.every((n) => n.valid && isValidCuit(n.cuit)))) return false
@@ -575,6 +837,7 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
   }
   const addNominas = useCallback(async () => {
     const cuits = parseNominaInput(nominaInput)
+    if (cuits.some(({ cleaned }) => !isValidCuit(cleaned))) return
     if (cuits.length === 0) return
     setResolvingNomina(true)
     const seen = new Set(nomina.map((n) => n.cuit))
@@ -591,9 +854,10 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
           try {
             const res = await fetch("/api/ap/persona", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ dni: cleaned }) })
             const json = await res.json()
-            if (json.data) {
-              const nombre = json.data.razonSocial ? json.data.razonSocial : `${json.data.nombre ?? ""} ${json.data.apellido ?? ""}`.trim()
-              return { cuit: cleaned, nombre, loading: false, valid: true, invalid: false, raw: json.data as Record<string, unknown> }
+            const persona = resolvePersonaData(json.data)
+            if (persona) {
+              const nombre = persona.razonSocial || `${persona.nombre} ${persona.apellido}`.trim()
+              return { cuit: cleaned, nombre, loading: false, valid: true, invalid: false, raw: persona }
             }
             return { cuit: cleaned, nombre: "", loading: false, valid: false, invalid: true, raw: null }
           } catch {
@@ -607,38 +871,65 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
     setNomina(updatedNomina)
     setNominaInput("")
     setResolvingNomina(false)
-    const firstManualIdx = updatedNomina.findIndex(
-      (item, idx) => idx >= nomina.length && item.invalid
-    )
-    if (firstManualIdx >= 0) openManualNomina(firstManualIdx)
-  }, [nominaInput, nomina, openManualNomina])
+  }, [nominaInput, nomina])
   const removeNomina = (idx: number) => setNomina((prev) => prev.filter((_, i) => i !== idx))
 
   const submitManualAsegurado = () => {
     if (manualAseguradoIdx === null) return
-    const cleanedDocument = cleanDni(manualAsegurado.dni)
-    if (!cleanedDocument || !manualAsegurado.nombre || !manualAsegurado.apellido) return
+    const isFisico = manualAsegurado.personType === "FISICO"
+    const cleanedDocument = cleanDni(manualAsegurado.documentNumber)
+    const cleanedCuit = manualAsegurado.cuit.replace(/\D/g, "")
+    const nationalityLabel = COUNTRY_OPTIONS.find((option) => option.value === manualAsegurado.nationality)?.label ?? ""
+    if (isFisico) {
+      if (
+        !cleanedDocument ||
+        !manualAsegurado.nombre.trim() ||
+        !manualAsegurado.apellido.trim() ||
+        !manualAsegurado.nationality.trim() ||
+        !manualAsegurado.gender ||
+        !manualAsegurado.birthDate
+      ) return
+    } else if (!manualAsegurado.razonSocial.trim() || !isValidCuit(cleanedCuit)) {
+      return
+    }
     setAseguradosList((prev) =>
       prev.map((item, idx) =>
         idx === manualAseguradoIdx
           ? {
               ...item,
-              dni: cleanedDocument,
-              nombre: manualAsegurado.nombre.trim(),
-              apellido: manualAsegurado.apellido.trim(),
-              documentType: manualAsegurado.documentType,
+              dni: isFisico ? cleanedDocument : cleanedCuit,
+              nombre: isFisico ? manualAsegurado.nombre.trim() : "",
+              apellido: isFisico ? manualAsegurado.apellido.trim() : "",
+              razonSocial: isFisico ? "" : manualAsegurado.razonSocial.trim(),
+              personType: manualAsegurado.personType,
+              documentType: isFisico ? manualAsegurado.documentType : "CUIT_CUIL",
+              nationality: isFisico ? manualAsegurado.nationality.trim() : "",
+              gender: isFisico ? manualAsegurado.gender : "",
+              birthDate: isFisico ? manualAsegurado.birthDate : "",
               valid: true,
               invalid: false,
               manual: true,
-              raw: {
-                idTipoDocumento: manualAsegurado.documentType === "PASAPORTE" ? 5 : 1,
-                numeroDocumento:
-                  manualAsegurado.documentType === "DNI"
-                    ? parseInt(cleanedDocument, 10)
-                    : cleanedDocument,
-                nombre: manualAsegurado.nombre.trim(),
-                apellido: manualAsegurado.apellido.trim(),
-              },
+              raw: isFisico
+                ? {
+                    idTipoPersona: 1,
+                    idTipoDocumento: manualAsegurado.documentType === "PASAPORTE" ? 5 : 1,
+                    numeroDocumento:
+                      manualAsegurado.documentType === "DNI"
+                        ? parseInt(cleanedDocument, 10)
+                        : cleanedDocument,
+                    nombre: manualAsegurado.nombre.trim(),
+                    apellido: manualAsegurado.apellido.trim(),
+                    cuit: manualAsegurado.nationality,
+                    nacionalidad: nationalityLabel,
+                    idSexo: Number(manualAsegurado.gender),
+                    sexo: Number(manualAsegurado.gender),
+                    fechaNacimiento: manualAsegurado.birthDate,
+                  }
+                : {
+                    idTipoPersona: 2,
+                    razonSocial: manualAsegurado.razonSocial.trim(),
+                    cuit: cleanedCuit,
+                  },
             }
           : item
       )
@@ -646,39 +937,12 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
     closeManualAsegurado()
   }
 
-  const submitManualNomina = () => {
-    if (manualNominaIdx === null) return
-    const cleanedCuit = manualNomina.cuit.replace(/\D/g, "")
-    if (!manualNomina.razonSocial || !isValidCuit(cleanedCuit)) return
-    setNomina((prev) =>
-      prev.map((item, idx) =>
-        idx === manualNominaIdx
-          ? {
-              ...item,
-              cuit: cleanedCuit,
-              nombre: manualNomina.razonSocial.trim(),
-              valid: true,
-              invalid: false,
-              manual: true,
-              raw: {
-                idTipoPersona: 2,
-                razonSocial: manualNomina.razonSocial.trim(),
-                numeroDocumento: manualNomina.numeroDocumento.trim(),
-                cuit: cleanedCuit,
-              },
-            }
-          : item
-      )
-    )
-    closeManualNomina()
-  }
-
   // ── Submit ──
   const handleSubmit = async () => {
     if (!selectedPlan) return
     setSubmitting(true)
     setSubmitError("")
-    const solicitante = `${tomador.nombre} ${tomador.apellido}`.trim()
+    const solicitante = getPersonaDisplayName(tomador)
     try {
       setSubmitStep("Generando cotización...")
       const triggerRes = await fetch("/api/ap/cotizacion/trigger", {
@@ -694,15 +958,30 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
       if (triggerRes.error) throw new Error(triggerRes.error)
       const { idCotizacion } = triggerRes.data
 
-      const tomadorPayload = tomador.raw ?? { numeroDocumento: parseInt(tomador.dni, 10), nombre: tomador.nombre, apellido: tomador.apellido }
+      const tomadorPayload = tomador.raw ?? (
+        tomador.personType === "JURIDICO"
+          ? { idTipoPersona: 2, cuit: tomador.dni, razonSocial: tomador.razonSocial }
+          : { numeroDocumento: parseInt(tomador.dni, 10), nombre: tomador.nombre, apellido: tomador.apellido }
+      )
       const idOcupacion = Number(quoter.actividad) || 1
       let allAsegurados: Record<string, unknown>[]
       if (isMulti) {
-        allAsegurados = aseguradosList.filter((a) => a.valid || a.manual).map((a) => ({ ...(a.raw ?? { numeroDocumento: parseInt(a.dni, 10), nombre: a.nombre, apellido: a.apellido }), idOcupacion }))
+        allAsegurados = aseguradosList.filter((a) => a.valid || a.manual).map((a) => ({
+          ...(a.raw ?? (
+            a.personType === "JURIDICO"
+              ? { idTipoPersona: 2, cuit: a.dni, razonSocial: a.razonSocial }
+              : { numeroDocumento: parseInt(a.dni, 10), nombre: a.nombre, apellido: a.apellido }
+          )),
+          idOcupacion,
+        }))
       } else if (esTomador) {
         allAsegurados = [{ ...tomadorPayload, idOcupacion }]
       } else {
-        const aseguradoPayload = asegurado.raw ?? { numeroDocumento: parseInt(asegurado.dni, 10), nombre: asegurado.nombre, apellido: asegurado.apellido }
+        const aseguradoPayload = asegurado.raw ?? (
+          asegurado.personType === "JURIDICO"
+            ? { idTipoPersona: 2, cuit: asegurado.dni, razonSocial: asegurado.razonSocial }
+            : { numeroDocumento: parseInt(asegurado.dni, 10), nombre: asegurado.nombre, apellido: asegurado.apellido }
+        )
         allAsegurados = [{ ...aseguradoPayload, idOcupacion }]
       }
       const nominaPayload = (clausulaSubrogacion || clausulaNoRepeticion) ? nomina.filter((n) => n.valid).map((n) => ({ cuit: n.cuit, nombre: n.nombre })) : []
@@ -777,7 +1056,7 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
             <button
               type="button"
               onClick={() => lookupDni(persona, setPersona)}
-              disabled={!persona.dni || persona.dni.length < 7}
+              disabled={!persona.dni || cleanDni(persona.dni).length < 7}
               className="text-sm font-medium text-woranz-ink disabled:opacity-30"
             >
               Agregar
@@ -785,37 +1064,15 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
           )}
         </div>
       </div>
-      {touched[`${prefix}Dni`] && errors[`${prefix}Dni`] && (
+      {(touched[`${prefix}Dni`] || persona.lookupDone) && errors[`${prefix}Dni`] && (
         <FieldError message={errors[`${prefix}Dni`]} />
       )}
       {persona.lookupDone && !persona.lookupFailed && (
         <EntityListItem
           tone="success"
-          title={`${persona.nombre} ${persona.apellido}`.trim()}
+          title={getPersonaDisplayName(persona)}
           subtitle={persona.dni}
         />
-      )}
-      {persona.lookupDone && persona.lookupFailed && (
-        <div className="grid gap-4 sm:grid-cols-2">
-          <FormField label="Nombre" error={touched[`${prefix}Nombre`] ? errors[`${prefix}Nombre`] : undefined}>
-            <Input
-              placeholder="Nombre"
-              value={persona.nombre}
-              onChange={(e) => setPersona({ ...persona, nombre: e.target.value })}
-              onBlur={() => touch(`${prefix}Nombre`)}
-              className="h-12"
-            />
-          </FormField>
-          <FormField label="Apellido" error={touched[`${prefix}Apellido`] ? errors[`${prefix}Apellido`] : undefined}>
-            <Input
-              placeholder="Apellido"
-              value={persona.apellido}
-              onChange={(e) => setPersona({ ...persona, apellido: e.target.value })}
-              onBlur={() => touch(`${prefix}Apellido`)}
-              className="h-12"
-            />
-          </FormField>
-        </div>
       )}
     </div>
   )
@@ -992,10 +1249,13 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
                       onChange={setNominaInput}
                       onSubmit={addNominas}
                       disabled={resolvingNomina}
-                      submitDisabled={resolvingNomina || parseNominaInput(nominaInput).length === 0}
+                      submitDisabled={resolvingNomina || parsedNominaInput.length === 0 || nominaInputHasInvalidValues}
                       submitting={resolvingNomina}
                       inputClassName="bg-white"
                     >
+                      {nominaInputHasInvalidValues ? (
+                        <FieldError message="Todos los CUITs tienen que tener 11 dígitos antes de agregarlos." />
+                      ) : null}
                       {nomina.map((entry, idx) => (
                         <EntityListItem
                           key={`${entry.cuit}-${idx}`}
@@ -1011,17 +1271,6 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
                           }
                           trailing={
                             <>
-                              {entry.invalid ? (
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="xs"
-                                  onClick={() => openManualNomina(idx)}
-                                  className="text-woranz-ink"
-                                >
-                                  Completar
-                                </Button>
-                              ) : null}
                               <Button
                                 type="button"
                                 variant="ghost"
@@ -1036,6 +1285,9 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
                         />
                       ))}
                     </LookupSection>
+                    {touched.nomina && errors.nomina ? (
+                      <FieldError message={errors.nomina} />
+                    ) : null}
                   </>
                 )}
               </div>
@@ -1057,81 +1309,120 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
             submitDisabled={resolvingAsegurados || parseAseguradosInput(aseguradosInput).length === 0}
             submitting={resolvingAsegurados}
           >
-            {aseguradosList.length > 0 && (
-              <p className="text-xs font-medium text-woranz-ink">
-                Asegurados ({validAsegurados.length} de {cantidadActual})
-                {invalidAsegurados.length > 0 ? (
-                  <span className="text-red-500"> · {invalidAsegurados.length} con errores</span>
-                ) : null}
-              </p>
-            )}
+            {aseguradosList.length > 0 ? (
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-medium text-woranz-ink">
+                    Asegurados
+                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-woranz-slate">
+                      {validAsegurados.length}
+                      {invalidAsegurados.length > 0 ? (
+                        <span className="text-red-500"> · {invalidAsegurados.length} con errores</span>
+                      ) : null}
+                    </span>
+                    {validAseguradosIndexed.length > 0 ? (
+                      <button
+                        type="button"
+                        onClick={() => setAseguradosExpanded((current) => !current)}
+                        className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium text-woranz-ink transition-colors hover:bg-woranz-warm-2"
+                      >
+                        Ver nombres
+                        <ChevronDown className={cn("h-4 w-4 shrink-0 text-woranz-muted transition-transform", aseguradosExpanded && "rotate-180")} />
+                      </button>
+                    ) : null}
+                  </div>
+                </div>
 
-            {[...aseguradosList]
-              .map((a, i) => ({ ...a, _idx: i }))
-              .sort((a, b) => {
-                const aErr = a.invalid || a.repeated || a.notCoverable ? 0 : 1
-                const bErr = b.invalid || b.repeated || b.notCoverable ? 0 : 1
-                return aErr - bErr
-              })
-              .map((a) => {
-                const i = a._idx
-                const isValid = a.valid || a.manual
-                const isRecoverable = a.invalid && !a.repeated && !a.notCoverable
-                const title = isValid
-                  ? `${a.nombre} ${a.apellido}`.trim()
-                  : a.notCoverable && (a.nombre || a.apellido)
-                    ? `${a.nombre} ${a.apellido}`.trim()
-                    : a.dni
-                const subtitle = isValid || a.notCoverable ? a.dni : undefined
-                const description = a.repeated
-                  ? "Duplicado"
-                  : a.notCoverable
-                    ? `Fuera de rango (${MIN_AGE}-${MAX_AGE} años)`
-                    : a.invalid
-                      ? a.documentType === "PASAPORTE"
-                        ? "Pasaporte: completá los datos manualmente"
-                        : "No encontrado"
-                      : undefined
-
-                return (
-                  <div key={i} className="flex flex-col gap-2">
-                    <EntityListItem
-                      tone={isValid ? "success" : "error"}
-                      title={title}
-                      subtitle={subtitle}
-                      description={description}
-                      trailing={
-                        <>
-                          {isRecoverable ? (
+                {validAseguradosIndexed.length > 0 ? (
+                  <div className="rounded-xl border border-woranz-line bg-woranz-warm-1 p-3">
+                    {aseguradosExpanded ? (
+                      <div className="flex max-h-72 flex-wrap gap-2 overflow-y-auto rounded-lg bg-white p-3">
+                        {validAseguradosIndexed.map((a) => (
+                          <div
+                            key={`${a.documentType}-${a.dni}`}
+                            className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-woranz-line bg-woranz-warm-1 pl-3 pr-1.5 py-1.5"
+                          >
+                            <span className="truncate text-sm font-medium text-woranz-ink">
+                              {getAseguradoDisplayName(a)}
+                            </span>
                             <Button
                               type="button"
                               variant="ghost"
-                              size="xs"
-                              onClick={() => openManualAsegurado(i)}
-                              className="text-woranz-ink"
+                              size="icon-xs"
+                              onClick={() => {
+                                setAseguradosList((prev) => prev.filter((_, idx) => idx !== a._idx))
+                                if (manualAseguradoIdx === a._idx) closeManualAsegurado()
+                              }}
+                              className="text-woranz-muted hover:text-red-500"
                             >
-                              Completar
+                              <Trash2 className="h-3.5 w-3.5" />
                             </Button>
-                          ) : null}
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon-xs"
-                            onClick={() => {
-                              setAseguradosList((prev) => prev.filter((_, idx) => idx !== i))
-                              if (manualAseguradoIdx === i) closeManualAsegurado()
-                            }}
-                            className="text-woranz-muted hover:text-red-500"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </Button>
-                        </>
-                      }
-                    />
-
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
                   </div>
-                )
-              })}
+                ) : null}
+
+                {invalidAseguradosIndexed.length > 0 ? (
+                  <div className="flex flex-col gap-2">
+                    {invalidAseguradosIndexed.map((a) => {
+                      const isRecoverable = a.invalid && !a.repeated && !a.notCoverable
+                      const title = a.notCoverable && (a.nombre || a.apellido || a.razonSocial)
+                        ? getAseguradoDisplayName(a)
+                        : a.dni
+                      const subtitle = a.notCoverable ? a.dni : undefined
+                      const description = a.repeated
+                        ? "Duplicado"
+                        : a.notCoverable
+                          ? `Fuera de rango (${MIN_AGE}-${MAX_AGE} años)`
+                          : a.documentType === "PASAPORTE"
+                            ? "Pasaporte: completá los datos manualmente"
+                            : "No encontrado"
+
+                      return (
+                        <EntityListItem
+                          key={`${a.documentType}-${a.dni}-${a._idx}`}
+                          tone="error"
+                          title={title}
+                          subtitle={subtitle}
+                          description={description}
+                          trailing={
+                            <>
+                              {isRecoverable ? (
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="xs"
+                                  onClick={() => openManualAsegurado(a._idx)}
+                                  className="text-woranz-ink"
+                                >
+                                  Completar
+                                </Button>
+                              ) : null}
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon-xs"
+                                onClick={() => {
+                                  setAseguradosList((prev) => prev.filter((_, idx) => idx !== a._idx))
+                                  if (manualAseguradoIdx === a._idx) closeManualAsegurado()
+                                }}
+                                className="text-woranz-muted hover:text-red-500"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </Button>
+                            </>
+                          }
+                        />
+                      )
+                    })}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
           </LookupSection>
         </div>
       )}
@@ -1166,7 +1457,7 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
               />
               <SummaryRow
                 label="Titular"
-                value={`${tomador.nombre} ${tomador.apellido}`.trim()}
+                value={getPersonaDisplayName(tomador)}
               />
               <SummaryRow
                 label="Contacto"
@@ -1175,21 +1466,33 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
               {!isMulti && !esTomador ? (
                 <SummaryRow
                   label="Asegurado"
-                  value={`${asegurado.nombre} ${asegurado.apellido}`.trim()}
+                  value={getPersonaDisplayName(asegurado)}
                 />
               ) : null}
               {isMulti && validAsegurados.length > 0 ? (
                 <div className="flex flex-col gap-2">
                   <SummaryRow label="Asegurados" value={`${validAsegurados.length}`} />
-                  <div className="max-h-64 overflow-y-auto rounded-lg bg-woranz-warm-1 p-2">
-                    <div className="flex flex-col gap-1.5">
-                      {validAsegurados.map((a) => (
-                        <div key={`${a.documentType}-${a.dni}`} className="flex items-center justify-between rounded-md bg-white px-3 py-2 text-xs">
-                          <span className="font-medium text-woranz-ink">{a.nombre} {a.apellido}</span>
-                          <span className="tabular-nums text-woranz-muted">{a.dni}</span>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="rounded-lg bg-woranz-warm-1 p-2">
+                    <button
+                      type="button"
+                      onClick={() => setResumenAseguradosExpanded((current) => !current)}
+                      className="flex w-full items-center justify-between gap-3 rounded-md bg-white px-3 py-2 text-left text-xs font-medium text-woranz-ink"
+                    >
+                      <span>Ver nombres</span>
+                      <ChevronDown className={cn("h-4 w-4 shrink-0 text-woranz-muted transition-transform", resumenAseguradosExpanded && "rotate-180")} />
+                    </button>
+                    {resumenAseguradosExpanded ? (
+                      <div className="mt-2 flex max-h-64 flex-wrap gap-2 overflow-y-auto">
+                        {validAsegurados.map((a) => (
+                          <div
+                            key={`${a.documentType}-${a.dni}`}
+                            className="rounded-full bg-white px-3 py-1.5 text-xs font-medium text-woranz-ink"
+                          >
+                            {getAseguradoDisplayName(a)}
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               ) : null}
@@ -1261,7 +1564,14 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
               </div>
               <button
                 type="button"
-                onClick={() => setEditingBar(false)}
+                onClick={() => {
+                  setEditingBar(false)
+                  setBarSnapshot({
+                    cantidad: cantidadActual,
+                    desde,
+                    hasta,
+                  })
+                }}
                 className="rounded-md px-3 py-1.5 text-xs font-semibold text-woranz-ink transition-colors hover:bg-woranz-warm-2"
               >
                 Listo
@@ -1282,7 +1592,14 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
               )}
               <button
                 type="button"
-                onClick={() => setEditingBar(true)}
+                onClick={() => {
+                  setBarSnapshot({
+                    cantidad: cantidadActual,
+                    desde,
+                    hasta,
+                  })
+                  setEditingBar(true)
+                }}
                 className="ml-1 rounded-md p-1 text-woranz-muted transition-colors hover:bg-woranz-warm-3 hover:text-woranz-ink"
                 title="Modificar cotización"
               >
@@ -1300,7 +1617,7 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
               </button>
             )}
             {stepId(step) === "pago" ? (
-              <button type="button" disabled={submitting} onClick={handleSubmit}
+              <button type="button" disabled={submitting || plansLoading || editingBar} onClick={handleSubmit}
                 className="btn-primary flex-1 justify-center px-8 py-3 text-sm font-bold disabled:opacity-50 sm:flex-none">
                 {submitting ? (
                   <span className="inline-flex items-center gap-2">
@@ -1332,13 +1649,22 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
             </DialogDescription>
           </DialogHeader>
           <DialogBody className="flex flex-col gap-4">
-            <FormField label="Tipo de documento">
+            <FormField label="Tipo de persona">
               <Select
-                value={manualAsegurado.documentType}
+                value={manualAsegurado.personType}
                 onValueChange={(value) =>
                   setManualAsegurado((prev) => ({
                     ...prev,
-                    documentType: value as "DNI" | "PASAPORTE",
+                    personType: value as PersonType,
+                    documentType: "DNI",
+                    documentNumber: "",
+                    nombre: "",
+                    apellido: "",
+                    razonSocial: "",
+                    cuit: "",
+                    nationality: "",
+                    gender: "",
+                    birthDate: "",
                   }))
                 }
               >
@@ -1346,127 +1672,150 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
                   <SelectValue placeholder="Seleccionar" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="DNI">DNI</SelectItem>
-                  <SelectItem value="PASAPORTE">Pasaporte</SelectItem>
+                  <SelectItem value="FISICO">Físico</SelectItem>
+                  <SelectItem value="JURIDICO">Jurídico</SelectItem>
                 </SelectContent>
               </Select>
             </FormField>
-            <FormField
-              label={manualAsegurado.documentType === "PASAPORTE" ? "Número de pasaporte" : "Número de documento"}
-            >
-              <Input
-                value={manualAsegurado.dni}
-                onChange={(e) =>
-                  setManualAsegurado((prev) => ({
-                    ...prev,
-                    dni:
-                      prev.documentType === "DNI"
-                        ? e.target.value.replace(/\D/g, "").slice(0, 8)
-                        : cleanDni(e.target.value).slice(0, 20),
-                  }))
-                }
-                className="h-12"
-              />
-            </FormField>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <FormField label="Nombre">
-                <Input
-                  value={manualAsegurado.nombre}
-                  onChange={(e) => setManualAsegurado((prev) => ({ ...prev, nombre: e.target.value }))}
-                  className="h-12"
-                />
-              </FormField>
-              <FormField label="Apellido">
-                <Input
-                  value={manualAsegurado.apellido}
-                  onChange={(e) => setManualAsegurado((prev) => ({ ...prev, apellido: e.target.value }))}
-                  className="h-12"
-                />
-              </FormField>
-            </div>
+            {manualAsegurado.personType === "FISICO" ? (
+              <>
+                <FormField label="Tipo de documento">
+                  <Select
+                    value={manualAsegurado.documentType}
+                    onValueChange={(value) =>
+                      setManualAsegurado((prev) => ({
+                        ...prev,
+                        documentType: value as "DNI" | "PASAPORTE",
+                      }))
+                    }
+                  >
+                    <SelectTrigger className="h-12">
+                      <SelectValue placeholder="Seleccionar" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="DNI">DNI</SelectItem>
+                      <SelectItem value="PASAPORTE">Pasaporte</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormField>
+                <FormField
+                  label={manualAsegurado.documentType === "PASAPORTE" ? "Número de pasaporte" : "Número de documento"}
+                >
+                  <Input
+                    value={manualAsegurado.documentNumber}
+                    onChange={(e) =>
+                      setManualAsegurado((prev) => ({
+                        ...prev,
+                        documentNumber:
+                          prev.documentType === "DNI"
+                            ? e.target.value.replace(/\D/g, "").slice(0, 8)
+                            : cleanDni(e.target.value).slice(0, 20),
+                      }))
+                    }
+                    className="h-12"
+                  />
+                </FormField>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <FormField label="Nombre">
+                    <Input
+                      value={manualAsegurado.nombre}
+                      onChange={(e) => setManualAsegurado((prev) => ({ ...prev, nombre: e.target.value }))}
+                      className="h-12"
+                    />
+                  </FormField>
+                  <FormField label="Apellido">
+                    <Input
+                      value={manualAsegurado.apellido}
+                      onChange={(e) => setManualAsegurado((prev) => ({ ...prev, apellido: e.target.value }))}
+                      className="h-12"
+                    />
+                  </FormField>
+                </div>
+                <FormField label="Nacionalidad">
+                  <Combobox
+                    className="w-full bg-white"
+                    contentClassName="max-h-80"
+                    emptyText="No se encontró una nacionalidad."
+                    options={COUNTRY_OPTIONS}
+                    placeholder="Seleccionar"
+                    searchPlaceholder="Buscar nacionalidad..."
+                    value={manualAsegurado.nationality}
+                    onChange={(value) => setManualAsegurado((prev) => ({ ...prev, nationality: value }))}
+                  />
+                </FormField>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <FormField label="Género">
+                    <Select
+                      value={manualAsegurado.gender}
+                      onValueChange={(value) =>
+                        setManualAsegurado((prev) => ({
+                          ...prev,
+                          gender: value,
+                        }))
+                      }
+                    >
+                      <SelectTrigger className="h-12">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="2">Femenino</SelectItem>
+                        <SelectItem value="1">Masculino</SelectItem>
+                        <SelectItem value="0">Otro</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormField>
+                  <FormField label="Fecha de nacimiento">
+                    <Input
+                      type="date"
+                      value={manualAsegurado.birthDate}
+                      onChange={(e) => setManualAsegurado((prev) => ({ ...prev, birthDate: e.target.value }))}
+                      className="h-12"
+                    />
+                  </FormField>
+                </div>
+                <p className="text-sm text-woranz-muted">
+                  Como figura en tu DNI / Pasaporte
+                </p>
+              </>
+            ) : (
+              <>
+                <FormField label="Razón social">
+                  <Input
+                    value={manualAsegurado.razonSocial}
+                    onChange={(e) => setManualAsegurado((prev) => ({ ...prev, razonSocial: e.target.value }))}
+                    className="h-12"
+                  />
+                </FormField>
+                <FormField label="CUIT/CUIL">
+                  <Input
+                    value={manualAsegurado.cuit}
+                    onChange={(e) =>
+                      setManualAsegurado((prev) => ({
+                        ...prev,
+                        cuit: e.target.value.replace(/\D/g, "").slice(0, 11),
+                      }))
+                    }
+                    className="h-12"
+                  />
+                </FormField>
+              </>
+            )}
           </DialogBody>
           <DialogFooter>
             <Button type="button" variant="ghost" onClick={closeManualAsegurado}>Cerrar</Button>
             <Button
               type="button"
               onClick={submitManualAsegurado}
-              disabled={!manualAsegurado.dni || !manualAsegurado.nombre || !manualAsegurado.apellido}
-            >
-              Continuar
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={manualNominaIdx !== null} onOpenChange={(open) => { if (!open) closeManualNomina() }}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Datos de la empresa</DialogTitle>
-            <DialogDescription>
-              Cargá los datos manualmente si el CUIT no se encuentra en la base.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogBody className="flex flex-col gap-4">
-            <FormField label="Tipo de persona">
-              <Select value="Juridico" onValueChange={() => undefined}>
-                <SelectTrigger className="h-12">
-                  <SelectValue placeholder="Jurídico" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Juridico">Jurídico</SelectItem>
-                </SelectContent>
-              </Select>
-            </FormField>
-            <FormField label="Razón social">
-              <Input
-                value={manualNomina.razonSocial}
-                onChange={(e) => setManualNomina((prev) => ({ ...prev, razonSocial: e.target.value }))}
-                className="h-12"
-              />
-            </FormField>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <FormField label="Tipo de documento">
-                <Select value="DNI" onValueChange={() => undefined}>
-                  <SelectTrigger className="h-12">
-                    <SelectValue placeholder="DNI" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="DNI">DNI</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormField>
-              <FormField label="Número de documento">
-                <Input
-                  value={manualNomina.numeroDocumento}
-                  onChange={(e) =>
-                    setManualNomina((prev) => ({
-                      ...prev,
-                      numeroDocumento: cleanDni(e.target.value).slice(0, 20),
-                    }))
-                  }
-                  className="h-12"
-                />
-              </FormField>
-            </div>
-            <FormField label="CUIT/CUIL">
-              <Input
-                value={manualNomina.cuit}
-                onChange={(e) =>
-                  setManualNomina((prev) => ({
-                    ...prev,
-                    cuit: e.target.value.replace(/\D/g, "").slice(0, 11),
-                  }))
-                }
-                className="h-12"
-              />
-            </FormField>
-          </DialogBody>
-          <DialogFooter>
-            <Button type="button" variant="ghost" onClick={closeManualNomina}>Cerrar</Button>
-            <Button
-              type="button"
-              onClick={submitManualNomina}
-              disabled={!manualNomina.razonSocial || !isValidCuit(manualNomina.cuit)}
+              disabled={
+                manualAsegurado.personType === "FISICO"
+                  ? !manualAsegurado.documentNumber ||
+                    !manualAsegurado.nombre.trim() ||
+                    !manualAsegurado.apellido.trim() ||
+                    !manualAsegurado.nationality.trim() ||
+                    !manualAsegurado.gender ||
+                    !manualAsegurado.birthDate
+                  : !manualAsegurado.razonSocial.trim() || !isValidCuit(manualAsegurado.cuit)
+              }
             >
               Continuar
             </Button>
