@@ -64,7 +64,7 @@ function Combobox({
       <PopoverContent
         align="start"
         className={cn(
-          "min-w-full rounded-xl border-woranz-border bg-white p-0 shadow-card",
+          "min-w-full rounded-xl border-woranz-border bg-white p-0 shadow-elevated",
           contentClassName
         )}
         style={{ width: "var(--radix-popover-trigger-width)" }}

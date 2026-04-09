@@ -222,7 +222,7 @@ const config: Config = {
       boxShadow: {
         panel: "0 0.75rem 2.5rem rgba(0, 0, 0, 0.04)",
         quoter: "0 0.5rem 2rem rgba(0, 0, 0, 0.1)",
-        card: "0 0.5rem 1.5rem rgba(0, 0, 0, 0.03)",
+        elevated: "0 12px 40px rgba(0, 0, 0, 0.06)",
         button: "0 0.125rem 0.25rem rgba(0, 0, 0, 0.12)",
       },
       letterSpacing: {
