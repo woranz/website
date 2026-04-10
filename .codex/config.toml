@@ -1,3 +1,59 @@
 [mcp_servers.agentation]
 command = "npx"
 args = [ "-y", "agentation-mcp", "server" ]
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/building-components/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/next-best-practices/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/vercel-composition-patterns/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/vercel-react-best-practices/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/web-design-guidelines/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/woranz-copy/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/woranz-design/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/woranz-frontend/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/woranz-images/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/woranz-orchestrator/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/woranz-product/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/woranz-productos/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/woranz-review/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "/Users/marcos/conductor/workspaces/website/edinburgh-v1/.claude/skills/woranz-ui-designer/SKILL.md"
+enabled = true
