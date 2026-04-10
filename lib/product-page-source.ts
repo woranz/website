@@ -111,6 +111,40 @@ const DEFAULT_DESCRIPTION =
   "Contratá online, con respaldo real y acompañamiento humano en cada paso."
 const DEFAULT_PRIMARY_CTA = "Cotizá ahora"
 const DEFAULT_SECONDARY_CTA = "Hablá con nosotros →"
+
+export const CTA_DEFAULTS: Record<ProductSegment, {
+  title: string
+  description: string
+  teamCount: string
+  teamLabel: string
+  primaryCta: string
+  secondaryCta: string
+}> = {
+  personas: {
+    title: "¿Querés saber más?",
+    description: "Nuestro equipo te ayuda a elegir la cobertura justa para vos.",
+    teamCount: "+20",
+    teamLabel: "personas cuidando de vos",
+    primaryCta: "Cotizá ahora",
+    secondaryCta: "Hablá con nosotros →",
+  },
+  empresas: {
+    title: "¿Necesitás proteger tu empresa?",
+    description: "Te ayudamos a encontrar la cobertura que tu negocio necesita.",
+    teamCount: "+20",
+    teamLabel: "asesores listos para ayudarte",
+    primaryCta: "Pedí una cotización",
+    secondaryCta: "Hablá con nosotros →",
+  },
+  productores: {
+    title: "¿Querés operar con Woranz?",
+    description: "Sumate a nuestra red y empezá a cotizar en minutos.",
+    teamCount: "+20",
+    teamLabel: "personas del otro lado",
+    primaryCta: "Empezá ahora",
+    secondaryCta: "Hablá con nosotros →",
+  },
+}
 const SANITY_REVALIDATE_SECONDS = 60
 
 function cleanStegaString<T extends string>(value: T | undefined) {
@@ -128,6 +162,10 @@ function isSanityConfigured() {
   )
 }
 
+const WHATSAPP_PHONE = "5491139490433"
+const WHATSAPP_BASE_URL = "https://api.whatsapp.com/send/"
+const SITE_BASE_URL = "https://www.woranz.com"
+
 function buildWhatsappHref(phone?: string) {
   if (!phone) {
     return undefined
@@ -136,6 +174,18 @@ function buildWhatsappHref(phone?: string) {
   const digits = phone.replace(/\D/g, "")
 
   return digits ? `https://wa.me/${digits}` : undefined
+}
+
+export function buildWhatsappCtaHref(pagePath: string) {
+  const pageUrl = `${SITE_BASE_URL}${pagePath}`
+  const text = `Hola, estoy visitando este link ${pageUrl} podrías asistirme con el seguro?`
+  const params = new URLSearchParams({
+    phone: WHATSAPP_PHONE,
+    text,
+    type: "phone_number",
+    app_absent: "0",
+  })
+  return `${WHATSAPP_BASE_URL}?${params.toString()}`
 }
 
 function splitIntoColumns<T>(items: T[]) {
@@ -354,10 +404,14 @@ function mapRequirementItems(
 
 function transformSectionBlock(
   block: SanitySectionBlock,
-  settings?: SanitySettings
+  settings: SanitySettings | undefined,
+  segment: ProductSegment,
+  pagePath: string
 ): ProductPageSection | null {
   const defaultCtas = resolveDefaultCtaHrefs(settings)
-  const defaultContactHref = defaultCtas.secondaryHref
+  const ctaDefaults = CTA_DEFAULTS[segment]
+  const whatsappHref = buildWhatsappCtaHref(pagePath)
+  const defaultContactHref = defaultCtas.secondaryHref || whatsappHref
 
   switch (block._type) {
     case "seccionCotizador": {
@@ -495,25 +549,25 @@ function transformSectionBlock(
     case "seccionCta": {
       const primaryCta = resolveContextualCtaLink({
         link: block.ctaPrimario,
-        fallbackLabel: DEFAULT_PRIMARY_CTA,
+        fallbackLabel: ctaDefaults.primaryCta,
         fallbackHref: defaultCtas.primaryHref,
         defaultContactHref,
         hasQuoteSection: true,
       })
       const secondaryCta = resolveContextualCtaLink({
         link: block.ctaSecundario,
-        fallbackLabel: DEFAULT_SECONDARY_CTA,
-        fallbackHref: defaultCtas.secondaryHref,
+        fallbackLabel: ctaDefaults.secondaryCta,
+        fallbackHref: defaultContactHref,
         defaultContactHref,
         hasQuoteSection: false,
       })
       return {
         type: "cta",
-        title: block.titulo?.trim() || "¿Querés que te ayudemos?",
+        title: block.titulo?.trim() || ctaDefaults.title,
         titleMobile: block.tituloMobile?.trim(),
-        description: block.descripcion?.trim() || "Te acompañamos en cada paso.",
-        teamCount: block.teamCount?.trim() || "4+",
-        teamLabel: block.teamLabel?.trim() || "personas acompañándote del otro lado",
+        description: block.descripcion?.trim() || ctaDefaults.description,
+        teamCount: block.teamCount?.trim() || ctaDefaults.teamCount,
+        teamLabel: block.teamLabel?.trim() || ctaDefaults.teamLabel,
         primaryCta: primaryCta.label,
         primaryCtaHref: primaryCta.href,
         secondaryCta: secondaryCta.label,
@@ -537,8 +591,9 @@ function transformSanityProduct(
     return undefined
   }
 
+  const pagePath = buildProductPath(segment, slug)
   const sections = (product.secciones ?? [])
-    .map((block) => transformSectionBlock(block, settings))
+    .map((block) => transformSectionBlock(block, settings, segment, pagePath))
     .filter((s): s is ProductPageSection => s !== null)
 
   // Ensure the quoter section always appears first
@@ -554,18 +609,21 @@ function transformSanityProduct(
 
   const defaultCtas = resolveDefaultCtaHrefs(settings)
   const hasQuoteSection = sections.some((section) => section.type === "quote")
+  const ctaDefaults = CTA_DEFAULTS[segment]
+  const whatsappHref = buildWhatsappCtaHref(pagePath)
+  const defaultContactHref = defaultCtas.secondaryHref || whatsappHref
   const primaryCta = resolveContextualCtaLink({
     link: product.ctaPrimario,
-    fallbackLabel: DEFAULT_PRIMARY_CTA,
+    fallbackLabel: ctaDefaults.primaryCta,
     fallbackHref: defaultCtas.primaryHref,
-    defaultContactHref: defaultCtas.secondaryHref,
+    defaultContactHref,
     hasQuoteSection,
   })
   const secondaryCta = resolveContextualCtaLink({
     link: product.ctaSecundario,
-    fallbackLabel: DEFAULT_SECONDARY_CTA,
-    fallbackHref: defaultCtas.secondaryHref,
-    defaultContactHref: defaultCtas.secondaryHref,
+    fallbackLabel: ctaDefaults.secondaryCta,
+    fallbackHref: defaultContactHref,
+    defaultContactHref,
     hasQuoteSection: false,
   })
   const title =
@@ -579,7 +637,7 @@ function transformSanityProduct(
   return {
     segment,
     slug,
-    path: buildProductPath(segment, slug),
+    path: pagePath,
     metadata: {
       title: `Woranz - ${product.nombre?.trim() || title}`,
       description,

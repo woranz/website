@@ -48,6 +48,16 @@ La división no debe hacerse por página completa. Debe hacerse por tipo de trab
 - `Claude` define cómo se ve y cómo se dice.
 - `Codex` implementa cómo funciona en el repo.
 
+### Contrato de handoff
+
+`Claude` trabaja directo en el código frontend — no hay etapa intermedia de diseño en Pencil ni specs separadas. El handoff es el código mismo.
+
+- **Copy y visual**: `Claude` implementa directamente en el repo (componentes, contenido, orden de bloques, estilos).
+- **Estructural**: `Codex` implementa wiring, rollouts, formularios y templates.
+- Si un ticket mezcla ambos, `Claude` hace su parte primero en el repo y `Codex` construye encima.
+
+`Codex` no debe reinterpretar decisiones visuales o de copy que `Claude` ya dejó en el código.
+
 ### Claude
 
 Tomar:
@@ -96,8 +106,8 @@ Ejemplos claros:
 - No asignar la misma página completa a ambos al mismo tiempo.
 - No asignar el mismo batch a ambos al mismo tiempo.
 - No tocar los mismos archivos en paralelo.
-- `Claude` entrega definición, dirección visual o copy aprobable.
-- `Codex` implementa después sobre esa definición.
+- `Claude` implementa directo en el repo (copy, visual, composición).
+- `Codex` construye encima sin reinterpretar lo que `Claude` ya dejó en código.
 - Si un ticket es puramente técnico, va directo a `Codex`.
 - Si un ticket es puramente editorial o visual, va primero a `Claude` y luego a `Codex` solo si requiere cambios de código.
 
@@ -117,8 +127,10 @@ Eso minimiza conflictos y evita que ambos reabran la misma decisión desde lados
 
 Objetivo: cerrar lo urgente de `caucion-alquiler`.
 
+Nota: `TD-013` se implementa completo como convención transversal en Ola 1. En Ola 0 solo se aplica su output a los dos CTAs de caución alquiler. Si `TD-013` aún no está cerrado, se hardcodea el destino correcto y se migra al patrón compartido cuando esté listo.
+
 Orden:
-1. `TD-013` para los dos CTA de la página
+1. Aplicar destinos CTA correctos en la página (adelanto de `TD-013`)
 2. `CAF-003` restitución en el quoter
 3. `CAF-002` rediseño de requisitos
 4. `CAF-001` refresh de copy de pasos
@@ -132,17 +144,22 @@ Salida esperada:
 
 Objetivo: crear la base que desbloquea varias páginas a la vez.
 
+Gate: `TD-017` está definido. Regla: salvo header y footer, todo el contenido editorial vive en Sanity. La implementación de `TD-017` (eliminar fallbacks, mover defaults a `settings`, borrar legacy) es el paso 1 de esta ola.
+
 Orden:
-1. `TD-013` cerrar convención de destinos CTA en homes y productos
-2. `QES-001` materializar `Qué es` en la capa compartida
-3. `ERT-001` fijar `Más opciones para tu empresa` en B2B
-4. `EFQ-001` definir patrón y source of truth para FAQs en `empresas`
-5. `FTC-001` unificar footer copy
-6. `TD-017` dejar claro ownership editorial entre hardcoded y Sanity
+1. `TD-017` definir ownership editorial entre hardcoded y Sanity (**gate**)
+2. `TD-013` cerrar convención de destinos CTA en homes y productos
+3. `QES-001` materializar `Qué es` en la capa compartida
+4. `TD-012` definir sistema de imágenes de `Seguros pensados para vos` (prerequisito de `PFC-001` y `EFC-001` en Ola 3)
+5. `ERT-001` fijar `Más opciones para tu empresa` en B2B
+6. `EFQ-001` definir patrón y source of truth para FAQs en `empresas`
+7. `FTC-001` unificar footer copy
 
 Salida esperada:
 - menos drift por página
 - menos backlog duplicado
+- ownership editorial definido
+- sistema de imágenes listo para rollouts
 - una base clara para empezar a bajar páginas rápido
 
 ### Ola 2 — Conversión y formularios
@@ -166,32 +183,42 @@ No arrancar implementación directa de estos hasta cerrar PRD/product decision:
 
 Esos cinco deben pasar primero por una mini etapa de producto y research, porque si no van a divergir entre sí.
 
-### Ola 3 — Rollouts de segmento
+### Ola 3a — Rollouts mecánicos de segmento
 
-Objetivo: bajar cambios repetidos en lote, no manualmente por página.
+Objetivo: aplicar patrones ya definidos en Ola 1 a todas las páginas que los necesitan. Trabajo repetitivo, bajo riesgo.
+
+Prerequisitos: `TD-012` cerrado (imágenes listas para carruseles).
 
 #### Personas
 
 - `PFC-001` para `Seguros pensados para vos` en coberturas
 - aplicar `QES-001` a todas las rutas mapeadas del segmento
-- luego ajustar relacionados específicos:
-  - `APP-005`
-  - `CTP-002`
-  - `RBP-005`
-  - `RCP-004`
-  - `RNP-004`
 
 #### Empresas
 
 - `EFC-001` para `Seguros pensados para tu empresa`
 - `EFQ-001` para FAQs donde falten
 - `QES-001` + `IAQ-001` + `IAQ-002` para `Qué es`
-- luego relacionados específicos:
-  - `CAT-006`
-  - `APE-004`
-  - `RCE-004`
-  - `INE-002`
-  - `ICE-002`
+
+### Ola 3b — Relacionados específicos por página
+
+Objetivo: ajustar contenido de relacionados que no se resuelve con el patrón genérico. Requiere revisión individual.
+
+#### Personas
+
+- `APP-005`
+- `CTP-002`
+- `RBP-005`
+- `RCP-004`
+- `RNP-004`
+
+#### Empresas
+
+- `CAT-006`
+- `APE-004`
+- `RCE-004`
+- `INE-002`
+- `ICE-002`
 
 ### Ola 4 — Home y navegación
 
@@ -264,9 +291,15 @@ Tomar:
 
 ### Stream D — Producto / research
 
+Timing: arrancar en paralelo con Ola 1. Si no empieza hasta que termine Ola 1, Ola 2 queda bloqueada esperando PRDs.
+
 Tomar:
-- los cinco formularios genéricos pendientes
+- los cinco formularios genéricos pendientes (`HGF-003`, `INF-002`, `RBP-001`, `RCP-002`, `RNP-002`)
 - alta de productores si requiere definición operativa
+
+Salida esperada antes de Ola 2:
+- PRD o decision doc para cada formulario
+- criterio unificado de campos, validaciones y destino de leads
 
 ## Asignación concreta recomendada
 
@@ -319,18 +352,21 @@ Sin cerrar esos cinco, no conviene poner a `Codex` a construir formularios final
 
 ## Qué implementaría primero si arrancáramos mañana
 
-1. `TD-013`
-2. `CAF-003`
-3. `CAF-002`
-4. `QES-001`
-5. `TD-015`
-6. `APE-001`
-7. `PRD-002`
-8. `ERT-001`
-9. `EFQ-001`
-10. `EHM-001`
+1. `TD-017` implementar ownership editorial (definido: header/footer = código, resto = Sanity)
+2. `TD-013` convención de destinos CTA + aplicar a caución alquiler (Ola 0 + Ola 1)
+3. `CAF-003` restitución en el quoter
+4. `CAF-002` rediseño de requisitos
+5. `QES-001` materializar `Qué es`
+6. `TD-012` sistema de imágenes (prerequisito de rollouts Ola 3a)
+7. `TD-015` patrón de formulario genérico
+8. `ERT-001` título de relacionados B2B
+9. `EFQ-001` patrón de FAQs empresas
+10. `FTC-001` footer copy
+
+En paralelo: arrancar Stream D (research de `HGF-003`, `INF-002`, `RBP-001`, `RCP-002`, `RNP-002`).
 
 Ese orden prioriza:
+- gates que desbloquean todo lo demás
 - conversión rota
 - reutilización
 - desbloqueo de muchas páginas con pocos cambios
@@ -350,10 +386,11 @@ Ese orden prioriza:
 
 ## Recomendación final
 
-Trabajaría en `3` sprints cortos:
+Trabajaría en `4` sprints cortos:
 
-- Sprint 1: `P0` + CTA + `Qué es` + base de forms
-- Sprint 2: rollouts de segmento (`personas` y `empresas`) + FAQs + relacionados
-- Sprint 3: homes, navegación oculta y polish de páginas específicas
+- Sprint 1: `P0` + `TD-017` (definido, implementar) + CTA + `Qué es` + sistema de imágenes + base de forms. Stream D (research) arranca en paralelo.
+- Sprint 2: conversión y formularios (solo los que tengan PRD cerrado de Stream D)
+- Sprint 3: rollouts mecánicos de segmento (`personas` y `empresas`) + FAQs, luego relacionados específicos
+- Sprint 4: homes, navegación oculta y polish de páginas específicas
 
 La mejor unidad de ejecución no es “una página”, sino “un patrón compartido”. El backlog ya quedó estructurado para eso y conviene respetarlo.
