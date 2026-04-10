@@ -1,6 +1,7 @@
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types"
 
 import { buildProductPath, type ProductSegment } from "@/lib/product-paths"
+import { buildWhatsappCtaHref, CTA_DEFAULTS } from "@/lib/product-page-source"
 import type {
   FeatureCarouselItem,
   ProductCarouselItem,
@@ -144,7 +145,7 @@ function mapProductRefsToGrid(products: SanityProductRef[] | undefined): Product
 
 // ── Section transform ─────────────────────────────────────────────────
 
-function transformSection(section: SanitySeccion): ProductPageSection | null {
+function transformSection(section: SanitySeccion, segment: ProductSegment, pagePath: string): ProductPageSection | null {
   switch (section._type) {
     case "seccionPasos": {
       const steps: ProductStep[] = (section.pasos ?? [])
@@ -197,17 +198,19 @@ function transformSection(section: SanitySeccion): ProductPageSection | null {
     }
 
     case "seccionCta": {
+      const ctaDefaults = CTA_DEFAULTS[segment]
+      const whatsappHref = buildWhatsappCtaHref(pagePath)
       return {
         type: "cta",
-        title: section.titulo?.trim() || "Estamos para ayudarte.",
+        title: section.titulo?.trim() || ctaDefaults.title,
         titleMobile: section.tituloMobile?.trim(),
-        description: section.descripcion?.trim() || "",
-        teamCount: section.teamCount?.trim() || "+9",
-        teamLabel: section.teamLabel?.trim() || "personas cuidando de vos",
-        primaryCta: section.ctaPrimario?.label?.trim() || "Empezar ahora",
+        description: section.descripcion?.trim() || ctaDefaults.description,
+        teamCount: section.teamCount?.trim() || ctaDefaults.teamCount,
+        teamLabel: section.teamLabel?.trim() || ctaDefaults.teamLabel,
+        primaryCta: section.ctaPrimario?.label?.trim() || ctaDefaults.primaryCta,
         primaryCtaHref: section.ctaPrimario?.href?.trim(),
-        secondaryCta: section.ctaSecundario?.label?.trim() || "Hablá con nosotros →",
-        secondaryCtaHref: section.ctaSecundario?.href?.trim(),
+        secondaryCta: section.ctaSecundario?.label?.trim() || ctaDefaults.secondaryCta,
+        secondaryCtaHref: section.ctaSecundario?.href?.trim() || whatsappHref,
       }
     }
 
@@ -227,14 +230,16 @@ function transformSanityHome(
   data: SanityHomeData,
   segment: ProductSegment
 ): ProductPageData {
+  const pagePath = segmentToPath(segment)
+  const whatsappHref = buildWhatsappCtaHref(pagePath)
   const sections: ProductPageSection[] = (data.secciones ?? [])
-    .map(transformSection)
+    .map((s) => transformSection(s, segment, pagePath))
     .filter((s): s is ProductPageSection => s !== null)
 
   return {
     segment,
     slug: segment === "personas" ? "home" : segment,
-    path: segmentToPath(segment),
+    path: pagePath,
     isHome: true,
     metadata: {
       title: data.metaTitulo?.trim() || `Woranz — ${segment.charAt(0).toUpperCase() + segment.slice(1)}`,
@@ -259,7 +264,7 @@ function transformSanityHome(
       primaryCta: data.ctaPrimario?.label?.trim() || "Ver seguros",
       primaryCtaHref: data.ctaPrimario?.href?.trim(),
       secondaryCta: data.ctaSecundario?.label?.trim() || "Hablar con alguien →",
-      secondaryCtaHref: data.ctaSecundario?.href?.trim(),
+      secondaryCtaHref: data.ctaSecundario?.href?.trim() || whatsappHref,
       imageSrc: resolveImage(data.heroImagen, "/images/hero.png"),
       imageAlt: `Woranz ${segment}`,
     },

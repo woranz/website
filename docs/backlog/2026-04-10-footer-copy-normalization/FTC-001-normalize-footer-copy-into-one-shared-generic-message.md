@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Shared content / Footer / Copy governance
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex
