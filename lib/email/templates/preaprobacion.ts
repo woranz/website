@@ -17,6 +17,7 @@ export type PreaprobacionEmailData = {
   alquiler: string
   duracion: string
   modoPago: string
+  restitucion: string
 
   // Ingresos
   ingresosMensuales: string
@@ -72,7 +73,11 @@ export function buildPreaprobacionEmail(data: PreaprobacionEmailData): string {
       emailRow("Provincia", data.provincia) +
       emailRow("Valor del alquiler", `$${data.alquiler}`) +
       emailRow("Duración del contrato", `${data.duracion} meses`) +
-      emailRow("Modo de pago", data.modoPago === "cuotas" ? "6 cuotas sin interés" : "Contado (10% off)")
+      emailRow("Modo de pago", data.modoPago === "cuotas" ? "6 cuotas sin interés" : "Contado (10% off)") +
+      emailRow(
+        "Restitución de la propiedad",
+        data.restitucion === "true" ? "Sí, con recargo provisorio del 30%" : "No"
+      )
     )}
 
     ${emailSectionTitle("Ingresos")}

@@ -2,7 +2,7 @@
 
 Prioridad: P0
 Tipo: UX / IA / Content structure
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

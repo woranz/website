@@ -17,13 +17,17 @@ import { CarouselWithHeader } from "@/components/Carousel"
 import { CaucionQuoterDesktop, CaucionQuoterMobile } from "@/components/CaucionQuoter"
 import { QuoterDesktop, QuoterMobile } from "@/components/Quoter"
 import { SiteFooter } from "@/components/site/footer"
-import { SiteHeader, type SiteNavLink } from "@/components/site/header"
+import { SiteHeader } from "@/components/site/header"
 import { SegmentTabs } from "@/components/site/segment-tabs"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { TeamAvatars } from "@/components/ui/team-avatars"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import {
+  PRODUCT_QUOTER_SECTION_ID,
+  SUPPORT_NAVIGATION_LINKS,
+} from "@/lib/site-links"
 import type {
   CoverageItem,
   FaqItem,
@@ -36,11 +40,6 @@ import type {
   ProductStep,
 } from "@/lib/product-pages"
 import { cn } from "@/lib/utils"
-
-const SITE_NAVIGATION: SiteNavLink[] = [
-  { href: "#", label: "Nosotros" },
-  { href: "#", label: "Contacto" },
-]
 
 function ActionButton({
   className,
@@ -179,7 +178,10 @@ function SectionHeader({
 
 function QuoteSection({ section }: { section: Extract<ProductPageSection, { type: "quote" }> }) {
   return (
-    <section className="page-shell gap-8 px-page-mobile py-section-mobile md:gap-10 md:px-page-wide md:py-section">
+    <section
+      id={PRODUCT_QUOTER_SECTION_ID}
+      className="page-shell gap-8 px-page-mobile py-section-mobile md:gap-10 md:px-page-wide md:py-section scroll-mt-24"
+    >
       <div className="flex flex-col items-center gap-8">
         <SectionHeader title={section.title} description={section.description} />
         <Card
@@ -396,25 +398,25 @@ function RequirementsSection({
 }: {
   section: Extract<ProductPageSection, { type: "requirements" }>
 }) {
-  const columns: CoverageItem[][] = section.columns ?? (() => {
-    const items = (section.items ?? []).map((item) => ({ title: item, description: "" }))
-    const mid = Math.ceil(items.length / 2)
-    return [items.slice(0, mid), items.slice(mid)]
-  })()
-  const mobileItems = columns.flat()
+  const items = (section.items ?? []).filter(Boolean)
 
   return (
     <section className="page-shell gap-8 px-page-mobile py-section-mobile md:gap-10 md:px-page-wide md:py-section">
-      <h2 className="section-title">{section.title}</h2>
-
-      <div className="hidden grid-cols-2 gap-16 md:grid">
-        {columns.map((column, index) => (
-          <AccordionColumn key={index} items={column} />
-        ))}
-      </div>
-
-      <div className="md:hidden">
-        <AccordionColumn items={mobileItems} mobile />
+      <div className="mx-auto flex w-full max-w-content flex-col gap-6 rounded-2xl bg-woranz-warm-1 px-6 py-7 md:px-10 md:py-10">
+        <SectionHeader title={section.title} description={section.description} />
+        <ul className="grid gap-3 md:grid-cols-2 md:gap-x-8 md:gap-y-4">
+          {items.map((item, index) => (
+            <li
+              key={`${item}-${index}`}
+              className="flex items-start gap-3 rounded-xl bg-white/70 px-4 py-4"
+            >
+              <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-woranz-yellow" />
+              <span className="text-sm leading-6 text-woranz-slate md:text-base md:leading-7">
+                {item}
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   )
@@ -818,7 +820,7 @@ function renderSection(section: ProductPageSection) {
 function ProductPageTemplate({ page }: { page: ProductPageData }) {
   return (
     <div className="flex flex-col bg-white">
-      <SiteHeader links={SITE_NAVIGATION} />
+      <SiteHeader links={SUPPORT_NAVIGATION_LINKS} />
       <main className="flex flex-col">
         <HeroSection page={page} />
         {page.sections.map((section, index) => (

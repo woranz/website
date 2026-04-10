@@ -24,6 +24,7 @@ import {
   productosQuery,
   settingsQuery,
 } from "@/sanity/lib/queries"
+import { resolveProductCtaHref, WORANZ_WHATSAPP_HREF } from "@/lib/site-links"
 
 type SanitySlug = {
   current?: string
@@ -254,6 +255,7 @@ function resolveDefaultCtaHrefs(settings?: SanitySettings) {
   const secondaryHref =
     settings?.ctaSecundarioHref ||
     buildWhatsappHref(settings?.whatsappNumero) ||
+    WORANZ_WHATSAPP_HREF ||
     (settings?.emailContacto ? `mailto:${settings.emailContacto}` : undefined)
 
   const primaryHref =
@@ -275,6 +277,34 @@ function resolveCtaLink(
   return {
     href: link?.href?.trim() || fallbackHref,
     label: link?.label?.trim() || fallbackLabel,
+  }
+}
+
+function resolveContextualCtaLink({
+  defaultContactHref,
+  fallbackHref,
+  fallbackLabel,
+  hasQuoteSection,
+  link,
+}: {
+  defaultContactHref?: string
+  fallbackHref?: string
+  fallbackLabel: string
+  hasQuoteSection: boolean
+  link: SanityCtaLink | undefined
+}) {
+  const label = link?.label?.trim() || fallbackLabel
+  const authoredHref = link?.href?.trim()
+  const contextualHref = resolveProductCtaHref({
+    label,
+    href: authoredHref,
+    hasQuoteSection,
+    contactHref: defaultContactHref,
+  })
+
+  return {
+    label,
+    href: contextualHref || fallbackHref,
   }
 }
 
@@ -380,6 +410,8 @@ function transformSectionBlock(
 ): ProductPageSection | null {
   const defaultCtas = resolveDefaultCtaHrefs(settings)
   const ctaDefaults = CTA_DEFAULTS[segment]
+  const whatsappHref = buildWhatsappCtaHref(pagePath)
+  const defaultContactHref = defaultCtas.secondaryHref || whatsappHref
 
   switch (block._type) {
     case "seccionCotizador": {
@@ -515,17 +547,20 @@ function transformSectionBlock(
     }
 
     case "seccionCta": {
-      const whatsappHref = buildWhatsappCtaHref(pagePath)
-      const primaryCta = resolveCtaLink(
-        block.ctaPrimario,
-        ctaDefaults.primaryCta,
-        defaultCtas.primaryHref
-      )
-      const secondaryCta = resolveCtaLink(
-        block.ctaSecundario,
-        ctaDefaults.secondaryCta,
-        defaultCtas.secondaryHref || whatsappHref
-      )
+      const primaryCta = resolveContextualCtaLink({
+        link: block.ctaPrimario,
+        fallbackLabel: ctaDefaults.primaryCta,
+        fallbackHref: defaultCtas.primaryHref,
+        defaultContactHref,
+        hasQuoteSection: true,
+      })
+      const secondaryCta = resolveContextualCtaLink({
+        link: block.ctaSecundario,
+        fallbackLabel: ctaDefaults.secondaryCta,
+        fallbackHref: defaultContactHref,
+        defaultContactHref,
+        hasQuoteSection: false,
+      })
       return {
         type: "cta",
         title: block.titulo?.trim() || ctaDefaults.title,
@@ -573,18 +608,24 @@ function transformSanityProduct(
   }
 
   const defaultCtas = resolveDefaultCtaHrefs(settings)
-  const whatsappHref = buildWhatsappCtaHref(pagePath)
+  const hasQuoteSection = sections.some((section) => section.type === "quote")
   const ctaDefaults = CTA_DEFAULTS[segment]
-  const primaryCta = resolveCtaLink(
-    product.ctaPrimario,
-    ctaDefaults.primaryCta,
-    defaultCtas.primaryHref
-  )
-  const secondaryCta = resolveCtaLink(
-    product.ctaSecundario,
-    ctaDefaults.secondaryCta,
-    defaultCtas.secondaryHref || whatsappHref
-  )
+  const whatsappHref = buildWhatsappCtaHref(pagePath)
+  const defaultContactHref = defaultCtas.secondaryHref || whatsappHref
+  const primaryCta = resolveContextualCtaLink({
+    link: product.ctaPrimario,
+    fallbackLabel: ctaDefaults.primaryCta,
+    fallbackHref: defaultCtas.primaryHref,
+    defaultContactHref,
+    hasQuoteSection,
+  })
+  const secondaryCta = resolveContextualCtaLink({
+    link: product.ctaSecundario,
+    fallbackLabel: ctaDefaults.secondaryCta,
+    fallbackHref: defaultContactHref,
+    defaultContactHref,
+    hasQuoteSection: false,
+  })
   const title =
     product.headline?.trim() ||
     product.nombre?.trim() ||
