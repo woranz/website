@@ -51,6 +51,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import type { ProductSegment } from "@/lib/product-paths"
+import { DEFAULT_LOGIN_HREF } from "@/lib/site-links"
 
 export type SiteNavLink = {
   href: string
@@ -117,7 +118,7 @@ const NAV_COVERAGE: Record<"personas" | "empresas", NavCoverageItem[]> = {
 
 function SiteHeader({
   links,
-  loginHref = "#",
+  loginHref = DEFAULT_LOGIN_HREF,
   loginLabel = "Ingresar",
 }: SiteHeaderProps) {
   const segment = useActiveSegment()
@@ -126,6 +127,7 @@ function SiteHeader({
   const otherLinks = links.filter(
     (l) => l.label !== "Coberturas" && l.label !== "Seguros"
   )
+  const showLogin = Boolean(loginHref && loginHref.trim() && loginHref !== "#")
 
   return (
     <>
@@ -191,10 +193,12 @@ function SiteHeader({
               </NavigationMenuList>
             </NavigationMenu>
 
-            <Link href={loginHref} className="btn-header">
-              <LogIn className="h-4 w-4" />
-              <span>{loginLabel}</span>
-            </Link>
+            {showLogin && loginHref ? (
+              <Link href={loginHref} className="btn-header">
+                <LogIn className="h-4 w-4" />
+                <span>{loginLabel}</span>
+              </Link>
+            ) : null}
           </div>
         </div>
       </header>
@@ -250,11 +254,13 @@ function SiteHeader({
                   </Link>
                 ))}
               </nav>
-              <SheetFooter>
-                <Link href={loginHref} className="btn-primary-form w-full text-center">
-                  {loginLabel}
-                </Link>
-              </SheetFooter>
+              {showLogin && loginHref ? (
+                <SheetFooter>
+                  <Link href={loginHref} className="btn-primary-form w-full text-center">
+                    {loginLabel}
+                  </Link>
+                </SheetFooter>
+              ) : null}
             </SheetContent>
           </Sheet>
 

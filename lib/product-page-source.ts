@@ -24,6 +24,7 @@ import {
   productosQuery,
   settingsQuery,
 } from "@/sanity/lib/queries"
+import { resolveProductCtaHref, WORANZ_WHATSAPP_HREF } from "@/lib/site-links"
 
 type SanitySlug = {
   current?: string
@@ -204,6 +205,7 @@ function resolveDefaultCtaHrefs(settings?: SanitySettings) {
   const secondaryHref =
     settings?.ctaSecundarioHref ||
     buildWhatsappHref(settings?.whatsappNumero) ||
+    WORANZ_WHATSAPP_HREF ||
     (settings?.emailContacto ? `mailto:${settings.emailContacto}` : undefined)
 
   const primaryHref =
@@ -225,6 +227,34 @@ function resolveCtaLink(
   return {
     href: link?.href?.trim() || fallbackHref,
     label: link?.label?.trim() || fallbackLabel,
+  }
+}
+
+function resolveContextualCtaLink({
+  defaultContactHref,
+  fallbackHref,
+  fallbackLabel,
+  hasQuoteSection,
+  link,
+}: {
+  defaultContactHref?: string
+  fallbackHref?: string
+  fallbackLabel: string
+  hasQuoteSection: boolean
+  link: SanityCtaLink | undefined
+}) {
+  const label = link?.label?.trim() || fallbackLabel
+  const authoredHref = link?.href?.trim()
+  const contextualHref = resolveProductCtaHref({
+    label,
+    href: authoredHref,
+    hasQuoteSection,
+    contactHref: defaultContactHref,
+  })
+
+  return {
+    label,
+    href: contextualHref || fallbackHref,
   }
 }
 
@@ -327,6 +357,7 @@ function transformSectionBlock(
   settings?: SanitySettings
 ): ProductPageSection | null {
   const defaultCtas = resolveDefaultCtaHrefs(settings)
+  const defaultContactHref = defaultCtas.secondaryHref
 
   switch (block._type) {
     case "seccionCotizador": {
@@ -462,16 +493,20 @@ function transformSectionBlock(
     }
 
     case "seccionCta": {
-      const primaryCta = resolveCtaLink(
-        block.ctaPrimario,
-        DEFAULT_PRIMARY_CTA,
-        defaultCtas.primaryHref
-      )
-      const secondaryCta = resolveCtaLink(
-        block.ctaSecundario,
-        DEFAULT_SECONDARY_CTA,
-        defaultCtas.secondaryHref
-      )
+      const primaryCta = resolveContextualCtaLink({
+        link: block.ctaPrimario,
+        fallbackLabel: DEFAULT_PRIMARY_CTA,
+        fallbackHref: defaultCtas.primaryHref,
+        defaultContactHref,
+        hasQuoteSection: true,
+      })
+      const secondaryCta = resolveContextualCtaLink({
+        link: block.ctaSecundario,
+        fallbackLabel: DEFAULT_SECONDARY_CTA,
+        fallbackHref: defaultCtas.secondaryHref,
+        defaultContactHref,
+        hasQuoteSection: false,
+      })
       return {
         type: "cta",
         title: block.titulo?.trim() || "¿Querés que te ayudemos?",
@@ -518,16 +553,21 @@ function transformSanityProduct(
   }
 
   const defaultCtas = resolveDefaultCtaHrefs(settings)
-  const primaryCta = resolveCtaLink(
-    product.ctaPrimario,
-    DEFAULT_PRIMARY_CTA,
-    defaultCtas.primaryHref
-  )
-  const secondaryCta = resolveCtaLink(
-    product.ctaSecundario,
-    DEFAULT_SECONDARY_CTA,
-    defaultCtas.secondaryHref
-  )
+  const hasQuoteSection = sections.some((section) => section.type === "quote")
+  const primaryCta = resolveContextualCtaLink({
+    link: product.ctaPrimario,
+    fallbackLabel: DEFAULT_PRIMARY_CTA,
+    fallbackHref: defaultCtas.primaryHref,
+    defaultContactHref: defaultCtas.secondaryHref,
+    hasQuoteSection,
+  })
+  const secondaryCta = resolveContextualCtaLink({
+    link: product.ctaSecundario,
+    fallbackLabel: DEFAULT_SECONDARY_CTA,
+    fallbackHref: defaultCtas.secondaryHref,
+    defaultContactHref: defaultCtas.secondaryHref,
+    hasQuoteSection: false,
+  })
   const title =
     product.headline?.trim() ||
     product.nombre?.trim() ||
