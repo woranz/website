@@ -85,6 +85,12 @@ function sanitizeReferences(items = []) {
     }))
 }
 
+function resolveRelatedProductsTitle(segmento) {
+  return segmento === "empresas"
+    ? "Más opciones para tu empresa"
+    : "Más opciones para vos"
+}
+
 export function buildProductSectionsFromLegacy(product) {
   const sections = []
   const variantes = mapVariantItems(product.variantes)
@@ -158,7 +164,7 @@ export function buildProductSectionsFromLegacy(product) {
     sections.push({
       _key: "legacy-relacionados",
       _type: "seccionCarouselProductos",
-      titulo: "Más opciones para vos",
+      titulo: resolveRelatedProductsTitle(product.segmento),
       productos: productosRelacionados,
     })
   }
