@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Content accuracy / Coverage labeling
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

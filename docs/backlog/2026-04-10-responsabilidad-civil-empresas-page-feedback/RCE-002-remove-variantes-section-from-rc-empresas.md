@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: IA / Content architecture / Product page UX
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

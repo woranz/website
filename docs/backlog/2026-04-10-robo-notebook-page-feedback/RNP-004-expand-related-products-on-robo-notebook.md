@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Navigation / Cross-sell / Product page content
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

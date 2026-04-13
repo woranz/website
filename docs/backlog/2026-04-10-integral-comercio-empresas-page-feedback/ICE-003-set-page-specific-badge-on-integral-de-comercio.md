@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Copy / IA / Hero metadata
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

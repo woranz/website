@@ -9,10 +9,6 @@
     "lint": "next lint",
     "agentation:server": "npx -y agentation-mcp server",
     "sanity:migrate-homes": "node scripts/migrate-homes.mjs",
-    "sanity:import-products": "node scripts/import-product-catalog.mjs",
-    "sanity:import-products:dry": "node scripts/import-product-catalog.mjs --dry-run",
-    "sanity:sync-product-faqs": "node scripts/sync-product-faqs-to-sanity.mjs",
-    "sanity:sync-product-faqs:dry": "node scripts/sync-product-faqs-to-sanity.mjs --dry-run",
     "sanity:migrate-que-es": "node scripts/migrate-que-es.mjs",
     "sanity:migrate-que-es:dry": "node scripts/migrate-que-es.mjs --dry-run"
   },
