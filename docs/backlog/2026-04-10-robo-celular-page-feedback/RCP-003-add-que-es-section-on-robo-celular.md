@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Content rollout / Product page architecture
-Estado: Todo
+Estado: Done (resuelto por QES-001, commit 0ea06bb)
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

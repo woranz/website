@@ -16,7 +16,7 @@ Mapeo del feedback transversal:
    Nueva task: `ERT-001`
 
 Tasks creadas en este batch:
-1. `ERT-001` [Normalize related products carousel title across empresas pages](./ERT-001-normalize-related-products-carousel-title-across-empresas-pages.md)
+1. `ERT-001` [Normalize related products carousel title across empresas pages](./ERT-001-normalize-related-products-carousel-title-across-empresas-pages.md) — **Done** (PR #19)
 
 Prioridad sugerida para arrancar:
 1. `ERT-001`

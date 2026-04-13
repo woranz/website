@@ -12,7 +12,7 @@ Estado del repo al momento de bajar este lote:
 - Este batch solo registra backlog e inventario de contenido fuente.
 
 Archivos de este batch:
-1. `QES-001` [Roll out que es sections across mapped product pages](./QES-001-roll-out-que-es-sections-across-mapped-product-pages.md)
+1. `QES-001` [Roll out que es sections across mapped product pages](./QES-001-roll-out-que-es-sections-across-mapped-product-pages.md) — **Done** (PR #14)
 2. `QES-001-source-inventory` [Inventario fuente de textos "Qué es"](./QES-001-source-inventory.md)
 
 Resumen del relevamiento:

@@ -2,7 +2,7 @@
 
 Prioridad: P0
 Tipo: Copy / Content UX
-Estado: Todo
+Estado: Done (commit 06a1cc1, PR #21)
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Content architecture / Segment consistency / Product page UX
-Estado: Todo
+Estado: Done (commit e290ee7, PR #19)
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex
