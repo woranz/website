@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Product / Research / Lead flow
-Estado: Todo
+Estado: Done (PR #24)
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex
