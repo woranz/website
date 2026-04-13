@@ -62,7 +62,8 @@ type QuoteSection = {
   formConfigId?: string
   maxWidth?: "default" | "wide"
   mobileSteps?: boolean
-  quoter: "accidentes" | "caucion" | "contacto"
+  quoter: "accidentes" | "caucion" | "contacto" | "generico"
+  quoterConfigId?: string
   steps: ProductStep[]
   title: string
   type: "quote"

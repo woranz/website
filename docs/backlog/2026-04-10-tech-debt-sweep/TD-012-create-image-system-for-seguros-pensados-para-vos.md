@@ -2,7 +2,7 @@
 
 Prioridad: Media-alta
 Tipo: Visual system / Assets
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

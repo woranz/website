@@ -15,6 +15,7 @@ import {
 
 import { CarouselWithHeader } from "@/components/Carousel"
 import { CaucionQuoterDesktop, CaucionQuoterMobile } from "@/components/CaucionQuoter"
+import { GenericQuoterDesktop, GenericQuoterMobile } from "@/components/GenericQuoter"
 import { QuoterDesktop, QuoterMobile } from "@/components/Quoter"
 import { SiteFooter } from "@/components/site/footer"
 import { SiteHeader } from "@/components/site/header"
@@ -199,9 +200,11 @@ function SectionHeader({
   )
 }
 
-function QuoteSection({ section }: { section: Extract<ProductPageSection, { type: "quote" }> }) {
+function QuoteSection({ section, basePath }: { section: Extract<ProductPageSection, { type: "quote" }>; basePath: string }) {
   // "contacto" mode is handled by the dedicated /contacto subpage, not inline
   if (section.quoter === "contacto") return null
+
+  if (section.quoter === "generico" && !section.quoterConfigId) return null
 
   return (
     <section
@@ -223,6 +226,11 @@ function QuoteSection({ section }: { section: Extract<ProductPageSection, { type
               <>
                 <CaucionQuoterMobile />
                 <CaucionQuoterDesktop />
+              </>
+            ) : section.quoter === "generico" && section.quoterConfigId ? (
+              <>
+                <GenericQuoterMobile configId={section.quoterConfigId} basePath={basePath} />
+                <GenericQuoterDesktop configId={section.quoterConfigId} basePath={basePath} />
               </>
             ) : (
               <>
@@ -829,10 +837,10 @@ function ProductGridSection({
   )
 }
 
-function renderSection(section: ProductPageSection) {
+function renderSection(section: ProductPageSection, basePath: string) {
   switch (section.type) {
     case "quote":
-      return <QuoteSection section={section} />
+      return <QuoteSection section={section} basePath={basePath} />
     case "explanation":
       return <ExplanationSection section={section} />
     case "variants":
@@ -863,7 +871,7 @@ function ProductPageTemplate({ page }: { page: ProductPageData }) {
       <main className="flex flex-col">
         <HeroSection page={page} />
         {page.sections.map((section, index) => (
-          <div key={`${section.type}-${index}`}>{renderSection(section)}</div>
+          <div key={`${section.type}-${index}`}>{renderSection(section, page.path)}</div>
         ))}
       </main>
       <SiteFooter />

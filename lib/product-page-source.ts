@@ -50,7 +50,7 @@ type SanitySectionBlock = {
   _type: string
   // seccionCotizador
   formConfigId?: string
-  modo?: "contacto" | "inline-accidentes" | "inline-caucion"
+  modo?: "contacto" | "inline-accidentes" | "inline-caucion" | "inline-generico"
   maxWidth?: "default" | "wide"
   mostrarPasosMobile?: boolean
   pasos?: Array<{ descripcion?: string; numero?: string; titulo?: string }>
@@ -343,7 +343,7 @@ function resolveSanityImageUrl(image: SanityImageSource | undefined) {
 }
 
 function inferQuoter(
-  mode?: "contacto" | "inline-accidentes" | "inline-caucion"
+  mode?: "contacto" | "inline-accidentes" | "inline-caucion" | "inline-generico"
 ) {
   const cleanedMode = cleanStegaString(mode)
 
@@ -353,6 +353,10 @@ function inferQuoter(
 
   if (cleanedMode === "inline-accidentes") {
     return "accidentes" as const
+  }
+
+  if (cleanedMode === "inline-generico") {
+    return "generico" as const
   }
 
   if (cleanedMode === "contacto") {
@@ -457,6 +461,7 @@ function transformSectionBlock(
         description: block.descripcion?.trim() || (quoter === "contacto" ? "Completá el formulario y te contactamos en menos de 24hs." : "Completá el flujo y recibí una propuesta en segundos."),
         quoter,
         formConfigId: quoter === "contacto" ? cleanStegaString(block.formConfigId) : undefined,
+        quoterConfigId: quoter === "generico" ? cleanStegaString(block.formConfigId) : undefined,
         maxWidth: cleanStegaString(block.maxWidth) === "wide" ? "wide" : "default",
         mobileSteps: block.mostrarPasosMobile ?? false,
         steps: mapStepItems(block.pasos),

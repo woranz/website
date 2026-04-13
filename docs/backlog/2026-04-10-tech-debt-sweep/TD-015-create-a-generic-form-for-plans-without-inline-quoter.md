@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Leads / Formularios / Producto
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

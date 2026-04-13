@@ -15,6 +15,7 @@ export const seccionCotizador = defineArrayMember({
         list: [
           { title: 'Cotizador inline - caución', value: 'inline-caucion' },
           { title: 'Cotizador inline - accidentes', value: 'inline-accidentes' },
+          { title: 'Cotizador inline - genérico', value: 'inline-generico' },
           { title: 'Contacto directo', value: 'contacto' },
         ],
       },
@@ -24,8 +25,8 @@ export const seccionCotizador = defineArrayMember({
       name: 'formConfigId',
       title: 'ID de formulario',
       type: 'string',
-      description: 'Identificador del formulario genérico (solo para modo "Contacto directo"). Debe coincidir con un ID registrado en lib/forms/configs/.',
-      hidden: ({ parent }) => parent?.modo !== 'contacto',
+      description: 'Identificador del formulario o cotizador genérico. Debe coincidir con un ID registrado en lib/forms/configs/ o lib/quoter-configs.ts.',
+      hidden: ({ parent }) => parent?.modo !== 'contacto' && parent?.modo !== 'inline-generico',
     }),
     defineField({
       name: 'maxWidth',
