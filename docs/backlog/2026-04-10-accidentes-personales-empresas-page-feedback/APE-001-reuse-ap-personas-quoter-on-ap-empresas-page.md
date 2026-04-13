@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: IA / Quoter reuse / Conversion flow
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

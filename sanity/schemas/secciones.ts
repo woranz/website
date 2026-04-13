@@ -397,6 +397,12 @@ export const seccionCta = defineArrayMember({
         { name: 'href', title: 'Link', type: 'string' },
       ],
     }),
+    defineField({
+      name: 'ocultarCtaSecundario',
+      title: 'Ocultar CTA secundario',
+      type: 'boolean',
+      initialValue: false,
+    }),
   ],
   preview: {
     select: { title: 'titulo' },

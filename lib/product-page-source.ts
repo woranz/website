@@ -24,7 +24,11 @@ import {
   productosQuery,
   settingsQuery,
 } from "@/sanity/lib/queries"
-import { resolveProductCtaHref, WORANZ_WHATSAPP_HREF } from "@/lib/site-links"
+import {
+  PRODUCT_QUOTER_SECTION_ID,
+  resolveProductCtaHref,
+  WORANZ_WHATSAPP_HREF,
+} from "@/lib/site-links"
 
 type SanitySlug = {
   current?: string
@@ -48,6 +52,7 @@ type SanityRelatedProduct = {
 
 type SanitySectionBlock = {
   _type: string
+  ocultarCtaSecundario?: boolean
   // seccionCotizador
   formConfigId?: string
   modo?: "contacto" | "inline-accidentes" | "inline-caucion" | "inline-generico"
@@ -94,6 +99,7 @@ type SanityProduct = {
   headline?: string
   heroImage?: SanityImageSource
   nombre?: string
+  ocultarCtaSecundario?: boolean
   pendientesValidacion?: string[]
   secciones?: SanitySectionBlock[]
   segmento?: ProductSegment
@@ -249,7 +255,7 @@ function mapStepItems(
 }
 
 function mapVariantItems(
-  items: Array<{ titulo?: string; descripcion?: string; href?: string; items?: string[] }> | null | undefined = []
+  items: Array<{ titulo?: string; descripcion?: string; href?: string; icono?: string; items?: string[] }> | null | undefined = []
 ): VariantItem[] {
   return (items ?? [])
     .filter((item) => item?.titulo)
@@ -257,6 +263,7 @@ function mapVariantItems(
       title: item?.titulo?.trim() || "Variante",
       description: item?.descripcion?.trim(),
       href: item?.href?.trim() || undefined,
+      icon: item?.icono?.trim() || undefined,
       items: item?.items?.filter(Boolean),
     }))
 }
@@ -316,6 +323,34 @@ function resolveContextualCtaLink({
     label,
     href: contextualHref || fallbackHref,
   }
+}
+
+function resolveOptionalContextualCtaLink({
+  defaultContactHref,
+  fallbackHref,
+  fallbackLabel,
+  hasQuoteSection,
+  hidden,
+  link,
+}: {
+  defaultContactHref?: string
+  fallbackHref?: string
+  fallbackLabel: string
+  hasQuoteSection: boolean
+  hidden?: boolean
+  link: SanityCtaLink | undefined
+}) {
+  if (hidden) {
+    return undefined
+  }
+
+  return resolveContextualCtaLink({
+    defaultContactHref,
+    fallbackHref,
+    fallbackLabel,
+    hasQuoteSection,
+    link,
+  })
 }
 
 function resolveHeroImage(heroImage: SanityImageSource | undefined) {
@@ -594,12 +629,13 @@ function transformSectionBlock(
         defaultContactHref,
         hasQuoteSection: true,
       })
-      const secondaryCta = resolveContextualCtaLink({
+      const secondaryCta = resolveOptionalContextualCtaLink({
         link: block.ctaSecundario,
         fallbackLabel: ctaDefaults.secondaryCta,
         fallbackHref: defaultContactHref,
         defaultContactHref,
         hasQuoteSection: false,
+        hidden: block.ocultarCtaSecundario,
       })
       return {
         type: "cta",
@@ -610,8 +646,8 @@ function transformSectionBlock(
         teamLabel: block.teamLabel?.trim() || ctaDefaults.teamLabel,
         primaryCta: primaryCta.label,
         primaryCtaHref: primaryCta.href,
-        secondaryCta: secondaryCta.label,
-        secondaryCtaHref: secondaryCta.href,
+        secondaryCta: secondaryCta?.label,
+        secondaryCtaHref: secondaryCta?.href,
       }
     }
 
@@ -659,12 +695,13 @@ function transformSanityProduct(
     defaultContactHref,
     hasQuoteSection,
   })
-  const secondaryCta = resolveContextualCtaLink({
+  const secondaryCta = resolveOptionalContextualCtaLink({
     link: product.ctaSecundario,
     fallbackLabel: ctaDefaults.secondaryCta,
     fallbackHref: defaultContactHref,
     defaultContactHref,
     hasQuoteSection: false,
+    hidden: product.ocultarCtaSecundario,
   })
   const title =
     product.headline?.trim() ||
@@ -692,12 +729,104 @@ function transformSanityProduct(
       descriptionMobile: description,
       primaryCta: primaryCta.label,
       primaryCtaHref: primaryCta.href,
-      secondaryCta: secondaryCta.label,
-      secondaryCtaHref: secondaryCta.href,
+      secondaryCta: secondaryCta?.label,
+      secondaryCtaHref: secondaryCta?.href,
       imageSrc: resolveHeroImage(product.heroImage),
       imageAlt: product.nombre?.trim() || title,
     },
     sections,
+  }
+}
+
+function applyProductPageOverrides(page: ProductPageData): ProductPageData {
+  if (
+    page.segment !== "empresas" ||
+    page.slug !== "accidentes-personales"
+  ) {
+    return page
+  }
+
+  const quoteHref = `#${PRODUCT_QUOTER_SECTION_ID}`
+  const whatsappHref = buildWhatsappCtaHref(page.path)
+  const normalizedQuoteTitle = "Cotizá la cobertura"
+  const quoteSteps: ProductStep[] = [
+    {
+      number: "01",
+      title: "Cotizá online",
+      description:
+        "Elegí tu cobertura y recibí el precio al instante, sin ingresar datos personales.",
+    },
+    {
+      number: "02",
+      title: "Contratá",
+      description:
+        "Pagá con Mercado Pago, con débito o tarjeta de crédito.",
+    },
+    {
+      number: "03",
+      title: "Listo, estás cubierto",
+      description:
+        "Tu póliza llega al instante a tu celular. Siempre disponible en tu cuenta Woranz.",
+    },
+  ]
+  const defaultQuoteSection: Extract<ProductPageSection, { type: "quote" }> = {
+    type: "quote",
+    title: normalizedQuoteTitle,
+    description: "",
+    quoter: "accidentes",
+    maxWidth: "default",
+    mobileSteps: true,
+    steps: quoteSteps,
+  }
+
+  let hasRenderableQuote = false
+
+  const sections = page.sections.map((section) => {
+    if (section.type === "quote") {
+      hasRenderableQuote = true
+
+      if (section.quoter === "contacto") {
+        return {
+          ...section,
+          title: normalizedQuoteTitle,
+          description: "",
+          quoter: "accidentes" as const,
+          formConfigId: undefined,
+          mobileSteps: true,
+          steps: quoteSteps,
+        }
+      }
+
+      return {
+        ...section,
+        title: normalizedQuoteTitle,
+        description: "",
+        mobileSteps: true,
+        steps: section.steps.length > 0 ? section.steps : quoteSteps,
+      }
+    }
+
+    if (section.type === "cta") {
+      return {
+        ...section,
+        primaryCta: "Cotizar",
+        primaryCtaHref: quoteHref,
+        secondaryCtaHref: whatsappHref,
+      }
+    }
+
+    return section
+  })
+
+  return {
+    ...page,
+    hero: {
+      ...page.hero,
+      primaryCta: "Cotizar",
+      primaryCtaHref: quoteHref,
+      secondaryCtaHref: whatsappHref,
+    },
+    sections: hasRenderableQuote ? sections : [defaultQuoteSection, ...sections],
   }
 }
 
@@ -759,7 +888,7 @@ export async function getProductPageByParams(
     )
 
     if (transformed) {
-      return transformed
+      return applyProductPageOverrides(transformed)
     }
   }
 

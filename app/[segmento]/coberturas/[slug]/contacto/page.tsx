@@ -13,6 +13,7 @@ type ContactoPageProps = {
     segmento: string
     slug: string
   }
+  searchParams: Record<string, string | undefined>
 }
 
 export async function generateMetadata({
@@ -32,7 +33,10 @@ export async function generateMetadata({
   }
 }
 
-export default async function ContactoPage({ params }: ContactoPageProps) {
+export default async function ContactoPage({
+  params,
+  searchParams,
+}: ContactoPageProps) {
   if (!isProductSegment(params.segmento)) {
     notFound()
   }
@@ -55,6 +59,7 @@ export default async function ContactoPage({ params }: ContactoPageProps) {
           config={config}
           productName={page.hero.title}
           returnHref={page.path}
+          searchParams={searchParams}
         />
       </main>
     </div>

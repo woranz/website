@@ -110,8 +110,8 @@ Documento para definir el contenido de cada página de producto antes de diseña
 
 ## Caución Turismo Estudiantil
 
-**HEADLINE:**
-**Bajada:**
+**HEADLINE:** El viaje que tu hijo espera, con respaldo real.
+**Bajada:** Antes de pagar, podés verificar que la agencia tenga nuestro seguro para que, si algo no se cumple, tengas un respaldo.
 
 **Cotizador:** Sí / No
 **Fórmula de cotización:**
@@ -566,6 +566,6 @@ Documento para definir el contenido de cada página de producto antes de diseña
 |----------|----------|--------|-----------|------------|------|--------------|
 | Caución Alquiler | ✅ | ✅ | ✅ | ⬜ | ⬜ | ⬜ |
 | Accidentes Personales | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
-| Caución Turismo | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| Caución Turismo | ✅ | ✅ | ⬜ | ⬜ | ⬜ | ⬜ |
 | Seguro de Hogar | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | ... | | | | | | |

@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: CTA / Navigation / Conversion flow
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

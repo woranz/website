@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Content architecture / FAQ / Product page UX
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex
