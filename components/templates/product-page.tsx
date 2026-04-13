@@ -103,7 +103,7 @@ function HeroFeatures({ features }: { features: Array<{ icon: string; label: str
 
 function HeroSection({ page }: { page: ProductPageData }) {
   return (
-    <section className="page-shell items-center gap-8 px-page-mobile pt-10 md:gap-10 md:px-page md:pt-hero-top">
+    <section className="page-shell items-center gap-12 px-page-mobile pt-10 md:gap-16 md:px-page md:pt-hero-top">
       {page.isHome ? <SegmentTabs /> : null}
       <div className="flex flex-col items-center gap-4">
         {page.hero.badge ? (
@@ -295,29 +295,25 @@ function ExplanationSection({
   const mobileParagraphs = mobileText.split(/\n\n+/).filter(Boolean)
 
   return (
-    <section className="page-shell px-page-mobile py-section-mobile md:px-page-wide md:py-section">
-      <div className="mx-auto w-full max-w-content rounded-2xl bg-woranz-warm-1 px-8 py-10 md:px-16 md:py-14">
-        <h2 className="text-lg font-bold text-woranz-slate md:text-2xl">
-          {section.title}
-        </h2>
-        <div className="mt-4 flex flex-col gap-3 md:mt-5 md:gap-4">
-          {desktopParagraphs.map((p, i) => (
-            <p
-              key={i}
-              className="hidden text-body leading-relaxed text-woranz-text md:block md:text-lg md:leading-8"
-            >
-              {p}
-            </p>
-          ))}
-          {mobileParagraphs.map((p, i) => (
-            <p
-              key={i}
-              className="text-body leading-relaxed text-woranz-text md:hidden"
-            >
-              {p}
-            </p>
-          ))}
-        </div>
+    <section className="page-shell gap-4 px-page-mobile py-section-mobile md:gap-5 md:px-page-wide md:py-section">
+      <h2 className="section-title">{section.title}</h2>
+      <div className="flex flex-col gap-3 md:max-w-[50%] md:gap-4">
+        {desktopParagraphs.map((p, i) => (
+          <p
+            key={i}
+            className="hidden text-body leading-relaxed text-woranz-text md:block md:text-lg md:leading-8"
+          >
+            {p}
+          </p>
+        ))}
+        {mobileParagraphs.map((p, i) => (
+          <p
+            key={i}
+            className="text-body leading-relaxed text-woranz-text md:hidden"
+          >
+            {p}
+          </p>
+        ))}
       </div>
     </section>
   )
