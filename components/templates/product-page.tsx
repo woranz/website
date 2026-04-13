@@ -41,6 +41,11 @@ import type {
 } from "@/lib/product-pages"
 import { cn } from "@/lib/utils"
 
+const PRODUCERS_HERO_CTA = {
+  href: "/productores/registro",
+  label: "Registrate como productor",
+} as const
+
 function ActionButton({
   className,
   href,
@@ -70,6 +75,35 @@ function ActionButton({
     <button type="button" className={className}>
       {content}
     </button>
+  )
+}
+
+function HeroActions({ page }: { page: ProductPageData }) {
+  if (page.isHome && page.segment === "productores") {
+    return (
+      <div className="flex w-full flex-col items-center gap-4 pt-6 md:w-auto md:flex-row md:gap-6 md:pt-8 lg:pt-6">
+        <ActionButton
+          className="btn-primary-hero"
+          href={PRODUCERS_HERO_CTA.href}
+          label={PRODUCERS_HERO_CTA.label}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex w-full flex-col items-center gap-4 pt-6 md:w-auto md:flex-row md:gap-6 md:pt-8 lg:pt-6">
+      <ActionButton
+        className="btn-primary-hero"
+        href={page.hero.primaryCtaHref}
+        label={page.hero.primaryCta}
+      />
+      <ActionButton
+        className="btn-secondary-outline"
+        href={page.hero.secondaryCtaHref}
+        label={page.hero.secondaryCta}
+      />
+    </div>
   )
 }
 
@@ -129,18 +163,7 @@ function HeroSection({ page }: { page: ProductPageData }) {
           </p>
         </div>
 
-        <div className="flex w-full flex-col items-center gap-4 md:w-auto md:flex-row md:gap-6 pt-6 md:pt-8 lg:pt-6">
-          <ActionButton
-            className="btn-primary-hero"
-            href={page.hero.primaryCtaHref}
-            label={page.hero.primaryCta}
-          />
-          <ActionButton
-            className="btn-secondary-outline"
-            href={page.hero.secondaryCtaHref}
-            label={page.hero.secondaryCta}
-          />
-        </div>
+        <HeroActions page={page} />
 
         {page.hero.features?.length ? <HeroFeatures features={page.hero.features} /> : null}
       </div>
