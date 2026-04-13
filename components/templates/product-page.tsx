@@ -177,6 +177,9 @@ function SectionHeader({
 }
 
 function QuoteSection({ section }: { section: Extract<ProductPageSection, { type: "quote" }> }) {
+  // "contacto" mode is handled by the dedicated /contacto subpage, not inline
+  if (section.quoter === "contacto") return null
+
   return (
     <section
       id={PRODUCT_QUOTER_SECTION_ID}

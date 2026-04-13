@@ -59,9 +59,10 @@ export type FeatureCarouselItem = {
 
 type QuoteSection = {
   description: string
+  formConfigId?: string
   maxWidth?: "default" | "wide"
   mobileSteps?: boolean
-  quoter: "accidentes" | "caucion"
+  quoter: "accidentes" | "caucion" | "contacto"
   steps: ProductStep[]
   title: string
   type: "quote"
