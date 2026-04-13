@@ -18,8 +18,8 @@ Mapeo del rollout:
    Nueva task: `IAQ-002`
 
 Tasks creadas en este batch:
-1. `IAQ-001` [Add que es section on hecho por humanos](./IAQ-001-add-que-es-section-on-hecho-por-humanos.md)
-2. `IAQ-002` [Add que es section on RC uso IA](./IAQ-002-add-que-es-section-on-rc-uso-ia.md)
+1. `IAQ-001` [Add que es section on hecho por humanos](./IAQ-001-add-que-es-section-on-hecho-por-humanos.md) — **Done** (QES-001)
+2. `IAQ-002` [Add que es section on RC uso IA](./IAQ-002-add-que-es-section-on-rc-uso-ia.md) — **Done** (QES-001)
 
 Prioridad sugerida para arrancar:
 1. `IAQ-001`

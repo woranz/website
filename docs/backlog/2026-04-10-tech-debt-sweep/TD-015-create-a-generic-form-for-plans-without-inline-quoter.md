@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Leads / Formularios / Producto
-Estado: Todo
+Estado: Done (commit 34a92df, PR #18)
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

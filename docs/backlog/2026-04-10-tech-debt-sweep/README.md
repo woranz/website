@@ -27,10 +27,10 @@ Tasks creadas en este barrido:
 | 9  | `TD-009` [Fix Tailwind ambiguous classes and motion tokens](./TD-009-fix-tailwind-ambiguous-classes-and-motion-tokens.md) | P2 | Claude | — |
 | 10 | `TD-010` [Define site-wide SEO strategy across Sanity and frontend](./TD-010-define-site-wide-seo-strategy-across-sanity-and-frontend.md) | **P0** | Codex | need PRD |
 | 11 | `TD-011` [Run a site-wide performance remediation plan](./TD-011-run-a-site-wide-performance-remediation-plan.md) | P1 | Claude | need PRD |
-| 12 | `TD-012` [Create image system for "Seguros pensados para vos"](./TD-012-create-image-system-for-seguros-pensados-para-vos.md) | **P0** | Claude | need PRD |
-| 13 | `TD-013` [Audit and normalize every CTA destination](./TD-013-audit-and-normalize-every-cta-destination.md) | **P0** | Claude | — |
+| 12 | `TD-012` [Create image system for "Seguros pensados para vos"](./TD-012-create-image-system-for-seguros-pensados-para-vos.md) | **P0** | Claude | ~~need PRD~~ **Done** (PR #20) |
+| 13 | `TD-013` [Audit and normalize every CTA destination](./TD-013-audit-and-normalize-every-cta-destination.md) | **P0** | Claude | **Done** |
 | 14 | `TD-014` [Create a redirect plan from woranz.com coverages to the new site](./TD-014-create-a-redirect-plan-from-woranz-com-coverages-to-the-new-site.md) | **P0** | Codex | — |
-| 15 | `TD-015` [Create a generic form for plans without inline quoter](./TD-015-create-a-generic-form-for-plans-without-inline-quoter.md) | **P0** | Claude | need PRD |
+| 15 | `TD-015` [Create a generic form for plans without inline quoter](./TD-015-create-a-generic-form-for-plans-without-inline-quoter.md) | **P0** | Claude | ~~need PRD~~ **Done** (PR #18) |
 | 16 | `TD-016` [Standardize spacing between components and sections](./TD-016-standardize-spacing-between-components-and-sections.md) | P1 | Claude | — |
 | 17 | `TD-017` [Audit content ownership: hardcoded vs Sanity](./TD-017-audit-content-ownership-hardcoded-vs-sanity.md) | P1 | Claude | need PRD |
 | 18 | `TD-018` [Add dual login entry points in the header](./TD-018-add-dual-login-entry-points-in-the-header.md) | P1 | Claude | need PRD |
