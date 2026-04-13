@@ -289,17 +289,34 @@ function ExplanationSection({
 }: {
   section: Extract<ProductPageSection, { type: "explanation" }>
 }) {
+  const desktopText = section.body
+  const mobileText = section.bodyMobile ?? section.body
+  const desktopParagraphs = desktopText.split(/\n\n+/).filter(Boolean)
+  const mobileParagraphs = mobileText.split(/\n\n+/).filter(Boolean)
+
   return (
     <section className="page-shell px-page-mobile py-section-mobile md:px-page-wide md:py-section">
       <div className="mx-auto w-full max-w-content rounded-2xl bg-woranz-warm-1 px-8 py-10 md:px-16 md:py-14">
-        <div className="flex flex-col gap-4 md:gap-5">
-          <h2 className="text-lg font-bold text-woranz-slate md:text-2xl">
-            {section.title}
-          </h2>
-          <p className="text-body leading-relaxed text-woranz-text md:text-lg md:leading-8">
-            <span className="hidden md:inline whitespace-pre-line">{section.body}</span>
-            <span className="md:hidden whitespace-pre-line">{section.bodyMobile ?? section.body}</span>
-          </p>
+        <h2 className="text-lg font-bold text-woranz-slate md:text-2xl">
+          {section.title}
+        </h2>
+        <div className="mt-4 flex flex-col gap-3 md:mt-5 md:gap-4">
+          {desktopParagraphs.map((p, i) => (
+            <p
+              key={i}
+              className="hidden text-body leading-relaxed text-woranz-text md:block md:text-lg md:leading-8"
+            >
+              {p}
+            </p>
+          ))}
+          {mobileParagraphs.map((p, i) => (
+            <p
+              key={i}
+              className="text-body leading-relaxed text-woranz-text md:hidden"
+            >
+              {p}
+            </p>
+          ))}
         </div>
       </div>
     </section>

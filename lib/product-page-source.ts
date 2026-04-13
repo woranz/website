@@ -145,6 +145,15 @@ export const CTA_DEFAULTS: Record<ProductSegment, {
     secondaryCta: "Hablá con nosotros →",
   },
 }
+
+const RELATED_PRODUCTS_DEFAULT_TITLE: Record<ProductSegment, string> = {
+  personas: "Más opciones para vos",
+  empresas: "Más opciones para tu empresa",
+  productores: "Más opciones para vos",
+}
+
+const LEGACY_EMPRESAS_RELATED_PRODUCTS_TITLE = "Más opciones para vos"
+
 const SANITY_REVALIDATE_SECONDS = 60
 
 function cleanStegaString<T extends string>(value: T | undefined) {
@@ -402,6 +411,26 @@ function mapRequirementItems(
     .filter(Boolean)
 }
 
+function resolveRelatedProductsTitle(
+  title: string | undefined,
+  segment: ProductSegment
+) {
+  const normalizedTitle = title?.trim()
+
+  if (!normalizedTitle) {
+    return RELATED_PRODUCTS_DEFAULT_TITLE[segment]
+  }
+
+  if (
+    segment === "empresas" &&
+    normalizedTitle === LEGACY_EMPRESAS_RELATED_PRODUCTS_TITLE
+  ) {
+    return RELATED_PRODUCTS_DEFAULT_TITLE[segment]
+  }
+
+  return normalizedTitle
+}
+
 function transformSectionBlock(
   block: SanitySectionBlock,
   settings: SanitySettings | undefined,
@@ -495,7 +524,7 @@ function transformSectionBlock(
       return {
         type: "carousel",
         variant: "product",
-        title: block.titulo?.trim() || "Más opciones para vos",
+        title: resolveRelatedProductsTitle(block.titulo, segment),
         items,
       }
     }
