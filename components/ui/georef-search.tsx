@@ -140,7 +140,7 @@ export function GeorefSearch({
       setLoading(true)
       try {
         const res = await fetch(
-          `https://apis.datos.gob.ar/georef/api/${config.endpoint}?nombre=${encodeURIComponent(q)}&max=8&campos=${config.fields}`
+          `/api/georef?endpoint=${config.endpoint}&nombre=${encodeURIComponent(q)}&campos=${config.fields}`
         )
         const data = await res.json()
         setOptions(config.mapResults(data[config.responseKey] ?? []))
@@ -155,7 +155,7 @@ export function GeorefSearch({
 
   useEffect(() => {
     clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => search(query), 300)
+    debounceRef.current = setTimeout(() => search(query), 500)
     return () => clearTimeout(debounceRef.current)
   }, [query, search])
 
