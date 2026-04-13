@@ -10,7 +10,7 @@ export type ProductHero = {
   primaryCtaHref?: string
   primaryCta: string
   secondaryCtaHref?: string
-  secondaryCta: string
+  secondaryCta?: string
   title: string
 }
 
@@ -47,6 +47,7 @@ export type ProductCarouselItem = {
 export type VariantItem = {
   description?: string
   href?: string
+  icon?: string
   items?: string[]
   title: string
 }
@@ -121,7 +122,7 @@ type CtaSection = {
   primaryCtaHref?: string
   primaryCta: string
   secondaryCtaHref?: string
-  secondaryCta: string
+  secondaryCta?: string
   teamCount: string
   teamLabel: string
   title: string

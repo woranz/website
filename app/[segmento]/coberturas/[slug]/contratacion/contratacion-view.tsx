@@ -97,6 +97,7 @@ export function ContratacionView({
           config={formConfig}
           productName={productName}
           returnHref={returnHref}
+          searchParams={searchParams}
         />
         {quoterConfig && (
           <QuoteSummary

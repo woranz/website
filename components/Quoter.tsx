@@ -12,6 +12,12 @@ import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
+import { usePathname } from "next/navigation"
+
+function inferCotizacionPath(pathname: string) {
+  const segment = pathname.startsWith("/empresas") ? "empresas" : "personas"
+  return `/${segment}/coberturas/accidentes-personales/cotizacion`
+}
 
 const CANTIDAD_PRESETS = [
   { value: 1, label: "Solo yo" },
@@ -87,6 +93,7 @@ function DateField({
 
 function useQuoterState() {
   const router = useRouter()
+  const pathname = usePathname()
   const [actividad, setActividad] = useState("")
   const [provincia, setProvincia] = useState("")
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -142,7 +149,7 @@ function useQuoterState() {
     })
 
     router.push(
-      `/personas/coberturas/accidentes-personales/cotizacion?${params.toString()}`
+      `${inferCotizacionPath(pathname)}?${params.toString()}`
     )
   }
 

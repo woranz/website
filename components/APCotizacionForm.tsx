@@ -13,6 +13,7 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react"
+import { usePathname } from "next/navigation"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 import { BreadcrumbStepper } from "@/components/ui/breadcrumb-stepper"
@@ -412,7 +413,16 @@ function SummaryRow({
 
 // ── Main component ───────────────────────────────────────────────────
 
-export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
+export function APCotizacionForm({
+  quoter,
+  segment,
+}: {
+  quoter: QuoterData
+  segment?: "empresas" | "personas"
+}) {
+  const pathname = usePathname()
+  const currentSegment =
+    segment ?? (pathname.startsWith("/empresas") ? "empresas" : "personas")
   const isMulti = quoter.cantidad > 1
 
   const STEPS = isMulti
@@ -1015,7 +1025,8 @@ export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           data: { idEmision, premio: premio ?? selectedPlan.premio, cantidad: cantidadActual, email, tomador: { ...tomadorPayload, tipo: "persona", emails: [{ idTipoEmail: 3, email }] } },
-          base_url: baseUrl, source_url: `${baseUrl}/personas/coberturas/accidentes-personales/cotizacion`,
+          base_url: baseUrl,
+          source_url: `${baseUrl}/${currentSegment}/coberturas/accidentes-personales/cotizacion`,
         }),
       }).then((r) => r.json())
       if (mpRes.error) throw new Error(mpRes.error)

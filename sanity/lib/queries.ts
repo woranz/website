@@ -19,6 +19,7 @@ export const productoByRouteQuery = groq`
     cardImage,
     ctaPrimario,
     ctaSecundario,
+    ocultarCtaSecundario,
     secciones[] {
       _type,
       ...,

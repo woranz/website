@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: IA / Navigation / Product discoverability
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

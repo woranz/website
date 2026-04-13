@@ -69,16 +69,29 @@ function FieldError({ message }: { message?: string }) {
 
 export function ContactForm({
   config,
+  embedded = false,
   productName,
   returnHref,
+  searchParams,
 }: {
   config: FormConfig
+  embedded?: boolean
   productName?: string
   returnHref?: string
+  searchParams?: Record<string, string | undefined>
 }) {
   const [values, setValues] = useState<Record<string, string>>(() => {
     const initial: Record<string, string> = {}
     for (const field of config.campos) {
+      const initialValue = searchParams?.[field.name]
+      if (
+        initialValue &&
+        (!field.options || field.options.some((option) => option.value === initialValue))
+      ) {
+        initial[field.name] = initialValue
+        continue
+      }
+
       initial[field.name] = ""
     }
     return initial
@@ -148,7 +161,10 @@ export function ContactForm({
 
   if (submitted) {
     return (
-      <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 text-center">
+      <div className={cn(
+        "flex flex-col items-center justify-center px-6 text-center",
+        embedded ? "min-h-[28rem] py-8" : "min-h-[70vh]"
+      )}>
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-50">
           <CheckCircle className="h-8 w-8 text-green-600" />
         </div>
@@ -175,12 +191,14 @@ export function ContactForm({
 
   return (
     <div className="mx-auto w-full max-w-page px-page-mobile md:px-page">
-      <div className="mx-auto w-full max-w-xl pb-16 pt-8 md:pt-10">
-        <h1 className="text-center font-display text-[2rem] font-bold leading-tight tracking-tight text-woranz-ink lg:text-[2.25rem]">
-          {config.titulo}
-        </h1>
+      <div className={cn("mx-auto w-full max-w-xl pb-16", embedded ? "pt-0" : "pt-8 md:pt-10")}>
+        {!embedded ? (
+          <h1 className="text-center font-display text-[2rem] font-bold leading-tight tracking-tight text-woranz-ink lg:text-[2.25rem]">
+            {config.titulo}
+          </h1>
+        ) : null}
 
-        <form onSubmit={handleSubmit} className="mt-8">
+        <form onSubmit={handleSubmit} className={cn(embedded ? "mt-0" : "mt-8")}>
           <div className="flex flex-col gap-6">
             {config.campos.map((field) => (
               <FormField

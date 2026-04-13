@@ -7,6 +7,9 @@ import {
   ArrowRight,
   ChevronRight,
   CreditCard,
+  FileText,
+  Package,
+  Scale,
   ShieldCheck,
   User,
   Users,
@@ -14,6 +17,7 @@ import {
 } from "lucide-react"
 
 import { CarouselWithHeader } from "@/components/Carousel"
+import { ContactForm } from "@/components/ContactForm"
 import { CaucionQuoterDesktop, CaucionQuoterMobile } from "@/components/CaucionQuoter"
 import { GenericQuoterDesktop, GenericQuoterMobile } from "@/components/GenericQuoter"
 import { QuoterDesktop, QuoterMobile } from "@/components/Quoter"
@@ -40,12 +44,15 @@ import type {
   ProductPageSection,
   ProductStep,
 } from "@/lib/product-pages"
+import { getFormConfig } from "@/lib/forms/registry"
 import { cn } from "@/lib/utils"
 
 const PRODUCERS_HERO_CTA = {
   href: "/productores/registro",
   label: "Registrate como productor",
 } as const
+
+const PRODUCT_COVERAGES_SECTION_ID = "coberturas"
 
 function ActionButton({
   className,
@@ -99,11 +106,13 @@ function HeroActions({ page }: { page: ProductPageData }) {
         href={page.hero.primaryCtaHref}
         label={page.hero.primaryCta}
       />
-      <ActionButton
-        className="btn-secondary-outline"
-        href={page.hero.secondaryCtaHref}
-        label={page.hero.secondaryCta}
-      />
+      {page.hero.secondaryCta ? (
+        <ActionButton
+          className="btn-secondary-outline"
+          href={page.hero.secondaryCtaHref}
+          label={page.hero.secondaryCta}
+        />
+      ) : null}
     </div>
   )
 }
@@ -201,9 +210,12 @@ function SectionHeader({
 }
 
 function QuoteSection({ section, basePath }: { section: Extract<ProductPageSection, { type: "quote" }>; basePath: string }) {
-  // "contacto" mode is handled by the dedicated /contacto subpage, not inline
-  if (section.quoter === "contacto") return null
+  const contactConfig =
+    section.quoter === "contacto" && section.formConfigId
+      ? getFormConfig(section.formConfigId)
+      : undefined
 
+  if (section.quoter === "contacto" && !contactConfig) return null
   if (section.quoter === "generico" && !section.quoterConfigId) return null
 
   return (
@@ -222,7 +234,14 @@ function QuoteSection({ section, basePath }: { section: Extract<ProductPageSecti
           )}
         >
           <CardContent className="p-0">
-            {section.quoter === "caucion" ? (
+            {section.quoter === "contacto" && contactConfig ? (
+              <ContactForm
+                config={contactConfig}
+                embedded
+                productName={section.title}
+                returnHref={basePath}
+              />
+            ) : section.quoter === "caucion" ? (
               <>
                 <CaucionQuoterMobile />
                 <CaucionQuoterDesktop />
@@ -383,60 +402,87 @@ function VariantsSection({
   section: Extract<ProductPageSection, { type: "variants" }>
 }) {
   return (
-    <section className="w-full py-section-mobile md:py-section">
-      <div className="flex flex-col gap-8">
-        <div className="carousel-header-centered">
-          <h2 className="section-title">{section.title}</h2>
-        </div>
-        <div className="carousel-slides-centered">
-          <div className="flex gap-6 overflow-x-auto scrollbar-hide pb-4">
-            {section.items.map((item) => {
-              const card = (
-                <div
-                  key={item.title}
-                  className="flex w-[280px] shrink-0 flex-col justify-between rounded-2xl bg-woranz-warm-1 p-8 md:w-[360px] md:p-10"
-                  style={{ boxShadow: "0 8px 24px rgba(0,0,0,0.03)", minHeight: "360px" }}
-                >
-                  <div className="flex flex-col gap-4">
-                    <h3 className="text-xl font-semibold text-woranz-slate md:text-2xl">
-                      {item.title}
-                    </h3>
-                    {item.description ? (
-                      <p className="text-[15px] leading-relaxed text-woranz-text">{item.description}</p>
-                    ) : null}
-                    {item.items?.length ? (
-                      <ul className="flex flex-col gap-2 text-[15px] text-woranz-text">
-                        {item.items.map((detail) => (
-                          <li key={detail} className="flex gap-2">
-                            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-woranz-yellow" />
-                            <span>{detail}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </div>
-                  {item.href ? (
-                    <span className="inline-flex items-center gap-2 pt-6 text-[15px] font-semibold text-woranz-slate">
-                      Ver cobertura
-                      <ChevronRight className="h-4 w-4" />
-                    </span>
-                  ) : null}
-                </div>
-              )
-
-              if (item.href) {
-                return (
-                  <Link key={item.title} href={item.href} className="block shrink-0">
-                    {card}
-                  </Link>
-                )
-              }
-              return <div key={item.title} className="shrink-0">{card}</div>
-            })}
-          </div>
-        </div>
-      </div>
+    <section
+      id={PRODUCT_COVERAGES_SECTION_ID}
+      className="w-full scroll-mt-24 py-section-mobile md:py-section"
+    >
+      <CarouselWithHeader title={section.title} fullWidth>
+        {section.items.map((item) => (
+          <CoverageVariantCard key={item.title} item={item} />
+        ))}
+      </CarouselWithHeader>
     </section>
+  )
+}
+
+function VariantIcon({ icon }: { icon?: string }) {
+  const Icon =
+    icon === "mantenimiento-oferta"
+      ? FileText
+      : icon === "cumplimiento-contrato"
+        ? ShieldCheck
+        : icon === "anticipo-financiero"
+          ? CreditCard
+          : icon === "fondo-reparo"
+            ? ShieldCheck
+            : icon === "suministro"
+              ? Package
+              : icon === "servicios"
+                ? Briefcase
+                : icon === "actividad-profesion"
+                  ? Building
+                  : icon === "judicial"
+                    ? Scale
+                    : Briefcase
+
+  return (
+    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/85 text-woranz-slate shadow-sm">
+      <Icon className="h-7 w-7" strokeWidth={1.8} />
+    </div>
+  )
+}
+
+function CoverageVariantCard({ item }: { item: Extract<ProductPageSection, { type: "variants" }>["items"][number] }) {
+  return (
+    <Card
+      className="flex h-full w-[280px] border-none bg-woranz-warm-1 p-0 shadow-elevated ring-0 md:w-[360px]"
+      style={{ minHeight: "380px" }}
+    >
+      <CardContent className="flex h-full flex-col justify-between gap-8 p-8 md:p-10">
+        <div className="flex flex-col gap-5">
+          <VariantIcon icon={item.icon} />
+          <div className="flex flex-col gap-3">
+            <h3 className="text-xl font-semibold text-woranz-slate md:text-2xl">
+              {item.title}
+            </h3>
+            {item.description ? (
+              <p className="text-[15px] leading-relaxed text-woranz-text md:text-base md:leading-7">
+                {item.description}
+              </p>
+            ) : null}
+          </div>
+          {item.items?.length ? (
+            <ul className="flex flex-col gap-2.5 text-sm text-woranz-text md:text-[15px]">
+              {item.items.map((detail) => (
+                <li key={detail} className="flex gap-2.5">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-woranz-yellow" />
+                  <span>{detail}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+        {item.href ? (
+          <Link
+            href={item.href}
+            className="btn-link-brand inline-flex items-center w-fit whitespace-nowrap px-0 text-sm md:text-body"
+          >
+            Solicitar esta cobertura
+            <ArrowRight className="ml-2 h-4 w-4 shrink-0 self-center" />
+          </Link>
+        ) : null}
+      </CardContent>
+    </Card>
   )
 }
 
@@ -574,8 +620,6 @@ function FaqAccordion({
 }
 
 function CtaSection({ section }: { section: Extract<ProductPageSection, { type: "cta" }> }) {
-  const secondaryHref = section.secondaryCtaHref ?? "/contacto"
-
   return (
     <section className="page-shell px-page-mobile py-section-mobile md:px-page-wide md:py-section">
       <div className="surface-cta px-8 py-10 md:px-16 md:py-16">
@@ -605,11 +649,13 @@ function CtaSection({ section }: { section: Extract<ProductPageSection, { type: 
               href={section.primaryCtaHref}
               label={section.primaryCta}
             />
-            <ActionButton
-              className="btn-secondary-outline w-full md:w-auto"
-              href={secondaryHref}
-              label={section.secondaryCta}
-            />
+            {section.secondaryCta ? (
+              <ActionButton
+                className="btn-secondary-outline w-full md:w-auto"
+                href={section.secondaryCtaHref ?? "/contacto"}
+                label={section.secondaryCta}
+              />
+            ) : null}
           </div>
         </div>
       </div>

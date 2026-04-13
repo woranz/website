@@ -138,6 +138,12 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'ocultarCtaSecundario',
+      title: 'Ocultar CTA secundario del hero',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'secciones',
       title: 'Secciones de la página',
       description: 'Arrastrá para reordenar las secciones del producto.',

@@ -112,6 +112,7 @@ const NAV_COVERAGE: Record<"personas" | "empresas", NavCoverageItem[]> = {
     { title: "Responsabilidad Civil", description: "Operá tranquilo.", href: "/empresas/coberturas/responsabilidad-civil", icon: "scale" },
     { title: "Incendio", description: "Protegé tu operación.", href: "/empresas/coberturas/incendio", icon: "flame" },
     { title: "Integral de Comercio", description: "Tu negocio en una póliza.", href: "/empresas/coberturas/integral-de-comercio", icon: "store" },
+    { title: "Aeronavegación", description: "Cobertura para operaciones aéreas.", href: "/empresas/coberturas/aeronavegacion", icon: "plane" },
     { title: "Hecho por Humanos", description: "Intervención humana verificable.", href: "/empresas/coberturas/hecho-por-humanos", icon: "handshake" },
     { title: "RC por uso de IA", description: "Cobertura para IA.", href: "/empresas/coberturas/responsabilidad-civil-uso-ia", icon: "cpu" },
   ],
