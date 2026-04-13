@@ -3,6 +3,7 @@
 import Link from "next/link"
 import {
   Bike,
+  Briefcase,
   Building,
   FileCheck,
   Flame,
@@ -51,7 +52,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import type { ProductSegment } from "@/lib/product-paths"
-import { DEFAULT_LOGIN_HREF } from "@/lib/site-links"
+import { cn } from "@/lib/utils"
+import { DEFAULT_LOGIN_LINKS } from "@/lib/site-links"
 
 export type SiteNavLink = {
   href: string
@@ -89,8 +91,7 @@ const NAV_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
 
 type SiteHeaderProps = {
   links: SiteNavLink[]
-  loginHref?: string
-  loginLabel?: string
+  loginLinks?: SiteNavLink[]
 }
 
 const NAV_COVERAGE: Record<"personas" | "empresas", NavCoverageItem[]> = {
@@ -116,10 +117,22 @@ const NAV_COVERAGE: Record<"personas" | "empresas", NavCoverageItem[]> = {
   ],
 }
 
+function sanitizeLoginLinks(links: SiteNavLink[]) {
+  return links.filter((link) => link.href.trim() && link.href !== "#")
+}
+
+function getLoginEntryShortLabel(label: string) {
+  return label.replace(/^Ingresar\s+como\s+/i, "")
+}
+
+function getLoginEntryIcon(label: string) {
+  if (/productor/i.test(label)) return Briefcase
+  return User
+}
+
 function SiteHeader({
   links,
-  loginHref = DEFAULT_LOGIN_HREF,
-  loginLabel = "Ingresar",
+  loginLinks = DEFAULT_LOGIN_LINKS,
 }: SiteHeaderProps) {
   const segment = useActiveSegment()
   const navSegment = segment === "productores" ? "personas" : segment
@@ -127,7 +140,8 @@ function SiteHeader({
   const otherLinks = links.filter(
     (l) => l.label !== "Coberturas" && l.label !== "Seguros"
   )
-  const showLogin = Boolean(loginHref && loginHref.trim() && loginHref !== "#")
+  const resolvedLoginLinks = sanitizeLoginLinks(loginLinks)
+  const showLogin = resolvedLoginLinks.length > 0
 
   return (
     <>
@@ -193,11 +207,34 @@ function SiteHeader({
               </NavigationMenuList>
             </NavigationMenu>
 
-            {showLogin && loginHref ? (
-              <Link href={loginHref} className="btn-header">
-                <LogIn className="h-4 w-4" />
-                <span>{loginLabel}</span>
-              </Link>
+            {showLogin ? (
+              <div className="flex items-center rounded-full bg-white p-1">
+                <span className="px-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-woranz-text/60">
+                  Ingresar
+                </span>
+                <div className="flex items-center gap-1">
+                  {resolvedLoginLinks.map((loginLink, index) => {
+                    const Icon = getLoginEntryIcon(loginLink.label)
+
+                    return (
+                      <Link
+                        key={loginLink.label}
+                        href={loginLink.href}
+                        aria-label={loginLink.label}
+                        className={cn(
+                          "inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-woranz-ink transition-colors",
+                          index === 0
+                            ? "bg-woranz-warm-1 hover:bg-woranz-warm-2"
+                            : "hover:bg-woranz-warm-1"
+                        )}
+                      >
+                        <Icon className="h-4 w-4" />
+                        <span>{getLoginEntryShortLabel(loginLink.label)}</span>
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
             ) : null}
           </div>
         </div>
@@ -205,71 +242,94 @@ function SiteHeader({
 
       {/* Mobile header */}
       <header className="sticky top-0 z-50 border-b border-transparent bg-white md:hidden">
-        <div className="page-shell flex-row items-center justify-between px-5 py-4">
-          <Sheet>
+        <Sheet>
+          <div className="page-shell flex-row items-center justify-between px-5 py-4">
             <SheetTrigger className="inline-flex h-10 w-10 items-center justify-center rounded-full text-woranz-slate transition-colors hover:bg-woranz-warm-1">
               <Menu className="h-6 w-6" />
               <span className="sr-only">Abrir menú</span>
             </SheetTrigger>
-            <SheetContent className="max-w-none overflow-y-auto px-0" side="left">
-              <SheetHeader>
-                <Logo size="small" />
-                <SheetTitle className="sr-only">Menú principal</SheetTitle>
-              </SheetHeader>
-              <nav className="flex flex-col gap-4 px-6 pt-6">
-                {/* Coberturas accordion — first */}
-                <Accordion>
-                  <AccordionItem value="coberturas" className="border-none">
-                    <AccordionTrigger className="p-0 text-xl font-medium text-woranz-ink hover:no-underline">
-                      Coberturas
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-3 pb-0">
-                      <div className="flex flex-col gap-1">
-                        {coverageItems.map((item) => (
-                          <Link
-                            key={item.title}
-                            href={item.href}
-                            className="flex flex-col gap-0.5 rounded-lg py-2.5"
-                          >
-                            <span className="text-base font-semibold text-woranz-ink">
-                              {item.title}
-                            </span>
-                            <span className="text-sm leading-snug text-woranz-text">
-                              {item.description}
-                            </span>
-                          </Link>
-                        ))}
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-
-                {otherLinks.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    className="text-xl font-medium text-woranz-ink"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </nav>
-              {showLogin && loginHref ? (
-                <SheetFooter>
-                  <Link href={loginHref} className="btn-primary-form w-full text-center">
-                    {loginLabel}
-                  </Link>
-                </SheetFooter>
-              ) : null}
-            </SheetContent>
-          </Sheet>
-
-          <Logo size="small" />
-
-          <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-woranz-warm-1 text-woranz-slate">
-            <User className="h-5 w-5" />
+            <Logo size="small" />
+            <SheetTrigger className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-woranz-warm-1 text-woranz-slate transition-colors hover:bg-woranz-warm-2">
+              <LogIn className="h-5 w-5" />
+              <span className="sr-only">Abrir accesos y menú</span>
+            </SheetTrigger>
           </div>
-        </div>
+
+          <SheetContent className="max-w-none overflow-y-auto px-0" side="left">
+            <SheetHeader>
+              <Logo size="small" />
+              <SheetTitle className="sr-only">Menú principal</SheetTitle>
+            </SheetHeader>
+            <nav className="flex flex-col gap-4 px-6 pt-6">
+              {/* Coberturas accordion — first */}
+              <Accordion>
+                <AccordionItem value="coberturas" className="border-none">
+                  <AccordionTrigger className="p-0 text-xl font-medium text-woranz-ink hover:no-underline">
+                    Coberturas
+                  </AccordionTrigger>
+                  <AccordionContent className="pt-3 pb-0">
+                    <div className="flex flex-col gap-1">
+                      {coverageItems.map((item) => (
+                        <Link
+                          key={item.title}
+                          href={item.href}
+                          className="flex flex-col gap-0.5 rounded-lg py-2.5"
+                        >
+                          <span className="text-base font-semibold text-woranz-ink">
+                            {item.title}
+                          </span>
+                          <span className="text-sm leading-snug text-woranz-text">
+                            {item.description}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+
+              {otherLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-xl font-medium text-woranz-ink"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+            {showLogin ? (
+              <SheetFooter className="border-t border-woranz-line/80 pt-4">
+                <div className="rounded-3xl bg-woranz-warm-1 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-woranz-text/60">
+                    Ingresá según tu perfil
+                  </p>
+                  <div className="mt-3 flex flex-col gap-2">
+                    {resolvedLoginLinks.map((loginLink, index) => {
+                      const Icon = getLoginEntryIcon(loginLink.label)
+
+                      return (
+                        <Link
+                          key={loginLink.label}
+                          href={loginLink.href}
+                          className={cn(
+                            "inline-flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-4 text-center text-base font-semibold text-woranz-ink transition-colors",
+                            index === 0
+                              ? "bg-white hover:bg-white/80"
+                              : "bg-transparent hover:bg-white/60"
+                          )}
+                        >
+                          <Icon className="h-4 w-4" />
+                          <span>{loginLink.label}</span>
+                        </Link>
+                      )
+                    })}
+                  </div>
+                </div>
+              </SheetFooter>
+            ) : null}
+          </SheetContent>
+        </Sheet>
       </header>
     </>
   )
