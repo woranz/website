@@ -21,6 +21,13 @@ export const seccionCotizador = defineArrayMember({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'formConfigId',
+      title: 'ID de formulario',
+      type: 'string',
+      description: 'Identificador del formulario genérico (solo para modo "Contacto directo"). Debe coincidir con un ID registrado en lib/forms/configs/.',
+      hidden: ({ parent }) => parent?.modo !== 'contacto',
+    }),
+    defineField({
       name: 'maxWidth',
       title: 'Ancho máximo',
       type: 'string',

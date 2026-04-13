@@ -49,6 +49,7 @@ type SanityRelatedProduct = {
 type SanitySectionBlock = {
   _type: string
   // seccionCotizador
+  formConfigId?: string
   modo?: "contacto" | "inline-accidentes" | "inline-caucion"
   maxWidth?: "default" | "wide"
   mostrarPasosMobile?: boolean
@@ -354,6 +355,10 @@ function inferQuoter(
     return "accidentes" as const
   }
 
+  if (cleanedMode === "contacto") {
+    return "contacto" as const
+  }
+
   return null
 }
 
@@ -448,9 +453,10 @@ function transformSectionBlock(
       if (!quoter) return null
       return {
         type: "quote",
-        title: block.titulo?.trim() || "Cotizá tu cobertura",
-        description: block.descripcion?.trim() || "Completá el flujo y recibí una propuesta en segundos.",
+        title: block.titulo?.trim() || (quoter === "contacto" ? "Contactanos" : "Cotizá tu cobertura"),
+        description: block.descripcion?.trim() || (quoter === "contacto" ? "Completá el formulario y te contactamos en menos de 24hs." : "Completá el flujo y recibí una propuesta en segundos."),
         quoter,
+        formConfigId: quoter === "contacto" ? cleanStegaString(block.formConfigId) : undefined,
         maxWidth: cleanStegaString(block.maxWidth) === "wide" ? "wide" : "default",
         mobileSteps: block.mostrarPasosMobile ?? false,
         steps: mapStepItems(block.pasos),

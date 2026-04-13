@@ -2,10 +2,12 @@ import { NextResponse } from "next/server"
 
 import { handleAccidentesCotizacion } from "./handlers/accidentes-cotizacion"
 import { handleCaucionPreaprobacion } from "./handlers/caucion-preaprobacion"
+import { handleContacto } from "./handlers/contacto"
 
 const handlers: Record<string, (formData: FormData) => Promise<void>> = {
   "accidentes-cotizacion": handleAccidentesCotizacion,
   "caucion-preaprobacion": handleCaucionPreaprobacion,
+  contacto: handleContacto,
 }
 
 export async function POST(request: Request) {
