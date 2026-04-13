@@ -141,8 +141,8 @@
     "slug": "accidentes-personales",
     "nombre": "Accidentes Personales",
     "badge": "Accidentes Personales",
-    "headline": "La cobertura ante accidentes que podés obtener en tiempo real",
-    "subtitulo": "Te cubrís hoy, para cualquier cosa que pase mañana.",
+    "headline": "Protección real para que vivas tranquilo.",
+    "subtitulo": "Cobertura ante accidentes, 100% online. Sin vueltas.",
     "heroImageSrc": "/images/feature-2.png",
     "cotizador": {
       "modo": "inline-accidentes",
@@ -150,20 +150,6 @@
       "descripcion": "Formulario inicial online para edad, actividad o profesión y capital asegurado deseado.",
       "ctaLabel": "Cotizá gratis"
     },
-    "variantes": [
-      {
-        "titulo": "Básico",
-        "descripcion": "Muerte accidental + incapacidad permanente."
-      },
-      {
-        "titulo": "Completo",
-        "descripcion": "Suma incapacidad temporaria + asistencia médica."
-      },
-      {
-        "titulo": "Full",
-        "descripcion": "Suma gastos de sepelio + cobertura 24/7."
-      }
-    ],
     "coberturas": [
       {
         "titulo": "Muerte accidental",
@@ -217,12 +203,12 @@
       {
         "numero": "01",
         "titulo": "Cotizá online",
-        "descripcion": "Elegí tu cobertura y recibí tu precio al instante. Sin datos personales ni formularios."
+        "descripcion": "Elegí tu cobertura y recibí el precio al instante, sin ingresar datos personales."
       },
       {
         "numero": "02",
         "titulo": "Contratá",
-        "descripcion": "Pagá con Mercado Pago con tarjeta de crédito, débito o transferencia."
+        "descripcion": "Pagá con Mercado Pago, con débito o tarjeta de crédito."
       },
       {
         "numero": "03",
