@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: UX / Responsive / Form IA
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

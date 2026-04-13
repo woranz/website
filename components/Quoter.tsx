@@ -187,8 +187,8 @@ function QuoterMobile() {
   }
 
   return (
-    <div className="flex flex-col md:hidden">
-      <div className="flex flex-col gap-1.5 px-6 pt-5">
+    <div className="flex flex-col gap-4 px-6 py-5 md:hidden">
+      <div className="flex flex-col gap-1.5">
         <label className="field-label">Actividad</label>
         <Combobox
           className="w-full"
@@ -200,7 +200,7 @@ function QuoterMobile() {
         />
       </div>
 
-      <div className="flex flex-col gap-1.5 px-6 pt-5">
+      <div className="flex flex-col gap-1.5">
         <label className="field-label">Provincia</label>
         <Combobox
           className="w-full"
@@ -212,52 +212,37 @@ function QuoterMobile() {
         />
       </div>
 
-      <div className="flex flex-col gap-1.5 px-6 pt-5">
-        <label className="field-label">Vigencia</label>
-        <DateField dateRange={dateRange} onSelect={setDateRange} />
-      </div>
-
-      <div className="flex flex-col gap-3 px-6 pt-5">
-        <label className="field-label">Cantidad de personas</label>
-        <div className="grid grid-cols-2 gap-2">
-          {CANTIDAD_PRESETS.map((preset) => (
-            <button
-              key={preset.value}
-              type="button"
-              onClick={() => setCantidad(preset.value)}
-              className={cn(
-                "segmented-option w-full rounded-lg py-2 text-xs",
-                cantidad === preset.value ? "segmented-option-active" : "bg-woranz-warm-2"
-              )}
-            >
-              {preset.label}
-            </button>
-          ))}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="flex flex-col gap-1.5">
+          <label className="field-label">Vigencia</label>
+          <DateField dateRange={dateRange} onSelect={setDateRange} />
         </div>
-        <div className="flex items-center gap-2">
-          <Input
-            type="number"
-            min={1}
-            max={700}
-            value={cantidad}
-            onChange={(event) => handleCantidadInput(event.target.value, setCantidad)}
-            className="h-12 rounded-field border-woranz-line bg-woranz-warm-2 px-4 text-sm font-medium text-woranz-ink shadow-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40"
-          />
-          <span className="shrink-0 text-sm text-woranz-text">
-            {cantidad === 1 ? "persona" : "personas"}
-          </span>
+
+        <div className="flex flex-col gap-1.5">
+          <label className="field-label">Personas</label>
+          <div className="relative">
+            <Input
+              type="number"
+              min={1}
+              max={700}
+              value={cantidad}
+              onChange={(event) => handleCantidadInput(event.target.value, setCantidad)}
+              className="h-12 rounded-field border-woranz-line bg-woranz-warm-2 px-4 pr-20 text-sm font-medium text-woranz-ink shadow-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40"
+            />
+            <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-sm text-woranz-muted">
+              {cantidad === 1 ? "persona" : "personas"}
+            </span>
+          </div>
         </div>
       </div>
 
-      <div className="px-6 pb-6 pt-5">
-        <button
-          type="button"
-          onClick={handleSubmit}
-          className="btn-primary-form flex w-full justify-center"
-        >
-          Cotizá ahora <ArrowRight className="ml-2 h-4 w-4" />
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={handleSubmit}
+        className="btn-primary-form flex w-full justify-center"
+      >
+        Cotizá ahora <ArrowRight className="ml-2 h-4 w-4" />
+      </button>
     </div>
   )
 }
@@ -288,8 +273,8 @@ function QuoterDesktop() {
 
   return (
     <div className="hidden w-full flex-col p-8 md:flex">
-      <div className="flex items-end gap-4">
-        <div className="flex flex-1 flex-col gap-1.5">
+      <div className="grid grid-cols-2 items-end gap-4 lg:flex">
+        <div className="flex flex-col gap-1.5 lg:flex-1">
           <label className="text-label text-woranz-text">Actividad</label>
           <Combobox
             className="w-full"
@@ -301,7 +286,7 @@ function QuoterDesktop() {
           />
         </div>
 
-        <div className="flex flex-1 flex-col gap-1.5">
+        <div className="flex flex-col gap-1.5 lg:flex-1">
           <label className="text-label text-woranz-text">Provincia</label>
           <Combobox
             className="w-full"
@@ -313,12 +298,12 @@ function QuoterDesktop() {
           />
         </div>
 
-        <div className="flex flex-1 flex-col gap-1.5">
+        <div className="flex flex-col gap-1.5 lg:flex-1">
           <label className="text-label text-woranz-text">Vigencia</label>
           <DateField dateRange={dateRange} desktop onSelect={setDateRange} />
         </div>
 
-        <div className="flex w-44 flex-col gap-1.5">
+        <div className="flex flex-col gap-1.5 lg:w-44">
           <label className="text-label text-woranz-text">Personas</label>
           <div className="relative">
             <Input
@@ -338,7 +323,7 @@ function QuoterDesktop() {
         <button
           type="button"
           onClick={handleSubmit}
-          className="btn-primary-form flex justify-center px-6"
+          className="btn-primary-form col-span-2 flex justify-center px-6 lg:col-span-1"
         >
           Cotizá ahora <ArrowRight className="ml-2 h-4 w-4" />
         </button>
