@@ -104,6 +104,36 @@ type SanityHomeData = {
 
 const REVALIDATE_SECONDS = 60
 
+const FEATURE_CAROUSEL_DEFAULTS: Record<ProductSegment, { title: string; items: FeatureCarouselItem[] }> = {
+  personas: {
+    title: "Seguros pensados para vos.",
+    items: [
+      { imageSrc: "/images/features/personas-1-online.webp", text: "Cotizá y gestioná todo\nonline, cuando quieras.", textMobile: "Cotizá y gestioná\ntodo online." },
+      { imageSrc: "/images/features/productores-2-cerca.webp", text: "Siempre cerca tuyo,\nsiempre a un mensaje.", textMobile: "Siempre cerca tuyo,\na un mensaje." },
+      { imageSrc: "/images/features/personas-3-precio.webp", text: "El mejor precio, el mejor\nproducto. Sin vueltas.", textMobile: "El mejor precio.\nSin vueltas." },
+      { imageSrc: "/images/features/personas-4-simple.webp", text: "Simple, online y con la\nmejor experiencia.", textMobile: "Simple, online y con\nla mejor experiencia." },
+    ],
+  },
+  empresas: {
+    title: "Seguros pensados para tu empresa.",
+    items: [
+      { imageSrc: "/images/features/empresas-1-online.webp", text: "Cotizá y gestioná las\ncoberturas de tu empresa.", textMobile: "Cotizá y gestioná\ntodo online." },
+      { imageSrc: "/images/features/empresas-2-cerca.webp", text: "Un equipo que entiende\ntu negocio, siempre cerca.", textMobile: "Siempre cerca\nde tu empresa." },
+      { imageSrc: "/images/features/empresas-3-medida.webp", text: "Coberturas a medida\nde tu operación.", textMobile: "Coberturas a medida\nde tu operación." },
+      { imageSrc: "/images/features/empresas-4-simple.webp", text: "Simple para vos\ny para tu equipo.", textMobile: "Simple para vos\ny tu equipo." },
+    ],
+  },
+  productores: {
+    title: "Herramientas que te ayudan a vender.",
+    items: [
+      { imageSrc: "/images/features/productores-1-gestion.webp", text: "Cotizá, emití y seguí cada\noperación desde un solo lugar.", textMobile: "Cotizá, emití y seguí\ndesde un solo lugar." },
+      { imageSrc: "/images/features/productores-2-cerca.webp", text: "Soporte real, siempre\na un mensaje.", textMobile: "Soporte real,\na un mensaje." },
+      { imageSrc: "/images/features/productores-3-comisiones.webp", text: "Comisiones competitivas\ny liquidación transparente.", textMobile: "Comisiones competitivas\ny transparentes." },
+      { imageSrc: "/images/features/productores-4-simple.webp", text: "Tu cartera, simplificada\nen una sola plataforma.", textMobile: "Tu cartera,\nsimplificada." },
+    ],
+  },
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────
 
 function isSanityConfigured() {
@@ -171,18 +201,19 @@ function transformSection(section: SanitySeccion, segment: ProductSegment, pageP
     }
 
     case "seccionCarouselFeatures": {
-      const items: FeatureCarouselItem[] = (section.items ?? [])
-        .filter((item) => item.imagen || item.texto)
-        .map((item) => ({
-          imageSrc: resolveImage(item.imagen, "/images/feature-1.png"),
-          text: item.texto?.trim(),
-          textMobile: item.textoMobile?.trim(),
-        }))
-      if (items.length === 0) return null
+      const defaults = FEATURE_CAROUSEL_DEFAULTS[segment]
+      const sanityItems = (section.items ?? []).filter((item) => item.imagen || item.texto)
+      const items: FeatureCarouselItem[] = sanityItems.length > 0
+        ? sanityItems.map((item, i) => ({
+            imageSrc: resolveImage(item.imagen, defaults.items[i]?.imageSrc ?? "/images/feature-1.png"),
+            text: item.texto?.trim() || defaults.items[i]?.text,
+            textMobile: item.textoMobile?.trim() || defaults.items[i]?.textMobile,
+          }))
+        : defaults.items
       return {
         type: "carousel",
         variant: "feature",
-        title: section.titulo?.trim() || "Features",
+        title: section.titulo?.trim() || defaults.title,
         items,
       }
     }
@@ -235,6 +266,20 @@ function transformSanityHome(
   const sections: ProductPageSection[] = (data.secciones ?? [])
     .map((s) => transformSection(s, segment, pagePath))
     .filter((s): s is ProductPageSection => s !== null)
+
+  // Inject default feature carousel if Sanity doesn't provide one
+  const hasFeatureCarousel = sections.some(
+    (s) => s.type === "carousel" && s.variant === "feature"
+  )
+  if (!hasFeatureCarousel) {
+    const defaults = FEATURE_CAROUSEL_DEFAULTS[segment]
+    sections.push({
+      type: "carousel",
+      variant: "feature",
+      title: defaults.title,
+      items: defaults.items,
+    })
+  }
 
   return {
     segment,
