@@ -5,7 +5,13 @@ export type SiteLink = {
 
 export const WORANZ_WHATSAPP_HREF = "https://wa.me/5491160061771"
 export const PRODUCT_QUOTER_SECTION_ID = "cotizador"
-export const DEFAULT_LOGIN_HREF = "https://asegurados.woranz.com"
+export const DEFAULT_INSURED_LOGIN_HREF = "https://asegurados.woranz.com"
+export const DEFAULT_PRODUCER_ENTRY_HREF = "/productores"
+export const DEFAULT_LOGIN_HREF = DEFAULT_INSURED_LOGIN_HREF
+export const DEFAULT_LOGIN_LINKS: SiteLink[] = [
+  { href: DEFAULT_INSURED_LOGIN_HREF, label: "Ingresar como asegurado" },
+  { href: DEFAULT_PRODUCER_ENTRY_HREF, label: "Ingresar como productor" },
+]
 
 export const SUPPORT_NAVIGATION_LINKS: SiteLink[] = [
   { href: "/nosotros", label: "Nosotros" },
