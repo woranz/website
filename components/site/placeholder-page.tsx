@@ -3,7 +3,6 @@ import Link from "next/link"
 import { SiteFooter } from "@/components/site/footer"
 import { SiteHeader } from "@/components/site/header"
 import {
-  DEFAULT_LOGIN_HREF,
   SUPPORT_NAVIGATION_LINKS,
   WORANZ_WHATSAPP_HREF,
 } from "@/lib/site-links"
@@ -31,10 +30,7 @@ export function PlaceholderPage({
 }: PlaceholderPageProps) {
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <SiteHeader
-        links={SUPPORT_NAVIGATION_LINKS}
-        loginHref={DEFAULT_LOGIN_HREF}
-      />
+      <SiteHeader links={SUPPORT_NAVIGATION_LINKS} />
       <main className="flex-1">
         <section className="page-shell gap-8 px-page-mobile py-section-mobile md:px-page-wide md:py-section">
           <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 rounded-3xl bg-woranz-warm-1 px-6 py-8 md:px-10 md:py-12">

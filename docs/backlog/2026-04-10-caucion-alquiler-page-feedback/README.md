@@ -38,9 +38,9 @@ Mapeo del feedback original:
    Nueva task: `CAF-003`
 
 Tasks creadas en este batch:
-1. `CAF-001` [Refresh process copy on caucion alquiler](./CAF-001-refresh-process-copy-on-caucion-alquiler.md)
-2. `CAF-002` [Rework requisitos presentation on caucion alquiler](./CAF-002-rework-requisitos-presentation-on-caucion-alquiler.md)
-3. `CAF-003` [Add restitucion option to caucion quoter](./CAF-003-add-restitucion-option-to-caucion-quoter.md)
+1. `CAF-001` [Refresh process copy on caucion alquiler](./CAF-001-refresh-process-copy-on-caucion-alquiler.md) — **Done** (PR #21)
+2. `CAF-002` [Rework requisitos presentation on caucion alquiler](./CAF-002-rework-requisitos-presentation-on-caucion-alquiler.md) — **Done**
+3. `CAF-003` [Add restitucion option to caucion quoter](./CAF-003-add-restitucion-option-to-caucion-quoter.md) — **Done**
 
 Prioridad sugerida para arrancar:
 1. `TD-013` para resolver los 2 CTA de esta página

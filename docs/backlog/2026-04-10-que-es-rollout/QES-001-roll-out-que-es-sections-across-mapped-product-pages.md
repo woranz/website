@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Content rollout / Product page architecture
-Estado: Todo
+Estado: Done (commit 0ea06bb, PR #14)
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex
