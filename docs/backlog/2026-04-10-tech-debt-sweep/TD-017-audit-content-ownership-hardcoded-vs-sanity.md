@@ -2,48 +2,20 @@
 
 Prioridad: Alta
 Tipo: CMS governance / Content architecture
-Estado: Done
+Estado: Todo
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex
-- Entregable estructural: centralizar fallbacks editoriales, hacer visibles los faltantes en dev, unificar helpers del source layer y dejar la excepción SEO/metadata resuelta en la capa compartida.
-- Visual: no aplica (la regla no cambia jerarquía ni composición)
+- Entregable estructural: matriz de ownership por contenido, limpieza de hardcodes y definición de source of truth.
+- Visual: si
+- Owner visual: Claude
+- Entregable visual: validar que al mover contenido a CMS no se degrade jerarquía ni consistencia editorial.
 
-## Decisión
+## Problema
 
-**Regla**: salvo header y footer, todo el contenido editorial vive en Sanity.
+No está claro qué contenido debe vivir en Sanity y qué contenido debe permanecer hardcoded. Hoy conviven ambos enfoques dentro del mismo sitio, con defaults y fallbacks que vuelven difuso el ownership editorial.
 
-Override aprobado durante implementación:
-- Se mantienen fallbacks editoriales centralizados en código.
-- Si falta contenido owned por Sanity, el sitio falla en `dev` y degrada con fallback en `prod`.
-
-## Matriz de ownership
-
-| Superficie | Owner | Fuente de verdad | Notas |
-|---|---|---|---|
-| Header (nav, dropdown coberturas, login) | Código | `header.tsx` | Se queda hardcoded. Si el catálogo crece, evaluar mover dropdown a Sanity. |
-| Footer (columnas, links, legal, copyright) | Código | `footer.tsx` | Se queda hardcoded. Varios links apuntan a "#" (páginas inexistentes). |
-| Hero de producto (título, descripción, imagen) | Sanity | `producto` schema | Ya migrado. Eliminar fallback silencioso en `product-page-source.ts:109`. |
-| CTAs de producto (labels, hrefs) | Sanity | `producto` → `seccionCotizador` / `seccionCta` | Eliminar `DEFAULT_PRIMARY_CTA` y `DEFAULT_SECONDARY_CTA` en `product-page-source.ts:111-112`. |
-| Hero de home (título, descripción, CTA) | Sanity | `paginaHome` schema | Eliminar fallbacks en `home-page-source.ts:240-262`. |
-| Secciones de producto (cobertura, FAQ, pasos, requisitos, variantes) | Sanity | `producto` schema | Ya migrado. Sin problemas. |
-| Carruseles (features, productos, paquetes) | Sanity | `producto` / `paginaHome` schemas | Ya migrado. |
-| Team count ("4+", "+9") | Sanity | Mover a `settings` o `seccionCta` | Hardcoded en `product-page-source.ts:480` y `home-page-source.ts:205`. |
-| Links institucionales ("Nosotros", "Contacto") | Sanity | Mover a `settings` → `navigationLinks[]` | Hardcoded en `product-page.tsx:40-43`, apuntan a "#". |
-| Imágenes editoriales | Sanity | `producto` / `paginaHome` schemas | Eliminar fallback silencioso a `/images/hero.png`. |
-| Metadata SEO | Sanity | `producto` / `paginaHome` schemas | Ya migrado. |
-| Mapeo de iconos (`FEATURE_ICONS`, `NAV_ICONS`) | Código | Componentes | Estructural, no contenido. Se queda. |
-| Lógica de formularios y handlers | Código | `app/api/forms/` | Estructural. Se queda. |
-| `product-catalog.json` | Eliminar | N/A | Legacy post-migración. No se usa. |
-
-## Acciones concretas para cerrar
-
-1. Centralizar fallbacks en un módulo compartido de page source.
-2. Hacer visible en `dev` cuando el contenido owned por Sanity cae a fallback.
-3. Mantener CTA defaults fuera de este ticket, sin reabrir su convención.
-4. Resolver el contrato SEO/metadata en la capa compartida sin romper `prod`.
-
-## Evidencia original
+## Evidencia
 
 - `lib/home-page-source.ts:240-262` define múltiples fallbacks hardcoded para metadata, hero y CTA aunque la home ya viene de Sanity.
 - `lib/product-page-source.ts:109-113` y `464-485` define defaults hardcoded para descripción y CTAs de producto.
@@ -52,22 +24,36 @@ Override aprobado durante implementación:
 - `components/templates/product-page.tsx:40-43` hardcodea links institucionales en navegación.
 - `components/site/footer.tsx:9-60` hardcodea columnas enteras del footer y múltiples links placeholder.
 - `components/site/header.tsx:120-121` hardcodea el login genérico.
-- `app/api/migrate-homes/route.ts:12-168` contiene contenido seed hardcoded de homes.
+- `app/api/migrate-homes/route.ts:12-168` además contiene contenido seed hardcoded de homes, incluyendo CTAs y `teamCount`.
 
 ## Riesgo
 
-- Si se eliminan fallbacks sin completar el contenido en Sanity, páginas pueden romper en dev.
-- Mitigación: verificar que cada producto y home tenga los campos requeridos en Sanity antes de eliminar fallbacks.
+- El equipo editorial no sabe qué puede cambiar desde CMS.
+- El frontend mantiene defaults que enmascaran ausencia o inconsistencia de contenido real.
+- Aumenta el drift entre lo que vive en schemas, lo que se siembra y lo que finalmente se renderiza.
+
+## Alcance propuesto
+
+- Hacer una matriz de ownership por superficie:
+  - contenido editorial
+  - navegación global
+  - trust signals
+  - metadata
+  - CTAs
+  - copies de fallback
+- Decidir qué vive en Sanity, qué vive en config tipada y qué no debe ser editable.
+- Limpiar hardcodes que hoy compiten con contenido CMS.
+- Dejar documentada la fuente de verdad por tipo de contenido.
 
 ## Criterio de aceptacion
 
-- Matriz de ownership documentada (este archivo).
-- Fallbacks hardcoded centralizados y documentados.
-- En dev, contenido faltante en Sanity produce error visible.
-- En prod, la página degrada con fallback en lugar de fallar.
+- Existe una matriz clara `contenido -> owner -> fuente de verdad`.
+- Se reducen fallbacks hardcoded en rutas ya gobernadas por CMS.
+- Header, footer, trust signals y CTAs tienen ownership explícito.
+- El equipo puede distinguir con claridad qué se cambia en Sanity y qué en código.
 
 ## Validacion
 
-- `rg` comparativo de hardcodes antes y después.
+- Revisión estática de schemas, queries y components.
+- `rg` comparativo de hardcodes relevantes antes y después.
 - Smoke de render con contenido CMS válido.
-- Verificar que no queden fallbacks silenciosos en `product-page-source.ts` ni `home-page-source.ts`.

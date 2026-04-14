@@ -1,10 +1,11 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Facebook, Instagram, Linkedin } from "lucide-react"
+import { Instagram, Linkedin, Twitter } from "lucide-react"
 
 import { buildProductPath } from "@/lib/product-paths"
 import { Logo } from "@/components/site/logo"
 import { Separator } from "@/components/ui/separator"
+
 const MOBILE_COLUMNS = [
   {
     title: "Productos",
@@ -16,8 +17,8 @@ const MOBILE_COLUMNS = [
   {
     title: "Empresa",
     links: [
-      { href: "/nosotros", label: "Nosotros" },
-      { href: "/contacto", label: "Contacto" },
+      { href: "#", label: "Nosotros" },
+      { href: "#", label: "Contacto" },
     ],
   },
 ]
@@ -28,32 +29,32 @@ const DESKTOP_COLUMNS = [
     links: [
       { href: buildProductPath("personas", "accidentes-personales"), label: "Accidentes Personales" },
       { href: buildProductPath("personas", "caucion-alquiler"), label: "Cauciones" },
-      { href: buildProductPath("empresas", "seguro-de-vida-empresas"), label: "Seguro de Vida" },
-      { href: buildProductPath("empresas", "seguro-de-sepelio"), label: "Seguro de Sepelio" },
+      { href: "#", label: "Seguro de Vida" },
+      { href: "#", label: "Seguro de Sepelio" },
     ],
   },
   {
     title: "Empresa",
     links: [
-      { href: "/nosotros", label: "Nosotros" },
-      { href: "/blog", label: "Blog" },
-      { href: "/trabaja-con-nosotros", label: "Trabajá con nosotros" },
+      { href: "#", label: "Nosotros" },
+      { href: "#", label: "Blog" },
+      { href: "#", label: "Trabajá con nosotros" },
     ],
   },
   {
     title: "Soporte",
     links: [
-      { href: "/centro-de-ayuda", label: "Centro de ayuda" },
-      { href: "/contacto", label: "Contacto" },
-      { href: "/faq", label: "FAQ" },
+      { href: "#", label: "Centro de ayuda" },
+      { href: "#", label: "Contacto" },
+      { href: "#", label: "FAQ" },
     ],
   },
   {
     title: "Legal",
     links: [
-      { href: "/terminos", label: "Términos" },
-      { href: "/privacidad", label: "Privacidad" },
-      { href: "https://www.argentina.gob.ar/ssn", label: "SSN" },
+      { href: "#", label: "Términos" },
+      { href: "#", label: "Privacidad" },
+      { href: "#", label: "SSN" },
     ],
   },
 ]
@@ -144,14 +145,14 @@ function SiteFooter() {
             © 2026 Woranz. Todos los derechos reservados.
           </span>
           <div className="hidden items-center gap-4 md:flex">
-            <Link href="https://www.facebook.com/woranz" className="text-woranz-muted transition-opacity hover:opacity-70">
-              <Facebook className="h-4 w-4" />
-            </Link>
-            <Link href="https://www.instagram.com/woranz" className="text-woranz-muted transition-opacity hover:opacity-70">
+            <Link href="#" className="text-woranz-muted transition-opacity hover:opacity-70">
               <Instagram className="h-4 w-4" />
             </Link>
-            <Link href="https://www.linkedin.com/company/woranz/" className="text-woranz-muted transition-opacity hover:opacity-70">
+            <Link href="#" className="text-woranz-muted transition-opacity hover:opacity-70">
               <Linkedin className="h-4 w-4" />
+            </Link>
+            <Link href="#" className="text-woranz-muted transition-opacity hover:opacity-70">
+              <Twitter className="h-4 w-4" />
             </Link>
           </div>
         </div>

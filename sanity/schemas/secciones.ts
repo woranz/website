@@ -15,18 +15,10 @@ export const seccionCotizador = defineArrayMember({
         list: [
           { title: 'Cotizador inline - caución', value: 'inline-caucion' },
           { title: 'Cotizador inline - accidentes', value: 'inline-accidentes' },
-          { title: 'Cotizador inline - genérico', value: 'inline-generico' },
           { title: 'Contacto directo', value: 'contacto' },
         ],
       },
       validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'formConfigId',
-      title: 'ID de formulario',
-      type: 'string',
-      description: 'Identificador del formulario o cotizador genérico. Debe coincidir con un ID registrado en lib/forms/configs/ o lib/quoter-configs.ts.',
-      hidden: ({ parent }) => parent?.modo !== 'contacto' && parent?.modo !== 'inline-generico',
     }),
     defineField({
       name: 'maxWidth',
@@ -396,12 +388,6 @@ export const seccionCta = defineArrayMember({
         { name: 'label', title: 'Texto', type: 'string' },
         { name: 'href', title: 'Link', type: 'string' },
       ],
-    }),
-    defineField({
-      name: 'ocultarCtaSecundario',
-      title: 'Ocultar CTA secundario',
-      type: 'boolean',
-      initialValue: false,
     }),
   ],
   preview: {

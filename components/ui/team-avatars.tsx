@@ -61,7 +61,8 @@ export function TeamAvatars({
     setMembers(shuffle(ALL_TEAM_MEMBERS).slice(0, count))
   }, [count])
 
-  const displayCount = teamCount ?? "+20"
+  const remaining = ALL_TEAM_MEMBERS.length - count
+  const displayCount = teamCount ?? `+${remaining}`
 
   return (
     <div className="flex flex-col items-center gap-2 md:flex-row md:gap-0">

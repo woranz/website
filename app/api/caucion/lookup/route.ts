@@ -1,39 +1,30 @@
-import { RATE_LIMITS } from "@/lib/api/limits"
-import { checkRateLimit } from "@/lib/api/rate-limit"
-import { caucionLookupSchema } from "@/lib/api/schemas/ap"
-import {
-  enforceSameOrigin,
-  jsonData,
-  jsonError,
-  parseJsonBody,
-} from "@/lib/api/request"
+import { NextResponse } from "next/server"
+
 import { lookupPersona } from "@/lib/woranz-api"
 
 export async function POST(request: Request) {
-  const rateLimit = checkRateLimit(request, RATE_LIMITS.caucionLookup)
-  if (!rateLimit.allowed) {
-    return jsonError("Too many requests.", 429, { rateLimit })
-  }
-
-  const originError = enforceSameOrigin(request, { rateLimit })
-  if (originError) {
-    return originError
-  }
-
-  const parsed = await parseJsonBody(request, caucionLookupSchema, {
-    invalidBodyMessage: "DNI inválido. Debe tener 7 u 8 dígitos.",
-    rateLimit,
-  })
-  if (!parsed.success) {
-    return parsed.response
-  }
-
   try {
-    const persona = await lookupPersona(parsed.data.dni)
-    return jsonData({ data: persona ?? null }, { rateLimit })
+    const body = await request.json()
+    const dni = body.dni as string
+
+    if (!dni || dni.length < 7 || dni.length > 8) {
+      return NextResponse.json(
+        { error: "DNI inválido. Debe tener 7 u 8 dígitos." },
+        { status: 400 }
+      )
+    }
+
+    const persona = await lookupPersona(dni)
+
+    if (!persona) {
+      return NextResponse.json({ data: null })
+    }
+
+    return NextResponse.json({ data: persona })
   } catch {
-    return jsonError("Error al buscar los datos. Intentá de nuevo.", 500, {
-      rateLimit,
-    })
+    return NextResponse.json(
+      { error: "Error al buscar los datos. Intentá de nuevo." },
+      { status: 500 }
+    )
   }
 }

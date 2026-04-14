@@ -17,8 +17,6 @@ import {
   Loader2,
 } from "lucide-react"
 
-import { BreadcrumbStepper } from "@/components/ui/breadcrumb-stepper"
-import { EntityListItem } from "@/components/ui/entity-list"
 import { CiudadSearch } from "@/components/ui/georef-search"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -41,7 +39,6 @@ type QuoterData = {
   alquiler: number
   duracion: number
   modoPago: string
-  restitucion: boolean
   idProductor: string
 }
 
@@ -97,10 +94,10 @@ const DOC_TYPES = [
 ]
 
 const STEPS = [
-  { id: "datos", title: "Datos personales" },
-  { id: "ingresos", title: "Tus ingresos" },
-  { id: "docs", title: "Documentación" },
-  { id: "contacto", title: "Contacto" },
+  { title: "Datos personales" },
+  { title: "Tus ingresos" },
+  { title: "Documentación" },
+  { title: "Contacto" },
 ]
 
 // ── Sub-components ───────────────────────────────────────────────────
@@ -108,6 +105,28 @@ const STEPS = [
 function FieldError({ message }: { message?: string }) {
   if (!message) return null
   return <p className="text-sm text-red-600">{message}</p>
+}
+
+function ProgressBar({
+  current,
+  total,
+}: {
+  current: number
+  total: number
+}) {
+  return (
+    <div className="flex w-full gap-1">
+      {Array.from({ length: total }, (_, i) => (
+        <div
+          key={i}
+          className={cn(
+            "h-[3px] flex-1 rounded-full transition-colors duration-500",
+            i < current ? "bg-woranz-ink" : "bg-woranz-warm-3"
+          )}
+        />
+      ))}
+    </div>
+  )
 }
 
 function OptionCard({
@@ -140,6 +159,56 @@ function OptionCard({
       </div>
       {children}
     </button>
+  )
+}
+
+function SidebarCard({ quoter }: { quoter: QuoterData }) {
+  const provincia = PROVINCIAS_MAP[quoter.provincia] ?? quoter.provincia
+  const pago = quoter.modoPago === "cuotas" ? "6 cuotas" : "Contado"
+
+  return (
+    <div className="rounded-lg border border-woranz-line bg-woranz-warm-1 p-4">
+      <h3 className="text-base font-semibold text-woranz-ink">
+        Caución de alquiler
+      </h3>
+      <div className="mt-3 flex flex-col gap-2">
+        <div className="flex items-baseline justify-between gap-3 text-xs">
+          <span className="text-woranz-text">Alquiler</span>
+          <span className="shrink-0 font-semibold text-woranz-ink">
+            {formatMoney(quoter.alquiler)}/mes
+          </span>
+        </div>
+        <div className="flex items-baseline justify-between gap-3 text-xs">
+          <span className="text-woranz-text">Duración</span>
+          <span className="shrink-0 font-semibold text-woranz-ink">
+            {quoter.duracion} meses
+          </span>
+        </div>
+        <div className="flex items-baseline justify-between gap-3 text-xs">
+          <span className="text-woranz-text">Forma de pago</span>
+          <span className="shrink-0 font-semibold text-woranz-ink">{pago}</span>
+        </div>
+        <div className="flex items-baseline justify-between gap-3 text-xs">
+          <span className="text-woranz-text">Provincia</span>
+          <span className="shrink-0 font-semibold text-woranz-ink">{provincia}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function MobileQuoterSummary({ quoter }: { quoter: QuoterData }) {
+  const pago = quoter.modoPago === "cuotas" ? "6 cuotas" : "Contado"
+
+  return (
+    <div className="rounded-xl border border-woranz-line bg-woranz-warm-1 px-4 py-3 lg:hidden">
+      <p className="text-xs text-woranz-text">
+        <span className="font-semibold text-woranz-ink">
+          {formatMoney(quoter.alquiler)}/mes
+        </span>
+        {" · "}{quoter.duracion} meses · {pago}
+      </p>
+    </div>
   )
 }
 
@@ -375,8 +444,8 @@ export function PreaprobacionForm({ quoter }: { quoter: QuoterData }) {
   }
 
   // Submit
-  const handleSubmit = async (e?: FormEvent) => {
-    e?.preventDefault()
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
     if (!validateStep(step)) return
 
     setSubmitError("")
@@ -399,7 +468,6 @@ export function PreaprobacionForm({ quoter }: { quoter: QuoterData }) {
       fd.set("alquiler", quoter.alquiler.toString())
       fd.set("duracion", quoter.duracion.toString())
       fd.set("modoPago", quoter.modoPago)
-      fd.set("restitucion", quoter.restitucion ? "true" : "false")
       fd.set("ingresosMensuales", ingresosMensuales.toString())
       fd.set("ingresoFamiliar", ingresoFamiliar.toString())
       fd.set("inmobiliaria", inmobiliaria)
@@ -466,21 +534,22 @@ export function PreaprobacionForm({ quoter }: { quoter: QuoterData }) {
   const isLastStep = step === STEPS.length
 
   return (
-    <div className="mx-auto w-full max-w-page px-page-mobile md:px-page">
-      {/* Stepper — breadcrumb style */}
-      <div className="mx-auto max-w-xl pt-6 md:pt-8">
-        <BreadcrumbStepper
-          steps={STEPS}
-          currentStep={step}
-          onStepClick={setStep}
-        />
+    <>
+      {/* Segmented progress bar */}
+      <div className="px-6 pt-6 md:pt-8">
+        <div className="mx-auto max-w-4xl">
+          <ProgressBar current={step} total={STEPS.length} />
+        </div>
       </div>
 
-      {/* Main content — centered single column */}
-      <div className="mx-auto w-full max-w-xl pb-32 pt-8 md:pt-10">
+      <div className="mx-auto w-full max-w-4xl px-6 pb-20 pt-8 md:pt-10">
+        <div className="grid gap-10 lg:grid-cols-[1fr_220px]">
+          <div className="w-full lg:mx-auto lg:max-w-lg">
+          {/* Mobile quoter summary */}
+          <MobileQuoterSummary quoter={quoter} />
 
           {/* Step title */}
-          <h1 className="text-center font-display text-[2rem] font-bold leading-tight tracking-tight text-woranz-ink lg:text-[2.25rem]">
+          <h1 className="mt-4 font-display text-[2rem] font-bold leading-tight tracking-tight text-woranz-ink lg:mt-0 lg:text-[2.25rem]">
             {STEPS[step - 1].title}
           </h1>
 
@@ -496,6 +565,7 @@ export function PreaprobacionForm({ quoter }: { quoter: QuoterData }) {
                   </label>
                   <div className="relative">
                     <Input
+                      type="text"
                       inputMode="numeric"
                       placeholder="Ej: 35123456"
                       value={dni}
@@ -516,31 +586,14 @@ export function PreaprobacionForm({ quoter }: { quoter: QuoterData }) {
                       }}
                       maxLength={8}
                       autoFocus
-                      className="h-12 pr-24"
                     />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                      {dniLoading ? (
+                    {dniLoading && (
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2">
                         <Loader2 className="h-4 w-4 animate-spin text-woranz-muted" />
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => lookupDni()}
-                          disabled={!dni || dni.replace(/\D/g, "").length < 7}
-                          className="text-sm font-medium text-woranz-ink disabled:opacity-30"
-                        >
-                          Agregar
-                        </button>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                   <FieldError message={errorFor("dni")} />
-                  {dniLookupDone && !dniLookupFailed && (
-                    <EntityListItem
-                      tone="success"
-                      title={`${nombre} ${apellido}`.trim()}
-                      subtitle={dni}
-                    />
-                  )}
                 </div>
 
                 {dniLookupFailed && (
@@ -926,49 +979,54 @@ export function PreaprobacionForm({ quoter }: { quoter: QuoterData }) {
             </div>
           )}
 
-          </form>
-      </div>
-
-      {/* ── Bottom sticky bar ── */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-woranz-line bg-white/95 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-page items-center justify-between px-page-mobile py-3 md:px-page">
-          {/* Left — summary */}
-          <div className="hidden items-center gap-2 text-sm sm:flex">
-            <span className="font-semibold text-woranz-ink">Caución de alquiler</span>
-            <span className="text-woranz-muted">·</span>
-            <span className="text-woranz-text">{formatMoney(quoter.alquiler)}/mes</span>
-            <span className="text-woranz-muted">·</span>
-            <span className="text-woranz-text">{quoter.duracion} meses</span>
-          </div>
-
-          {/* Right — nav buttons */}
-          <div className="flex w-full items-center gap-3 sm:w-auto">
-            {step > 1 && (
-              <button type="button" onClick={goBack}
-                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-woranz-text transition-colors hover:bg-woranz-warm-2 hover:text-woranz-ink">
-                <ArrowLeft className="h-4 w-4" /> Atrás
-              </button>
-            )}
+          {/* Navigation */}
+          <div className="mt-10 flex flex-col items-center gap-3">
             {isLastStep ? (
-              <button type="button" disabled={submitting} onClick={handleSubmit}
-                className="btn-primary flex-1 justify-center px-8 py-3 text-sm font-bold disabled:opacity-50 sm:flex-none">
+              <button
+                type="submit"
+                disabled={submitting}
+                className="btn-primary-form w-full justify-center disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
                 {submitting ? (
                   <span className="inline-flex items-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin" />Enviando...
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Enviando...
                   </span>
-                ) : <>Enviar solicitud <ArrowRight className="ml-2 h-4 w-4" /></>}
+                ) : (
+                  <>Enviar solicitud <ArrowRight className="ml-2 h-4 w-4" /></>
+                )}
               </button>
             ) : (
-              <button type="button"
+              <button
+                type="button"
                 onClick={goNext}
-                className="btn-primary flex-1 justify-center px-8 py-3 text-sm font-bold sm:flex-none"
+                className="btn-primary-form w-full justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 Siguiente <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             )}
+            {step > 1 && (
+              <button
+                type="button"
+                onClick={goBack}
+                className="inline-flex items-center gap-1.5 py-2 text-sm font-medium text-woranz-text transition-colors hover:text-woranz-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-md"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Atrás
+              </button>
+            )}
           </div>
+          </form>
+          </div>
+
+          {/* Sidebar card — desktop only */}
+          <aside className="hidden lg:block">
+            <div className="sticky top-8">
+              <SidebarCard quoter={quoter} />
+            </div>
+          </aside>
         </div>
       </div>
-    </div>
+    </>
   )
 }

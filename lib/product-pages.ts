@@ -1,4 +1,3 @@
-import type { PageMetadataConfig } from "@/lib/metadata"
 import type { ProductSegment } from "@/lib/product-paths"
 
 export type ProductHero = {
@@ -11,7 +10,7 @@ export type ProductHero = {
   primaryCtaHref?: string
   primaryCta: string
   secondaryCtaHref?: string
-  secondaryCta?: string
+  secondaryCta: string
   title: string
 }
 
@@ -48,7 +47,6 @@ export type ProductCarouselItem = {
 export type VariantItem = {
   description?: string
   href?: string
-  icon?: string
   items?: string[]
   title: string
 }
@@ -61,11 +59,9 @@ export type FeatureCarouselItem = {
 
 type QuoteSection = {
   description: string
-  formConfigId?: string
   maxWidth?: "default" | "wide"
   mobileSteps?: boolean
-  quoter: "accidentes" | "caucion" | "contacto" | "generico"
-  quoterConfigId?: string
+  quoter: "accidentes" | "caucion"
   steps: ProductStep[]
   title: string
   type: "quote"
@@ -123,7 +119,7 @@ type CtaSection = {
   primaryCtaHref?: string
   primaryCta: string
   secondaryCtaHref?: string
-  secondaryCta?: string
+  secondaryCta: string
   teamCount: string
   teamLabel: string
   title: string
@@ -170,7 +166,10 @@ export type ProductPageSection =
 export type ProductPageData = {
   hero: ProductHero
   isHome?: boolean
-  metadata: PageMetadataConfig
+  metadata: {
+    description: string
+    title: string
+  }
   path: string
   sections: ProductPageSection[]
   segment: ProductSegment

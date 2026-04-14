@@ -13,7 +13,6 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react"
-import { usePathname } from "next/navigation"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 import { BreadcrumbStepper } from "@/components/ui/breadcrumb-stepper"
@@ -288,203 +287,6 @@ function resolvePersonaData(data: unknown): (Record<string, unknown> & {
   }
 }
 
-type ProposalTomadorPayload =
-  | {
-      numeroDocumento: number
-      nombre: string
-      apellido: string
-      domicilio?: Record<string, unknown>
-      emails: Array<{ idTipoEmail: number; email: string }>
-      sexo?: string
-      fechaNacimiento?: string
-      nacionalidad?: string
-    }
-  | {
-      idTipoPersona: 2
-      cuit: string
-      razonSocial: string
-      domicilio?: Record<string, unknown>
-      emails: Array<{ idTipoEmail: number; email: string }>
-    }
-
-type ProposalAseguradoPayload =
-  | {
-      numeroDocumento: number
-      nombre: string
-      apellido: string
-      idOcupacion: number
-      sexo?: string
-      fechaNacimiento?: string
-      nacionalidad?: string
-    }
-  | {
-      idTipoPersona: 2
-      cuit: string
-      razonSocial: string
-      idOcupacion: number
-    }
-
-type MercadoPagoTomadorPayload =
-  | {
-      tipo: "persona"
-      numeroDocumento: number
-      nombre: string
-      apellido: string
-      emails: Array<{ idTipoEmail: number; email: string }>
-    }
-  | {
-      tipo: "persona"
-      idTipoPersona: 2
-      cuit: string
-      razonSocial: string
-      emails: Array<{ idTipoEmail: number; email: string }>
-    }
-
-function getOptionalTrimmedValue(value: string | undefined) {
-  const trimmed = value?.trim() ?? ""
-  return trimmed ? trimmed : undefined
-}
-
-function getRawObjectValue(
-  raw: Record<string, unknown> | null,
-  key: string
-): Record<string, unknown> | undefined {
-  const value = raw?.[key]
-  if (!value || typeof value !== "object" || Array.isArray(value)) {
-    return undefined
-  }
-
-  return value as Record<string, unknown>
-}
-
-function buildTomadorPayload(
-  persona: PersonaEntry,
-  email: string
-): ProposalTomadorPayload {
-  const emails = [{ idTipoEmail: 3, email }]
-  const domicilio = getRawObjectValue(persona.raw, "domicilio")
-
-  if (persona.personType === "JURIDICO") {
-    return {
-      idTipoPersona: 2,
-      cuit: persona.dni,
-      razonSocial: persona.razonSocial,
-      ...(domicilio ? { domicilio } : {}),
-      emails,
-    }
-  }
-
-  const sexo = getOptionalTrimmedValue(
-    persona.raw ? getStringValue(persona.raw.sexo) : ""
-  )
-  const fechaNacimiento = getOptionalTrimmedValue(
-    persona.raw ? getStringValue(persona.raw.fechaNacimiento) : ""
-  )
-  const nacionalidad = getOptionalTrimmedValue(
-    persona.raw ? getStringValue(persona.raw.nacionalidad) : ""
-  )
-
-  return {
-    numeroDocumento: parseInt(persona.dni, 10),
-    nombre: persona.nombre,
-    apellido: persona.apellido,
-    ...(domicilio ? { domicilio } : {}),
-    emails,
-    ...(sexo ? { sexo } : {}),
-    ...(fechaNacimiento ? { fechaNacimiento } : {}),
-    ...(nacionalidad ? { nacionalidad } : {}),
-  }
-}
-
-function buildPersonaAseguradoPayload(
-  persona: PersonaEntry,
-  idOcupacion: number
-): ProposalAseguradoPayload {
-  if (persona.personType === "JURIDICO") {
-    return {
-      idTipoPersona: 2,
-      cuit: persona.dni,
-      razonSocial: persona.razonSocial,
-      idOcupacion,
-    }
-  }
-
-  const sexo = getOptionalTrimmedValue(
-    persona.raw ? getStringValue(persona.raw.sexo) : ""
-  )
-  const fechaNacimiento = getOptionalTrimmedValue(
-    persona.raw ? getStringValue(persona.raw.fechaNacimiento) : ""
-  )
-  const nacionalidad = getOptionalTrimmedValue(
-    persona.raw ? getStringValue(persona.raw.nacionalidad) : ""
-  )
-
-  return {
-    numeroDocumento: parseInt(persona.dni, 10),
-    nombre: persona.nombre,
-    apellido: persona.apellido,
-    idOcupacion,
-    ...(sexo ? { sexo } : {}),
-    ...(fechaNacimiento ? { fechaNacimiento } : {}),
-    ...(nacionalidad ? { nacionalidad } : {}),
-  }
-}
-
-function buildListAseguradoPayload(
-  asegurado: AseguradoItem,
-  idOcupacion: number
-): ProposalAseguradoPayload {
-  if (asegurado.personType === "JURIDICO") {
-    return {
-      idTipoPersona: 2,
-      cuit: asegurado.dni,
-      razonSocial: asegurado.razonSocial,
-      idOcupacion,
-    }
-  }
-
-  return {
-    numeroDocumento: parseInt(asegurado.dni, 10),
-    nombre: asegurado.nombre,
-    apellido: asegurado.apellido,
-    idOcupacion,
-    ...(getOptionalTrimmedValue(asegurado.gender)
-      ? { sexo: asegurado.gender.trim() }
-      : {}),
-    ...(getOptionalTrimmedValue(asegurado.birthDate)
-      ? { fechaNacimiento: asegurado.birthDate.trim() }
-      : {}),
-    ...(getOptionalTrimmedValue(asegurado.nationality)
-      ? { nacionalidad: asegurado.nationality.trim() }
-      : {}),
-  }
-}
-
-function buildMercadoPagoTomadorPayload(
-  persona: PersonaEntry,
-  email: string
-): MercadoPagoTomadorPayload {
-  const emails = [{ idTipoEmail: 3, email }]
-
-  if (persona.personType === "JURIDICO") {
-    return {
-      tipo: "persona",
-      idTipoPersona: 2,
-      cuit: persona.dni,
-      razonSocial: persona.razonSocial,
-      emails,
-    }
-  }
-
-  return {
-    tipo: "persona",
-    numeroDocumento: parseInt(persona.dni, 10),
-    nombre: persona.nombre,
-    apellido: persona.apellido,
-    emails,
-  }
-}
-
 const COUNTRY_OPTIONS: ComboboxOption[] = [
   { value: "50000000032", label: "CHILE" },
   { value: "51000004382", label: "ALEMANIA" },
@@ -610,16 +412,7 @@ function SummaryRow({
 
 // ── Main component ───────────────────────────────────────────────────
 
-export function APCotizacionForm({
-  quoter,
-  segment,
-}: {
-  quoter: QuoterData
-  segment?: "empresas" | "personas"
-}) {
-  const pathname = usePathname()
-  const currentSegment =
-    segment ?? (pathname.startsWith("/empresas") ? "empresas" : "personas")
+export function APCotizacionForm({ quoter }: { quoter: QuoterData }) {
   const isMulti = quoter.cantidad > 1
 
   const STEPS = isMulti
@@ -1165,17 +958,31 @@ export function APCotizacionForm({
       if (triggerRes.error) throw new Error(triggerRes.error)
       const { idCotizacion } = triggerRes.data
 
-      const tomadorPayload = buildTomadorPayload(tomador, email)
+      const tomadorPayload = tomador.raw ?? (
+        tomador.personType === "JURIDICO"
+          ? { idTipoPersona: 2, cuit: tomador.dni, razonSocial: tomador.razonSocial }
+          : { numeroDocumento: parseInt(tomador.dni, 10), nombre: tomador.nombre, apellido: tomador.apellido }
+      )
       const idOcupacion = Number(quoter.actividad) || 1
-      let allAsegurados: ProposalAseguradoPayload[]
+      let allAsegurados: Record<string, unknown>[]
       if (isMulti) {
-        allAsegurados = aseguradosList
-          .filter((a) => a.valid || a.manual)
-          .map((a) => buildListAseguradoPayload(a, idOcupacion))
+        allAsegurados = aseguradosList.filter((a) => a.valid || a.manual).map((a) => ({
+          ...(a.raw ?? (
+            a.personType === "JURIDICO"
+              ? { idTipoPersona: 2, cuit: a.dni, razonSocial: a.razonSocial }
+              : { numeroDocumento: parseInt(a.dni, 10), nombre: a.nombre, apellido: a.apellido }
+          )),
+          idOcupacion,
+        }))
       } else if (esTomador) {
-        allAsegurados = [buildPersonaAseguradoPayload(tomador, idOcupacion)]
+        allAsegurados = [{ ...tomadorPayload, idOcupacion }]
       } else {
-        allAsegurados = [buildPersonaAseguradoPayload(asegurado, idOcupacion)]
+        const aseguradoPayload = asegurado.raw ?? (
+          asegurado.personType === "JURIDICO"
+            ? { idTipoPersona: 2, cuit: asegurado.dni, razonSocial: asegurado.razonSocial }
+            : { numeroDocumento: parseInt(asegurado.dni, 10), nombre: asegurado.nombre, apellido: asegurado.apellido }
+        )
+        allAsegurados = [{ ...aseguradoPayload, idOcupacion }]
       }
       const nominaPayload = (clausulaSubrogacion || clausulaNoRepeticion) ? nomina.filter((n) => n.valid).map((n) => ({ cuit: n.cuit, nombre: n.nombre })) : []
 
@@ -1192,9 +999,9 @@ export function APCotizacionForm({
           cantidad: cantidadActual,
           items: [{ idOcupacion, cantidad: cantidadActual }],
           coberturas: selectedPlan.coberturas,
-          tomador: tomadorPayload,
+          tomador: { ...tomadorPayload, emails: [{ idTipoEmail: 3, email }] },
           asegurados: allAsegurados,
-          domicilioRiesgo: "domicilio" in tomadorPayload ? tomadorPayload.domicilio ?? {} : {},
+          domicilioRiesgo: (tomadorPayload as Record<string, unknown>).domicilio ?? {},
           clausulaSubrogacion, clausulaNoRepeticion, nomina: nominaPayload, solicitante, mail: email,
           telefonoArea: parseInt(telefonoArea, 10) || 0, telefonoNumero: parseInt(telefonoNumero, 10) || 0,
         }),
@@ -1207,15 +1014,8 @@ export function APCotizacionForm({
       const mpRes = await fetch("/api/ap/mercadopago", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          data: {
-            idEmision,
-            premio: premio ?? selectedPlan.premio,
-            cantidad: cantidadActual,
-            email,
-            tomador: buildMercadoPagoTomadorPayload(tomador, email),
-          },
-          base_url: baseUrl,
-          source_url: `${baseUrl}/${currentSegment}/coberturas/accidentes-personales/cotizacion`,
+          data: { idEmision, premio: premio ?? selectedPlan.premio, cantidad: cantidadActual, email, tomador: { ...tomadorPayload, tipo: "persona", emails: [{ idTipoEmail: 3, email }] } },
+          base_url: baseUrl, source_url: `${baseUrl}/personas/coberturas/accidentes-personales/cotizacion`,
         }),
       }).then((r) => r.json())
       if (mpRes.error) throw new Error(mpRes.error)

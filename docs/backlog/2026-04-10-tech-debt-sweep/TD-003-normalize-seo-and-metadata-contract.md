@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: SEO / Plataforma
-Estado: Done
+Estado: Todo
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex
