@@ -1,6 +1,14 @@
-import { NextResponse } from "next/server"
-
+import { RATE_LIMITS } from "@/lib/api/limits"
+import { checkRateLimit } from "@/lib/api/rate-limit"
+import { propuestaSchema } from "@/lib/api/schemas/ap"
+import {
+  enforceSameOrigin,
+  jsonData,
+  jsonError,
+  parseJsonBody,
+} from "@/lib/api/request"
 import { getIdPlanComercial, woranzFetch } from "@/lib/woranz-api"
+import { getWoranzErrorMessage } from "@/lib/woranz-api"
 
 const POLICY_DEFAULTS = {
   referencia: "Pago desde MercadoPago",
@@ -17,36 +25,70 @@ const POLICY_DEFAULTS = {
 }
 
 export async function POST(request: Request) {
-  try {
-    const body = await request.json()
-    const idPlanComercial = await getIdPlanComercial()
+  const rateLimit = checkRateLimit(request, RATE_LIMITS.apPropuesta)
+  if (!rateLimit.allowed) {
+    return jsonError("Too many requests.", 429, { rateLimit })
+  }
 
+  const originError = enforceSameOrigin(request, { rateLimit })
+  if (originError) {
+    return originError
+  }
+
+  const parsed = await parseJsonBody(request, propuestaSchema, {
+    invalidBodyMessage: "Error al crear propuesta",
+    rateLimit,
+  })
+  if (!parsed.success) {
+    return parsed.response
+  }
+
+  try {
+    const idPlanComercial = await getIdPlanComercial()
     const payload = {
       ...POLICY_DEFAULTS,
-      ...body,
       idPlanComercial,
+      idSeccion: 12,
+      idVigencia: 17,
+      idCoberturaPaquete: 498,
+      idPersonaTipo: 1,
+      idCondicionFiscal: 1,
+      idFormaCobro: 1,
+      idCotizacion: parsed.data.idCotizacion,
+      idProvinciaRiesgo: parsed.data.idProvinciaRiesgo,
+      vigenciaDesde: parsed.data.vigenciaDesde,
+      vigenciaHasta: parsed.data.vigenciaHasta,
+      cantidad: parsed.data.cantidad,
+      items: parsed.data.items,
+      coberturas: parsed.data.coberturas,
+      tomador: parsed.data.tomador,
+      asegurados: parsed.data.asegurados,
+      domicilioRiesgo: parsed.data.domicilioRiesgo,
+      clausulaSubrogacion: parsed.data.clausulaSubrogacion,
+      clausulaNoRepeticion: parsed.data.clausulaNoRepeticion,
+      nomina: parsed.data.nomina,
+      solicitante: parsed.data.solicitante,
+      mail: parsed.data.mail,
+      telefonoArea: Number(parsed.data.telefonoArea),
+      telefonoNumero: Number(parsed.data.telefonoNumero),
     }
 
     const res = await woranzFetch("/ap/propuesta", {
       method: "POST",
       body: JSON.stringify(payload),
     })
-
     const json = await res.json()
 
     if (json.error) {
-      const msg =
-        typeof json.error === "string"
-          ? json.error
-          : json.error?.message ?? JSON.stringify(json.error)
-      return NextResponse.json({ error: msg || "Error al crear propuesta" }, { status: 422 })
+      return jsonError(
+        getWoranzErrorMessage(json.error, "Error al crear propuesta"),
+        422,
+        { rateLimit }
+      )
     }
 
-    return NextResponse.json({ data: json.data })
+    return jsonData({ data: json.data }, { rateLimit })
   } catch {
-    return NextResponse.json(
-      { error: "Error al crear propuesta" },
-      { status: 500 }
-    )
+    return jsonError("Error al crear propuesta", 500, { rateLimit })
   }
 }

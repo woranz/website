@@ -283,7 +283,7 @@ Documento para definir el contenido de cada página de producto antes de diseña
 
 ---
 
-## Caución Tradicional (Obra, Servicios, Aduanera, Judicial)
+## Cauciones Tradicionales (Obra, Servicios)
 
 **HEADLINE:**
 **Bajada:**
@@ -294,21 +294,70 @@ Documento para definir el contenido de cada página de producto antes de diseña
 **Paquetes disponibles:**
 - Caución de Obra
 - Caución de Servicios
-- Caución Aduanera
-- Caución Judicial
 
 **Qué cubre:**
 - [ ] Garantía de cumplimiento de contratos
 - [ ] Respaldo ante licitaciones
-- [ ] Obligaciones aduaneras
-- [ ] Garantías judiciales
 
 **FAQs:**
 1. ¿?
 
 
 **Productos relacionados:**
--
+- Garantía Aduanera
+- Caución Judicial
+
+---
+
+## Garantía Aduanera
+
+**HEADLINE:**
+**Bajada:**
+
+**Cotizador:** No (cotización personalizada)
+**Fórmula de cotización:** Según tipo de operación y monto de la obligación aduanera
+
+**Paquetes disponibles:** No (producto único)
+
+**Qué cubre:**
+- [ ] Garantía de importación temporal
+- [ ] Garantía de exportación temporal
+- [ ] Garantía de tránsito aduanero
+- [ ] Obligaciones ante la aduana
+
+**FAQs:**
+1. ¿?
+
+
+**Productos relacionados:**
+- Cauciones Tradicionales
+- Caución Judicial
+
+---
+
+## Caución Judicial
+
+**HEADLINE:**
+**Bajada:**
+
+**Cotizador:** No (cotización personalizada)
+**Fórmula de cotización:** Según tipo de garantía y monto del proceso
+
+**Paquetes disponibles:** No (producto único)
+
+**Qué cubre:**
+- [ ] Garantía de embargo
+- [ ] Garantía de medida cautelar
+- [ ] Contracautela
+- [ ] Garantías en procesos judiciales
+
+**FAQs:**
+1. ¿?
+
+
+**Productos relacionados:**
+- Cauciones Tradicionales
+- Garantía Aduanera
 
 ---
 

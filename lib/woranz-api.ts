@@ -3,6 +3,8 @@
  * Token is cached in memory with a 50-minute TTL.
  */
 
+import { woranzPersonaSchema, type WoranzPersona } from "@/lib/api/schemas/ap"
+
 const FRONTAPI_URL = "https://frontapi.woranz.com/api"
 const LOGIN_URL = `${FRONTAPI_URL}/usuario/login`
 const PERSONAS_URL = `${FRONTAPI_URL}/personas/all`
@@ -58,17 +60,31 @@ export async function getIdPlanComercial(): Promise<number> {
   return idPlanComercial
 }
 
+export function getWoranzErrorMessage(error: unknown, fallback: string) {
+  if (typeof error === "string" && error.trim()) {
+    return error
+  }
+
+  if (
+    error &&
+    typeof error === "object" &&
+    "message" in error &&
+    typeof error.message === "string" &&
+    error.message.trim()
+  ) {
+    return error.message
+  }
+
+  return fallback
+}
+
 export type PersonaData = {
   nombre: string
   apellido: string
   domicilio: string
 }
 
-/**
- * Look up a person by DNI using the frontapi personas endpoint.
- * Returns parsed name and locality from the first result.
- */
-export async function lookupPersona(dni: string): Promise<PersonaData | null> {
+async function fetchPersonaRecord(dni: string): Promise<WoranzPersona | null> {
   const token = await authenticate()
 
   const res = await fetch(PERSONAS_URL, {
@@ -85,27 +101,44 @@ export async function lookupPersona(dni: string): Promise<PersonaData | null> {
   }
 
   const json = await res.json()
-  const d = json.data
+  const data = json.data
 
-  if (!d) {
+  if (!data) {
     return null
   }
 
-  // Response can be a single object or an array
-  const persona = Array.isArray(d) ? d[0] : d
-
+  const persona = Array.isArray(data) ? data[0] : data
   if (!persona) {
     return null
   }
 
-  const nombre = persona.nombre ?? ""
-  const apellido = persona.apellido ?? ""
-  const localidad = persona.domicilio?.localidad ?? persona.localidad ?? ""
+  const parsed = woranzPersonaSchema.safeParse(persona)
+  if (!parsed.success) {
+    return null
+  }
+
+  return parsed.data
+}
+
+/**
+ * Look up a person by DNI using the frontapi personas endpoint.
+ * Returns parsed name and locality from the first result.
+ */
+export async function lookupPersona(dni: string): Promise<PersonaData | null> {
+  const persona = await fetchPersonaRecord(dni)
+  if (!persona) {
+    return null
+  }
+
+  const domicilio =
+    persona.domicilio && typeof persona.domicilio === "object"
+      ? (persona.domicilio.localidad as string | undefined) ?? ""
+      : ""
 
   return {
-    nombre,
-    apellido,
-    domicilio: localidad,
+    nombre: persona.nombre,
+    apellido: persona.apellido,
+    domicilio,
   }
 }
 
@@ -131,27 +164,8 @@ export async function woranzFetch(
  * Look up a person by DNI returning the full raw object from the API.
  * Includes domicilio, CUIT, sexo, fechaNacimiento, emails, etc.
  */
-// biome-ignore lint: raw API response shape
-export async function lookupPersonaFull(dni: string): Promise<any | null> {
-  const token = await authenticate()
-
-  const res = await fetch(PERSONAS_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ id: dni, type: "tomador" }),
-  })
-
-  if (!res.ok) {
-    return null
-  }
-
-  const json = await res.json()
-  const d = json.data
-  if (!d) return null
-
-  const persona = Array.isArray(d) ? d[0] : d
-  return persona ?? null
+export async function lookupPersonaFull(
+  dni: string
+): Promise<WoranzPersona | null> {
+  return fetchPersonaRecord(dni)
 }

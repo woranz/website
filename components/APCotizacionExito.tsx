@@ -48,9 +48,15 @@ function APCotizacionExitoContent({ baseHref }: { baseHref: string }) {
         setPhase(1)
 
         if (email) {
-          fetch(
-            `/api/ap/documentos/email?idEmision=${idEmision}&email=${encodeURIComponent(email)}&idImpresion=${ID_IMPRESION.coberturaAP}`
-          )
+          fetch("/api/ap/documentos/email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              idEmision,
+              email,
+              idImpresion: ID_IMPRESION.coberturaAP,
+            }),
+          })
             .then((response) => response.json())
             .then(() => setEmailSent(true))
             .catch(() => {})

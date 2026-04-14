@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Backend boundary / Seguridad
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

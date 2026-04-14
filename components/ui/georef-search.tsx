@@ -140,7 +140,7 @@ export function GeorefSearch({
       setLoading(true)
       try {
         const res = await fetch(
-          `/api/georef?endpoint=${config.endpoint}&nombre=${encodeURIComponent(q)}&campos=${config.fields}`
+          `/api/georef?endpoint=${config.endpoint}&nombre=${encodeURIComponent(q)}`
         )
         const data = await res.json()
         setOptions(config.mapResults(data[config.responseKey] ?? []))

@@ -1,50 +1,42 @@
+import type { FormConfig } from "@/lib/forms/types"
 import { sendEmail } from "@/lib/email/send"
+import { sanitizeEmailHeaderValue } from "@/lib/email/sanitize"
 import {
   buildContactoEmail,
   type ContactoEmailData,
 } from "@/lib/email/templates/contacto"
-import { getFormConfig } from "@/lib/forms/registry"
 
-export async function handleContacto(formData: FormData) {
-  const formId = formData.get("_formId") as string
-  if (!formId) {
-    throw new Error("Falta el identificador del formulario.")
-  }
-
-  const config = getFormConfig(formId)
-  if (!config) {
-    throw new Error(`Formulario "${formId}" no encontrado.`)
-  }
-
-  // Extract and validate fields
+export async function handleContacto(
+  config: FormConfig,
+  values: Record<string, string>
+) {
   const fields: { label: string; value: string }[] = []
 
   for (const field of config.campos) {
-    const value = (formData.get(field.name) as string) ?? ""
-
-    if (field.required && !value.trim()) {
-      throw new Error(`El campo "${field.label}" es obligatorio.`)
-    }
-
-    fields.push({ label: field.label, value })
+    fields.push({
+      label: field.label,
+      value: values[field.name] ?? "",
+    })
   }
 
-  // Build subject from template or default
   let subject = config.subjectTemplate ?? `Contacto — ${config.titulo}`
 
-  // Replace {{fieldName}} placeholders in subject
   for (const { label, value } of fields) {
-    subject = subject.replace(`{{${label}}}`, value)
+    subject = subject.replace(
+      `{{${label}}}`,
+      sanitizeEmailHeaderValue(value)
+    )
   }
 
-  // Also support replacing by field name
   for (const field of config.campos) {
-    const value = (formData.get(field.name) as string) ?? ""
-    subject = subject.replace(`{{${field.name}}}`, value)
+    subject = subject.replace(
+      `{{${field.name}}}`,
+      sanitizeEmailHeaderValue(values[field.name] ?? "")
+    )
   }
 
   const emailData: ContactoEmailData = {
-    formId,
+    formId: config.id,
     formTitle: config.titulo,
     fields,
   }
@@ -62,7 +54,7 @@ export async function handleContacto(formData: FormData) {
         : config.cc && config.cc.length > 0
           ? config.cc
           : undefined,
-    subject,
+    subject: sanitizeEmailHeaderValue(subject),
     html,
   })
 }

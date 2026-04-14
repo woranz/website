@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: CMS / Data layer
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

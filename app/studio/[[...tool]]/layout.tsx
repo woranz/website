@@ -1,7 +1,11 @@
-export const metadata = {
-  title: 'Woranz CMS',
-  description: 'Panel de administración de contenido',
-}
+import { buildPageMetadata } from "@/lib/metadata"
+
+export const metadata = buildPageMetadata({
+  title: "Woranz CMS",
+  description: "Panel de administración de contenido",
+  canonicalPath: "/studio",
+  noIndex: true,
+})
 
 export default function StudioLayout({
   children,

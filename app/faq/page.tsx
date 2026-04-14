@@ -1,11 +1,13 @@
 import type { Metadata } from "next"
 
 import { PlaceholderPage } from "@/components/site/placeholder-page"
+import { buildPageMetadata } from "@/lib/metadata"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "FAQ — Woranz",
   description: "Página temporal de preguntas frecuentes de Woranz.",
-}
+  canonicalPath: "/faq",
+})
 
 export default function FaqPage() {
   return (

@@ -2,16 +2,20 @@
 
 Prioridad: Alta
 Tipo: CMS governance / Content architecture
-Estado: Definido
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex
-- Entregable estructural: eliminar fallbacks silenciosos, mover defaults de CTA y descripción a `settings` en Sanity, borrar `product-catalog.json`.
+- Entregable estructural: centralizar fallbacks editoriales, hacer visibles los faltantes en dev, unificar helpers del source layer y dejar la excepción SEO/metadata resuelta en la capa compartida.
 - Visual: no aplica (la regla no cambia jerarquía ni composición)
 
 ## Decisión
 
 **Regla**: salvo header y footer, todo el contenido editorial vive en Sanity.
+
+Override aprobado durante implementación:
+- Se mantienen fallbacks editoriales centralizados en código.
+- Si falta contenido owned por Sanity, el sitio falla en `dev` y degrada con fallback en `prod`.
 
 ## Matriz de ownership
 
@@ -34,12 +38,10 @@ Split de ejecucion:
 
 ## Acciones concretas para cerrar
 
-1. Eliminar fallbacks silenciosos en `product-page-source.ts` y `home-page-source.ts` — si falta contenido en Sanity, que falle explícito en dev.
-2. Mover defaults de CTA labels y descripción genérica al documento `settings` en Sanity (el schema ya existe, solo faltan campos).
-3. Mover `teamCount` a `settings` o a `seccionCta` en Sanity.
-4. Mover links institucionales a `settings` → `navigationLinks[]`.
-5. Borrar `/data/product-catalog.json`.
-6. Borrar contenido seed hardcoded en `app/api/migrate-homes/route.ts` si ya no se usa.
+1. Centralizar fallbacks en un módulo compartido de page source.
+2. Hacer visible en `dev` cuando el contenido owned por Sanity cae a fallback.
+3. Mantener CTA defaults fuera de este ticket, sin reabrir su convención.
+4. Resolver el contrato SEO/metadata en la capa compartida sin romper `prod`.
 
 ## Evidencia original
 
@@ -60,9 +62,9 @@ Split de ejecucion:
 ## Criterio de aceptacion
 
 - Matriz de ownership documentada (este archivo).
-- Fallbacks hardcoded eliminados o reemplazados por datos de `settings` en Sanity.
-- `product-catalog.json` eliminado.
-- En dev, contenido faltante en Sanity produce error visible, no copy fantasma.
+- Fallbacks hardcoded centralizados y documentados.
+- En dev, contenido faltante en Sanity produce error visible.
+- En prod, la página degrada con fallback en lugar de fallar.
 
 ## Validacion
 

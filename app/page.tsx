@@ -2,12 +2,16 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { ProductPageTemplate } from "@/components/templates/product-page"
-import { getHomePageData } from "@/lib/home-page-source"
+import {
+  getHomePageData,
+  getHomePageFallbackMetadata,
+} from "@/lib/home-page-source"
+import { buildPageMetadata } from "@/lib/metadata"
 
-export const metadata: Metadata = {
-  title: "Woranz — Seguros para Personas",
-  description:
-    "Cuando pasa algo, necesitás que alguien responda. Seguros 100% online con personas reales del otro lado.",
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getHomePageData("personas")
+
+  return buildPageMetadata(page?.metadata || getHomePageFallbackMetadata("personas"))
 }
 
 export default async function HomePage() {
