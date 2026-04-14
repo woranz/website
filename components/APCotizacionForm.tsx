@@ -1767,7 +1767,20 @@ export function APCotizacionForm({
 
       {/* ── Bottom sticky bar ── */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-woranz-line bg-white/95 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-page items-center justify-between px-page-mobile py-3 md:px-page">
+        <div className="mx-auto flex max-w-page flex-col gap-2 px-page-mobile py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-0 md:px-page">
+          {/* Mobile-only summary */}
+          {!editingBar && (
+            <div className="flex items-center justify-between text-xs sm:hidden">
+              <span className="text-woranz-text">
+                {cantidadActual} {cantidadActual === 1 ? "persona" : "personas"}
+                <span className="text-woranz-muted"> · </span>
+                {dayCount > 0 ? `${dayCount} ${dayCount === 1 ? "día" : "días"}` : formatDate(desde)}
+              </span>
+              {selectedPlan && (
+                <span className="font-semibold text-woranz-ink">{formatMoney(selectedPlan.premio)}</span>
+              )}
+            </div>
+          )}
           {/* Left — summary or edit mode */}
           {editingBar ? (
             <div className="hidden items-center gap-3 sm:flex">
