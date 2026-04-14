@@ -16,6 +16,7 @@ import {
   Zap,
 } from "lucide-react"
 
+import { ProductSearchList } from "@/components/ProductSearchList"
 import { CarouselWithHeader } from "@/components/Carousel"
 import { ContactForm } from "@/components/ContactForm"
 import { CaucionQuoterDesktop, CaucionQuoterMobile } from "@/components/CaucionQuoter"
@@ -901,6 +902,8 @@ function renderSection(section: ProductPageSection, basePath: string) {
       return <StandaloneStepsSection section={section} />
     case "product-grid":
       return <ProductGridSection section={section} />
+    case "product-search-list":
+      return <ProductSearchList title={section.title} items={section.items} />
     case "faq":
       return <FaqSection section={section} />
     case "cta":

@@ -176,7 +176,7 @@ function transformSection(
       }
 
       return {
-        type: "product-grid",
+        type: segment === "empresas" ? "product-search-list" as const : "product-grid" as const,
         title: section.titulo?.trim() || "Coberturas",
         items,
       }
@@ -302,7 +302,7 @@ export function transformSanityHome(
           label: feature.texto?.trim() || feature.label?.trim() || "",
         })),
       primaryCta: data.ctaPrimario?.label?.trim() || fallback.primaryCta,
-      primaryCtaHref: data.ctaPrimario?.href?.trim(),
+      primaryCtaHref: data.ctaPrimario?.href?.trim() ?? (segment === "empresas" ? "#coberturas" : undefined),
       secondaryCta:
         data.ctaSecundario?.label?.trim() || fallback.secondaryCta,
       secondaryCtaHref: data.ctaSecundario?.href?.trim() || whatsappHref,

@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: IA / Search UX / Home page architecture
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex
