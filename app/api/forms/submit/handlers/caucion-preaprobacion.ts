@@ -1,10 +1,10 @@
+import type { CaucionPreaprobacionPayload } from "@/lib/api/schemas/forms"
 import { sendEmail, type EmailAttachment } from "@/lib/email/send"
+import { sanitizeEmailHeaderValue } from "@/lib/email/sanitize"
 import {
   buildPreaprobacionEmail,
   type PreaprobacionEmailData,
 } from "@/lib/email/templates/preaprobacion"
-
-const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB total
 
 /** Determine CC recipients based on city name */
 function getCcRecipients(ciudad: string): string[] {
@@ -29,50 +29,33 @@ function getCcRecipients(ciudad: string): string[] {
   return cc
 }
 
-export async function handleCaucionPreaprobacion(formData: FormData) {
-  // Extract text fields
-  const getString = (key: string) => (formData.get(key) as string) ?? ""
-
+export async function handleCaucionPreaprobacion(
+  payload: CaucionPreaprobacionPayload
+) {
   const data: PreaprobacionEmailData = {
-    dni: getString("dni"),
-    nombre: getString("nombre"),
-    apellido: getString("apellido"),
-    domicilio: getString("domicilio"),
-    ciudad: getString("ciudad"),
-    modoContacto: getString("modoContacto"),
-    contactoValor: getString("contactoValor"),
-    provincia: getString("provincia"),
-    alquiler: getString("alquiler"),
-    duracion: getString("duracion"),
-    modoPago: getString("modoPago"),
-    restitucion: getString("restitucion"),
-    ingresosMensuales: getString("ingresosMensuales"),
-    ingresoFamiliar: getString("ingresoFamiliar"),
-    avalesDnis: formData.getAll("avalesDnis") as string[],
-    tiposDocumentacion: formData.getAll("tiposDocumentacion") as string[],
-    inmobiliaria: getString("inmobiliaria"),
-    idProductor: getString("idProductor"),
+    dni: payload.dni,
+    nombre: payload.nombre,
+    apellido: payload.apellido,
+    domicilio: payload.domicilio,
+    ciudad: payload.ciudad,
+    modoContacto: payload.modoContacto,
+    contactoValor: payload.contactoValor,
+    provincia: payload.provincia,
+    alquiler: String(payload.alquiler),
+    duracion: String(payload.duracion),
+    modoPago: payload.modoPago,
+    restitucion: payload.restitucion ? "true" : "false",
+    ingresosMensuales: String(payload.ingresosMensuales),
+    ingresoFamiliar: String(payload.ingresoFamiliar),
+    avalesDnis: payload.avalesDnis,
+    tiposDocumentacion: payload.tiposDocumentacion,
+    inmobiliaria: payload.inmobiliaria,
+    idProductor: payload.idProductor,
   }
 
-  // Validate required fields
-  const required = ["dni", "nombre", "apellido", "ciudad", "modoContacto", "contactoValor", "ingresosMensuales"] as const
-  for (const field of required) {
-    if (!data[field]) {
-      throw new Error(`El campo "${field}" es obligatorio.`)
-    }
-  }
-
-  // Process file attachments
-  const files = formData.getAll("archivos") as File[]
   const attachments: EmailAttachment[] = []
-  let totalSize = 0
 
-  for (const file of files) {
-    if (!(file instanceof File) || file.size === 0) continue
-    totalSize += file.size
-    if (totalSize > MAX_FILE_SIZE) {
-      throw new Error("Los archivos adjuntos superan el límite de 10MB.")
-    }
+  for (const file of payload.archivos) {
     const buffer = Buffer.from(await file.arrayBuffer())
     attachments.push({
       content: buffer.toString("base64"),
@@ -81,14 +64,23 @@ export async function handleCaucionPreaprobacion(formData: FormData) {
     })
   }
 
-  // Build email
   const html = buildPreaprobacionEmail(data)
   const cc = getCcRecipients(data.ciudad)
 
   await sendEmail({
-    to: process.env.NODE_ENV === "development" ? "live@woranz.com" : "alquileres@woranz.com",
-    cc: process.env.NODE_ENV === "development" ? undefined : cc.length > 0 ? cc : undefined,
-    subject: `Pre-aprobación Caución — ${data.nombre} ${data.apellido} — DNI ${data.dni}`,
+    to:
+      process.env.NODE_ENV === "development"
+        ? "live@woranz.com"
+        : "alquileres@woranz.com",
+    cc:
+      process.env.NODE_ENV === "development"
+        ? undefined
+        : cc.length > 0
+          ? cc
+          : undefined,
+    subject: sanitizeEmailHeaderValue(
+      `Pre-aprobación Caución — ${data.nombre} ${data.apellido} — DNI ${data.dni}`
+    ),
     html,
     attachments: attachments.length > 0 ? attachments : undefined,
   })
