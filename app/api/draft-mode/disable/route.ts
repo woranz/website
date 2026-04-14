@@ -1,12 +1,23 @@
-import { draftMode } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { draftMode } from "next/headers"
+import { NextRequest, NextResponse } from "next/server"
+import {
+  getSafeDraftModeRedirect,
+  validateDraftModeRequest,
+} from "@/app/api/draft-mode/_shared"
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
+  const invalidResponse = validateDraftModeRequest(request)
+
+  if (invalidResponse) {
+    return invalidResponse
+  }
+
   const dm = await draftMode()
   dm.disable()
 
-  const url = new URL(request.url)
-  const redirectTo = url.searchParams.get('redirect') || '/'
+  const redirectTo = getSafeDraftModeRedirect(
+    request.nextUrl.searchParams.get("redirect")
+  )
 
-  redirect(redirectTo)
+  return NextResponse.redirect(new URL(redirectTo, request.url))
 }

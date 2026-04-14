@@ -1,6 +1,7 @@
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types"
 
 import { buildProductPath, type ProductSegment } from "@/lib/product-paths"
+import { buildWhatsappCtaHref, CTA_DEFAULTS } from "@/lib/product-page-source"
 import type {
   FeatureCarouselItem,
   ProductCarouselItem,
@@ -103,6 +104,36 @@ type SanityHomeData = {
 
 const REVALIDATE_SECONDS = 60
 
+const FEATURE_CAROUSEL_DEFAULTS: Record<ProductSegment, { title: string; items: FeatureCarouselItem[] }> = {
+  personas: {
+    title: "Seguros pensados para vos.",
+    items: [
+      { imageSrc: "/images/features/personas-1-online.webp", text: "Cotizá y gestioná todo\nonline, cuando quieras.", textMobile: "Cotizá y gestioná\ntodo online." },
+      { imageSrc: "/images/features/productores-2-cerca.webp", text: "Siempre cerca tuyo,\nsiempre a un mensaje.", textMobile: "Siempre cerca tuyo,\na un mensaje." },
+      { imageSrc: "/images/features/personas-3-precio.webp", text: "El mejor precio, el mejor\nproducto. Sin vueltas.", textMobile: "El mejor precio.\nSin vueltas." },
+      { imageSrc: "/images/features/personas-4-simple.webp", text: "Simple, online y con la\nmejor experiencia.", textMobile: "Simple, online y con\nla mejor experiencia." },
+    ],
+  },
+  empresas: {
+    title: "Seguros pensados para tu empresa.",
+    items: [
+      { imageSrc: "/images/features/empresas-1-online.webp", text: "Cotizá y gestioná las\ncoberturas de tu empresa.", textMobile: "Cotizá y gestioná\ntodo online." },
+      { imageSrc: "/images/features/empresas-2-cerca.webp", text: "Un equipo que entiende\ntu negocio, siempre cerca.", textMobile: "Siempre cerca\nde tu empresa." },
+      { imageSrc: "/images/features/empresas-3-medida.webp", text: "Coberturas a medida\nde tu operación.", textMobile: "Coberturas a medida\nde tu operación." },
+      { imageSrc: "/images/features/empresas-4-simple.webp", text: "Simple para vos\ny para tu equipo.", textMobile: "Simple para vos\ny tu equipo." },
+    ],
+  },
+  productores: {
+    title: "Herramientas que te ayudan a vender.",
+    items: [
+      { imageSrc: "/images/features/productores-1-gestion.webp", text: "Cotizá, emití y seguí cada\noperación desde un solo lugar.", textMobile: "Cotizá, emití y seguí\ndesde un solo lugar." },
+      { imageSrc: "/images/features/productores-2-cerca.webp", text: "Soporte real, siempre\na un mensaje.", textMobile: "Soporte real,\na un mensaje." },
+      { imageSrc: "/images/features/productores-3-comisiones.webp", text: "Comisiones competitivas\ny liquidación transparente.", textMobile: "Comisiones competitivas\ny transparentes." },
+      { imageSrc: "/images/features/productores-4-simple.webp", text: "Tu cartera, simplificada\nen una sola plataforma.", textMobile: "Tu cartera,\nsimplificada." },
+    ],
+  },
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────
 
 function isSanityConfigured() {
@@ -144,7 +175,7 @@ function mapProductRefsToGrid(products: SanityProductRef[] | undefined): Product
 
 // ── Section transform ─────────────────────────────────────────────────
 
-function transformSection(section: SanitySeccion): ProductPageSection | null {
+function transformSection(section: SanitySeccion, segment: ProductSegment, pagePath: string): ProductPageSection | null {
   switch (section._type) {
     case "seccionPasos": {
       const steps: ProductStep[] = (section.pasos ?? [])
@@ -170,18 +201,19 @@ function transformSection(section: SanitySeccion): ProductPageSection | null {
     }
 
     case "seccionCarouselFeatures": {
-      const items: FeatureCarouselItem[] = (section.items ?? [])
-        .filter((item) => item.imagen || item.texto)
-        .map((item) => ({
-          imageSrc: resolveImage(item.imagen, "/images/feature-1.png"),
-          text: item.texto?.trim(),
-          textMobile: item.textoMobile?.trim(),
-        }))
-      if (items.length === 0) return null
+      const defaults = FEATURE_CAROUSEL_DEFAULTS[segment]
+      const sanityItems = (section.items ?? []).filter((item) => item.imagen || item.texto)
+      const items: FeatureCarouselItem[] = sanityItems.length > 0
+        ? sanityItems.map((item, i) => ({
+            imageSrc: resolveImage(item.imagen, defaults.items[i]?.imageSrc ?? "/images/feature-1.png"),
+            text: item.texto?.trim() || defaults.items[i]?.text,
+            textMobile: item.textoMobile?.trim() || defaults.items[i]?.textMobile,
+          }))
+        : defaults.items
       return {
         type: "carousel",
         variant: "feature",
-        title: section.titulo?.trim() || "Features",
+        title: section.titulo?.trim() || defaults.title,
         items,
       }
     }
@@ -197,17 +229,19 @@ function transformSection(section: SanitySeccion): ProductPageSection | null {
     }
 
     case "seccionCta": {
+      const ctaDefaults = CTA_DEFAULTS[segment]
+      const whatsappHref = buildWhatsappCtaHref(pagePath)
       return {
         type: "cta",
-        title: section.titulo?.trim() || "Estamos para ayudarte.",
+        title: section.titulo?.trim() || ctaDefaults.title,
         titleMobile: section.tituloMobile?.trim(),
-        description: section.descripcion?.trim() || "",
-        teamCount: section.teamCount?.trim() || "+9",
-        teamLabel: section.teamLabel?.trim() || "personas cuidando de vos",
-        primaryCta: section.ctaPrimario?.label?.trim() || "Empezar ahora",
+        description: section.descripcion?.trim() || ctaDefaults.description,
+        teamCount: section.teamCount?.trim() || ctaDefaults.teamCount,
+        teamLabel: section.teamLabel?.trim() || ctaDefaults.teamLabel,
+        primaryCta: section.ctaPrimario?.label?.trim() || ctaDefaults.primaryCta,
         primaryCtaHref: section.ctaPrimario?.href?.trim(),
-        secondaryCta: section.ctaSecundario?.label?.trim() || "Hablá con nosotros →",
-        secondaryCtaHref: section.ctaSecundario?.href?.trim(),
+        secondaryCta: section.ctaSecundario?.label?.trim() || ctaDefaults.secondaryCta,
+        secondaryCtaHref: section.ctaSecundario?.href?.trim() || whatsappHref,
       }
     }
 
@@ -227,14 +261,30 @@ function transformSanityHome(
   data: SanityHomeData,
   segment: ProductSegment
 ): ProductPageData {
+  const pagePath = segmentToPath(segment)
+  const whatsappHref = buildWhatsappCtaHref(pagePath)
   const sections: ProductPageSection[] = (data.secciones ?? [])
-    .map(transformSection)
+    .map((s) => transformSection(s, segment, pagePath))
     .filter((s): s is ProductPageSection => s !== null)
+
+  // Inject default feature carousel if Sanity doesn't provide one
+  const hasFeatureCarousel = sections.some(
+    (s) => s.type === "carousel" && s.variant === "feature"
+  )
+  if (!hasFeatureCarousel) {
+    const defaults = FEATURE_CAROUSEL_DEFAULTS[segment]
+    sections.push({
+      type: "carousel",
+      variant: "feature",
+      title: defaults.title,
+      items: defaults.items,
+    })
+  }
 
   return {
     segment,
     slug: segment === "personas" ? "home" : segment,
-    path: segmentToPath(segment),
+    path: pagePath,
     isHome: true,
     metadata: {
       title: data.metaTitulo?.trim() || `Woranz — ${segment.charAt(0).toUpperCase() + segment.slice(1)}`,
@@ -259,7 +309,7 @@ function transformSanityHome(
       primaryCta: data.ctaPrimario?.label?.trim() || "Ver seguros",
       primaryCtaHref: data.ctaPrimario?.href?.trim(),
       secondaryCta: data.ctaSecundario?.label?.trim() || "Hablar con alguien →",
-      secondaryCtaHref: data.ctaSecundario?.href?.trim(),
+      secondaryCtaHref: data.ctaSecundario?.href?.trim() || whatsappHref,
       imageSrc: resolveImage(data.heroImagen, "/images/hero.png"),
       imageAlt: `Woranz ${segment}`,
     },

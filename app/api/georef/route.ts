@@ -4,7 +4,6 @@ import { RATE_LIMITS } from "@/lib/api/limits"
 import { checkRateLimit } from "@/lib/api/rate-limit"
 import { georefQuerySchema, GEOREF_ENDPOINT_CONFIG } from "@/lib/api/schemas/georef"
 import { jsonError } from "@/lib/api/request"
-
 const GEOREF_BASE = "https://apis.datos.gob.ar/georef/api"
 const CACHE_TTL = 3600_000 // 1 hour in ms
 

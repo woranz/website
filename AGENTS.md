@@ -36,7 +36,7 @@ Read this file before taking any action on a `/frontend` or general request.
 ## Content Architecture
 
 - **Product data**: Sanity CMS schemas (`sanity/schemas/`)
-- **Product catalog**: `data/product-catalog.json` + `lib/product-catalog.ts`
+- **Legacy redirects**: `data/legacy-redirects.json`
 - **Page sources**: `lib/home-page-source.ts`, `lib/product-page-source.ts`
 - **Dynamic routing**: `app/[segmento]/coberturas/[slug]/`
 
