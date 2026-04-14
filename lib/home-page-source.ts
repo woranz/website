@@ -13,7 +13,7 @@ import type {
 import { draftMode } from "next/headers"
 
 import { client, previewClient, urlFor } from "@/sanity/lib/client"
-import { paginaHomeQuery } from "@/sanity/lib/queries"
+import { paginaHomeQuery, productosQuery } from "@/sanity/lib/queries"
 
 // ── Sanity response types ─────────────────────────────────────────────
 
@@ -160,6 +160,7 @@ function mapProductRef(product: SanityProductRef): ProductCarouselItem | null {
 
   return {
     title: product.nombre?.trim() || product.headline?.trim() || "Producto Woranz",
+    subtitle: product.subtitulo?.trim(),
     href: buildProductPath(segment, slug),
     imageSrc: resolveImage(product.cardImage ?? product.heroImage, "/images/hero.png"),
   }
@@ -222,7 +223,7 @@ function transformSection(section: SanitySeccion, segment: ProductSegment, pageP
       const items = mapProductRefsToGrid(section.productos)
       if (items.length === 0) return null
       return {
-        type: "product-grid",
+        type: segment === "empresas" ? "product-search-list" as const : "product-grid" as const,
         title: section.titulo?.trim() || "Coberturas",
         items,
       }
@@ -306,9 +307,9 @@ function transformSanityHome(
           icon: f.icono?.trim() || f.icon?.trim() || "shield-check",
           label: f.texto?.trim() || f.label?.trim() || "",
         })),
-      primaryCta: data.ctaPrimario?.label?.trim() || "Ver seguros",
-      primaryCtaHref: data.ctaPrimario?.href?.trim(),
-      secondaryCta: data.ctaSecundario?.label?.trim() || "Hablar con alguien →",
+      primaryCta: data.ctaPrimario?.label?.trim() || (segment === "empresas" ? "Ver coberturas" : "Ver seguros"),
+      primaryCtaHref: data.ctaPrimario?.href?.trim() ?? (segment === "empresas" ? "#coberturas" : undefined),
+      secondaryCta: data.ctaSecundario?.label?.trim() || (segment === "empresas" ? "¡Hablemos!" : "Hablar con alguien →"),
       secondaryCtaHref: data.ctaSecundario?.href?.trim() || whatsappHref,
       imageSrc: resolveImage(data.heroImagen, "/images/hero.png"),
       imageAlt: `Woranz ${segment}`,
@@ -337,7 +338,30 @@ export async function getHomePageData(
     )
 
     if (data) {
-      return transformSanityHome(data, segment)
+      const page = transformSanityHome(data, segment)
+
+      // For empresas, replace search list items with ALL segment products
+      if (segment === "empresas") {
+        const allProducts = await sanityClient.fetch<SanityProductRef[]>(
+          productosQuery,
+          {},
+          dm.isEnabled
+            ? { perspective: "previewDrafts" as const }
+            : { next: { revalidate: REVALIDATE_SECONDS } }
+        )
+        const segmentItems = mapProductRefsToGrid(
+          allProducts.filter((p) => p.segmento === "empresas")
+        )
+        if (segmentItems.length > 0) {
+          for (const section of page.sections) {
+            if (section.type === "product-search-list") {
+              section.items = segmentItems
+            }
+          }
+        }
+      }
+
+      return page
     }
   } catch {
     // Fall through — caller uses hardcoded fallback
