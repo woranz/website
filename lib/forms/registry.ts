@@ -3,6 +3,7 @@ import type { FormConfig } from "./types"
 import { aeronavegacion } from "./configs/aeronavegacion"
 import { caucionesTradicionales } from "./configs/cauciones-tradicionales"
 import { incendio } from "./configs/incendio"
+import { productoresRegistro } from "./configs/productores-registro"
 import { roboBici } from "./configs/robo-bici"
 import { roboCelular } from "./configs/robo-celular"
 import { roboNotebook } from "./configs/robo-notebook"
@@ -12,6 +13,7 @@ const configs: Record<string, FormConfig> = {
   [aeronavegacion.id]: aeronavegacion,
   [caucionesTradicionales.id]: caucionesTradicionales,
   [incendio.id]: incendio,
+  [productoresRegistro.id]: productoresRegistro,
   [roboBici.id]: roboBici,
   [roboCelular.id]: roboCelular,
   [roboNotebook.id]: roboNotebook,

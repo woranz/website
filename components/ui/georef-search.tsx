@@ -5,36 +5,13 @@ import { Loader2 } from "lucide-react"
 
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
+import { PROVINCIAS } from "@/lib/provincias"
 import type { ComboboxOption } from "@/components/ui/combobox"
 
 // ── Province data ────────────────────────────────────────────────────
 
-export const PROVINCIAS: Array<ComboboxOption & { impuesto: number }> = [
-  { value: "caba", label: "CABA", impuesto: 0.03 },
-  { value: "buenos-aires", label: "Buenos Aires", impuesto: 0.035 },
-  { value: "cordoba", label: "Córdoba", impuesto: 0.04 },
-  { value: "santa-fe", label: "Santa Fe", impuesto: 0.038 },
-  { value: "mendoza", label: "Mendoza", impuesto: 0.035 },
-  { value: "tucuman", label: "Tucumán", impuesto: 0.04 },
-  { value: "entre-rios", label: "Entre Ríos", impuesto: 0.035 },
-  { value: "salta", label: "Salta", impuesto: 0.035 },
-  { value: "misiones", label: "Misiones", impuesto: 0.04 },
-  { value: "chaco", label: "Chaco", impuesto: 0.035 },
-  { value: "corrientes", label: "Corrientes", impuesto: 0.035 },
-  { value: "santiago-del-estero", label: "Santiago del Estero", impuesto: 0.04 },
-  { value: "san-juan", label: "San Juan", impuesto: 0.035 },
-  { value: "jujuy", label: "Jujuy", impuesto: 0.035 },
-  { value: "rio-negro", label: "Río Negro", impuesto: 0.03 },
-  { value: "neuquen", label: "Neuquén", impuesto: 0.03 },
-  { value: "formosa", label: "Formosa", impuesto: 0.035 },
-  { value: "chubut", label: "Chubut", impuesto: 0.03 },
-  { value: "san-luis", label: "San Luis", impuesto: 0.035 },
-  { value: "catamarca", label: "Catamarca", impuesto: 0.035 },
-  { value: "la-rioja", label: "La Rioja", impuesto: 0.035 },
-  { value: "la-pampa", label: "La Pampa", impuesto: 0.03 },
-  { value: "santa-cruz", label: "Santa Cruz", impuesto: 0.03 },
-  { value: "tierra-del-fuego", label: "Tierra del Fuego", impuesto: 0.03 },
-]
+export const PROVINCIA_DATA: Array<ComboboxOption & { impuesto: number }> = [...PROVINCIAS]
+export { PROVINCIAS }
 
 function matchProvinciaSlug(nombre: string): string | undefined {
   const normalized = nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -95,6 +72,11 @@ const MODE_CONFIGS: Record<string, ModeConfig> = {
   },
 }
 
+const PROVINCIA_OPTIONS: GeorefOption[] = PROVINCIAS.map((provincia) => ({
+  id: provincia.value,
+  nombre: provincia.label,
+}))
+
 // ── Base component ───────────────────────────────────────────────────
 
 type GeorefSearchProps = {
@@ -133,6 +115,25 @@ export function GeorefSearch({
 
   const search = useCallback(
     async (q: string) => {
+      if (mode === "provincias") {
+        const normalizedQuery = q
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .trim()
+
+        const matches = PROVINCIA_OPTIONS.filter((provincia) =>
+          provincia.nombre
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .includes(normalizedQuery)
+        )
+
+        setOptions(matches)
+        return
+      }
+
       if (q.length < 2) {
         setOptions([])
         return
@@ -177,13 +178,12 @@ export function GeorefSearch({
       onChange={(e) => {
         setQuery(e.target.value)
         setOpen(true)
-        if (e.target.value !== initialDisplay) onChange(mode === "provincias" ? "buenos-aires" : "")
+        if (e.target.value !== initialDisplay) onChange("")
       }}
       onFocus={() => {
         if (mode === "provincias") {
-          setQuery("")
           setOpen(true)
-          search("")
+          void search(query)
         } else if (query.length >= 2) {
           setOpen(true)
         }

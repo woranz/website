@@ -27,6 +27,7 @@ export type FormConfig = {
   descripcionExito?: string
   destinatario: string
   id: string
+  submitLabel?: string
   subjectTemplate?: string
   titulo: string
   tituloExito?: string
