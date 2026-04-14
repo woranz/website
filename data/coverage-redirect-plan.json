@@ -1,0 +1,86 @@
+[
+  {
+    "source": "/coberturas/caucion-del-alquiler",
+    "destination": "/personas/caucion-alquiler",
+    "permanent": true,
+    "matchType": "exact-match",
+    "reason": "Legacy core coverage page maps directly to the live personas product."
+  },
+  {
+    "source": "/coberturas/accidentes-personales",
+    "destination": "/personas/accidentes-personales",
+    "permanent": true,
+    "matchType": "exact-match",
+    "reason": "Legacy core coverage page maps directly to the live personas product."
+  },
+  {
+    "source": "/coberturas/seguro-de-vida",
+    "destination": "/empresas/seguro-de-vida-empresas",
+    "permanent": true,
+    "matchType": "segment-shift",
+    "reason": "The destination moved from a generic legacy coverage URL into the empresas catalog."
+  },
+  {
+    "source": "/coberturas/seguro-de-sepelio",
+    "destination": "/empresas",
+    "permanent": true,
+    "matchType": "temporary-fallback",
+    "reason": "There is no live sepelio product page yet. Keep traffic on the empresas surface until TD-022 ships /empresas/sepelio-colectivo."
+  },
+  {
+    "source": "/coberturas/caucion-de-servicio",
+    "destination": "/empresas/cauciones-tradicionales",
+    "permanent": true,
+    "matchType": "many-to-one",
+    "reason": "This legacy caucion page is now consolidated under the empresas cauciones product."
+  },
+  {
+    "source": "/coberturas/caucion-de-obra",
+    "destination": "/empresas/cauciones-tradicionales",
+    "permanent": true,
+    "matchType": "many-to-one",
+    "reason": "This legacy caucion page is now consolidated under the empresas cauciones product."
+  },
+  {
+    "source": "/coberturas/caucion-de-suministro",
+    "destination": "/empresas/cauciones-tradicionales",
+    "permanent": true,
+    "matchType": "many-to-one",
+    "reason": "This legacy caucion page is now consolidated under the empresas cauciones product."
+  },
+  {
+    "source": "/coberturas/caucion-actividad-o-profesion",
+    "destination": "/empresas/cauciones-tradicionales",
+    "permanent": true,
+    "matchType": "many-to-one",
+    "reason": "This legacy caucion page is now consolidated under the empresas cauciones product."
+  },
+  {
+    "source": "/coberturas/garantias-aduaneras",
+    "destination": "/empresas/cauciones-tradicionales",
+    "permanent": true,
+    "matchType": "many-to-one",
+    "reason": "Traffic now enters through the shared cauciones surface until dedicated surfacing work lands."
+  },
+  {
+    "source": "/coberturas/seguro-de-salud",
+    "destination": "/",
+    "permanent": true,
+    "matchType": "retired-to-home",
+    "reason": "There is no equivalent live product in the new catalog, so the safest fallback is the site home."
+  },
+  {
+    "source": "/turismo",
+    "destination": "/personas/caucion-turismo-estudiantil",
+    "permanent": true,
+    "matchType": "rename",
+    "reason": "The legacy turismo landing is represented by the renamed turismo estudiantil product page."
+  },
+  {
+    "source": "/coberturas",
+    "destination": "/personas",
+    "permanent": true,
+    "matchType": "index-to-segment",
+    "reason": "The legacy coverage index should land on the current personas catalog entrypoint."
+  }
+]

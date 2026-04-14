@@ -3,10 +3,5 @@
     "source": "/caucion-alquiler",
     "destination": "/personas/caucion-alquiler",
     "permanent": true
-  },
-  {
-    "source": "/coberturas/seguro-de-sepelio",
-    "destination": "/empresas/seguro-de-sepelio",
-    "permanent": true
   }
 ]
