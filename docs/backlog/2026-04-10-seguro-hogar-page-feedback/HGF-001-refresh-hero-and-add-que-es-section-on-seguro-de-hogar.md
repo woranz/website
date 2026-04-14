@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Copy / Content architecture / Product page UX
-Estado: Todo
+Estado: Done (copy aprobado en doc Contenidos Web, que es section ya existe en Sanity)
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex
