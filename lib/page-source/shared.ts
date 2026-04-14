@@ -35,6 +35,7 @@ export type SanityProductReference = {
   pendientesValidacion?: string[]
   segmento?: ProductSegment
   slug?: SanitySlug
+  subtitulo?: string
 }
 
 export type PageSourceContext = {
@@ -224,6 +225,7 @@ function mapProductReference(
 
   return {
     title: product.nombre?.trim() || product.headline?.trim() || "Producto Woranz",
+    subtitle: product.subtitulo?.trim(),
     href: buildProductPath(segment, slug),
     imageSrc: resolveSanityImage(
       product.cardImage ?? product.heroImage,
@@ -236,8 +238,8 @@ function mapProductReference(
 export function mapProductReferences(
   products: SanityProductReference[] | undefined,
   fallbackImage = "/images/hero.png"
-): Array<{ href?: string; imageSrc: string; title: string }> {
-  const items: Array<{ href?: string; imageSrc: string; title: string }> = []
+): Array<{ href?: string; imageSrc: string; subtitle?: string; title: string }> {
+  const items: Array<{ href?: string; imageSrc: string; subtitle?: string; title: string }> = []
 
   for (const product of products ?? []) {
     const mapped = mapProductReference(product, fallbackImage)

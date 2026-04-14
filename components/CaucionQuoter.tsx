@@ -112,9 +112,40 @@ function calculatePrice({
   const subtotal = primaBase + impuestos
   const descuento = subtotal * (selectedModoPago?.descuento ?? 0)
   const totalBase = subtotal - descuento
-  const total = restitucion ? totalBase * (1 + RESTITUCION_SURCHARGE) : totalBase
+  const total = restitucion
+    ? totalBase * (1 + RESTITUCION_SURCHARGE)
+    : totalBase
 
   return modoPago === "cuotas" ? Math.round(total / 6) : Math.round(total)
+}
+
+function RestitucionToggle({
+  checked,
+  onChange,
+}: {
+  checked: boolean
+  onChange: (value: boolean) => void
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      onClick={() => onChange(!checked)}
+      className={cn(
+        "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        checked ? "bg-woranz-ink" : "bg-woranz-warm-4"
+      )}
+    >
+      <span
+        className={cn(
+          "inline-block h-5 w-5 rounded-full bg-white transition-transform",
+          checked ? "translate-x-6" : "translate-x-1"
+        )}
+      />
+      <span className="sr-only">Activar restitución de la propiedad</span>
+    </button>
+  )
 }
 
 function handleMoneyInput(
@@ -176,34 +207,6 @@ function SegmentSelector({
   )
 }
 
-function RestitucionToggle({
-  checked,
-  onChange,
-}: {
-  checked: boolean
-  onChange: (value: boolean) => void
-}) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      onClick={() => onChange(!checked)}
-      className={cn(
-        "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        checked ? "bg-woranz-ink" : "bg-woranz-warm-4"
-      )}
-    >
-      <span
-        className={cn(
-          "inline-block h-5 w-5 rounded-full bg-white transition-transform",
-          checked ? "translate-x-6" : "translate-x-1"
-        )}
-      />
-      <span className="sr-only">Activar restitución de la propiedad</span>
-    </button>
-  )
-}
 
 function PriceAction({
   buttonLabel,

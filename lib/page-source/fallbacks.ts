@@ -29,8 +29,8 @@ export const HOME_PAGE_FALLBACKS: Record<ProductSegment, HomePageFallback> = {
     metadataDescription:
       "Tu operación no se puede frenar. Nosotros nos ocupamos de las coberturas para que vos sigas avanzando.",
     metadataTitle: "Woranz — Seguros para Empresas",
-    primaryCta: "Ver seguros",
-    secondaryCta: "Hablar con alguien →",
+    primaryCta: "Ver coberturas",
+    secondaryCta: "¡Hablemos!",
   },
   productores: {
     heroDescription: "Seguros 100% online con personas reales del otro lado.",

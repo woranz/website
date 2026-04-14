@@ -2,7 +2,7 @@
 
 Prioridad: Media-alta
 Tipo: Visual system / Assets
-Estado: Done (commit 04aa2dc, PR #20)
+Estado: Todo
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Conversion / IA / Linking
-Estado: Done
+Estado: Todo
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

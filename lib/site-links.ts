@@ -1,4 +1,4 @@
-import { WORANZ_WHATSAPP_HREF } from "@/lib/site-config"
+import { WORANZ_WHATSAPP_HREF as SITE_CONFIG_WHATSAPP_HREF } from "@/lib/site-config"
 
 export type SiteLink = {
   href: string
@@ -13,7 +13,7 @@ export const DEFAULT_LOGIN_LINKS: SiteLink[] = [
   { href: DEFAULT_INSURED_LOGIN_HREF, label: "Ingresar como asegurado" },
   { href: DEFAULT_PRODUCER_ENTRY_HREF, label: "Ingresar como productor" },
 ]
-export { WORANZ_WHATSAPP_HREF }
+export const WORANZ_WHATSAPP_HREF = SITE_CONFIG_WHATSAPP_HREF
 
 export const SUPPORT_NAVIGATION_LINKS: SiteLink[] = [
   { href: "/nosotros", label: "Nosotros" },

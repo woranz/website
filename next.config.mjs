@@ -1,12 +1,20 @@
 import { createRequire } from "node:module"
 
 const require = createRequire(import.meta.url)
-const legacyRedirects = require("./data/legacy-redirects.json")
+const productCatalog = require("./data/product-catalog.json")
+
+const legacyProductRedirects = productCatalog.flatMap((product) =>
+  (product.legacyPaths ?? []).map((source) => ({
+    source,
+    destination: `/${product.segmento}/coberturas/${product.slug}`,
+    permanent: true,
+  }))
+)
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async redirects() {
-    return legacyRedirects
+    return legacyProductRedirects
   },
   images: {
     remotePatterns: [

@@ -1,0 +1,1644 @@
+[
+  {
+    "segmento": "personas",
+    "slug": "caucion-alquiler",
+    "nombre": "Caución de Alquiler",
+    "badge": "Caución de Alquiler",
+    "headline": "La garantía de alquiler más completa, al mejor precio",
+    "subtitulo": "Resolvés tu alquiler con una póliza real, aceptada por el mercado y lista en horas.",
+    "heroImageSrc": "/images/products/caucion-alquiler-hero-v2.png",
+    "cotizador": {
+      "modo": "inline-caucion",
+      "titulo": "Calculá tu precio",
+      "descripcion": "Cotizador online en woranz.com/alquileres. El precio que ves es el final, sin nada oculto ni extra.",
+      "ctaLabel": "Cotizá tu garantía"
+    },
+    "variantes": [
+      {
+        "titulo": "Alquiler de Vivienda",
+        "descripcion": "Para inquilinos que alquilan una propiedad residencial."
+      },
+      {
+        "titulo": "Alquiler Comercial",
+        "descripcion": "Para alquilar un local, oficina o inmueble comercial.",
+        "href": "/empresas/coberturas/caucion-alquiler-comercial"
+      },
+      {
+        "titulo": "Beneficios Corporativos",
+        "descripcion": "Para empresas que ofrecen la garantía como beneficio a sus empleados. Precio preferencial + pre aprobación inmediata.",
+        "href": "/empresas/coberturas/caucion-alquiler-beneficios-corporativos"
+      }
+    ],
+    "requisitos": {
+      "titulo": "Requisitos",
+      "items": [
+        "El alquiler no puede superar el 40% del ingreso del inquilino y su grupo familiar.",
+        "No deben existir deudas relevantes en BCRA, Veraz o Nosis.",
+        "DNI del titular del contrato.",
+        "Relación de dependencia: últimos 3 recibos de sueldo.",
+        "Monotributista: certificación de ingresos y facturación de los últimos 12 meses.",
+        "Responsable inscripto: DDJJ de Ganancias.",
+        "Contrato preliminar con domicilio, datos de las partes y fechas de vigencia."
+      ]
+    },
+    "coberturas": [
+      {
+        "titulo": "Alquiler impago",
+        "descripcion": "Si el inquilino no paga, responderemos ante el propietario. La cobertura corre hasta que se entreguen las llaves o se desaloje la propiedad, aunque eso tarde más de lo esperado. Plazo máximo: hasta la suma total del contrato."
+      },
+      {
+        "titulo": "Expensas",
+        "descripcion": "Las expensas del edificio están cubiertas hasta $100.000. Se puede ampliar, consultá precios."
+      },
+      {
+        "titulo": "Servicios e impuestos",
+        "descripcion": "Luz, agua y gas hasta $80.000."
+      },
+      {
+        "titulo": "Restitución de la propiedad",
+        "descripcion": "Cobertura opcional para cubrir daños si el inquilino devuelve la propiedad en mal estado. Suma asegurada $200.000."
+      }
+    ],
+    "pasos": [
+      {
+        "numero": "01",
+        "titulo": "Preaprobación",
+        "descripcion": "Completás tus datos y subís los recibos de sueldo en woranz.com/alquileres. Sin obligación de compra. En 2 horas hábiles te respondemos."
+      },
+      {
+        "numero": "02",
+        "titulo": "Contrato",
+        "descripcion": "Nos mandás el borrador del contrato de alquiler para poder emitir la póliza."
+      },
+      {
+        "numero": "03",
+        "titulo": "Pago y listo",
+        "descripcion": "Pagás con tarjeta o transferencia. En 24 horas tenés la póliza en tu mail y en el del propietario o inmobiliaria."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Puedo alquilar sin garante?",
+        "respuesta": "Sí, esa es exactamente la idea. El seguro de caución reemplaza al garante. El propietario recibe una garantía legal certificada por la Superintendencia de Seguros de la Nación."
+      },
+      {
+        "pregunta": "¿Cuánto tarda en emitirse?",
+        "respuesta": "Una vez que tenemos toda la documentación, máximo 24 horas hábiles. Te la enviamos a vos y al propietario o inmobiliaria por mail."
+      },
+      {
+        "pregunta": "¿El precio que veo es el final?",
+        "respuesta": "Sí. El precio del cotizador es el real. No hay nada oculto ni nada extra que te aparezca a último momento."
+      },
+      {
+        "pregunta": "¿Quién paga el seguro, el inquilino o el propietario?",
+        "respuesta": "El inquilino. Es un pago único por contrato. Cada vez que firmás un contrato nuevo, renovás la garantía."
+      },
+      {
+        "pregunta": "¿Cómo pago?",
+        "respuesta": "Con tarjeta de crédito en hasta 6 cuotas sin interés vía MercadoPago, o por transferencia bancaria."
+      },
+      {
+        "pregunta": "¿El propietario tiene que aceptarlo?",
+        "respuesta": "Sí, y trabajamos con todas las inmobiliarias. Si tienen dudas con la póliza, nos comunicamos directamente con ellos para explicarles."
+      },
+      {
+        "pregunta": "¿Y si el inquilino no devuelve las llaves?",
+        "respuesta": "Seguís cubierto. La cobertura corre hasta que el inquilino cumpla sus obligaciones: entregar las llaves o desalojar la propiedad."
+      },
+      {
+        "pregunta": "¿Cuándo me pagan si el inquilino no paga?",
+        "respuesta": "A mes vencido. Si el inquilino no pagó en marzo y nos avisás a principio de mes, nos contactamos con él durante el mes en curso. Si no se resuelve, en abril realizamos los pagos."
+      },
+      {
+        "pregunta": "¿Woranz está regulada?",
+        "respuesta": "Sí. Somos una compañía avalada por la Superintendencia de Seguros de la Nación. Cumplimos con todas sus regulaciones y requisitos de patrimonio."
+      },
+      {
+        "pregunta": "¿Trabajan con mi inmobiliaria?",
+        "respuesta": "Trabajamos con todas las inmobiliarias. Si tienen dudas con la póliza, nos comunicamos directamente con ellos."
+      }
+    ],
+    "ctaTitulo": "Tu próximo alquiler, sin vueltas.",
+    "ctaSubtitulo": "Cotizás online, presentás la póliza y seguís con la mudanza.",
+    "ctaPrimario": {
+      "label": "Cotizá tu garantía"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "personas/seguro-de-hogar",
+      "empresas/caucion-alquiler-comercial",
+      "empresas/caucion-alquiler-beneficios-corporativos"
+    ],
+    "legacyPaths": [
+      "/caucion-alquiler"
+    ],
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "personas",
+    "slug": "accidentes-personales",
+    "nombre": "Accidentes Personales",
+    "badge": "Accidentes Personales",
+    "headline": "La cobertura ante accidentes que podés obtener en tiempo real",
+    "subtitulo": "Te cubrís hoy, para cualquier cosa que pase mañana.",
+    "heroImageSrc": "/images/feature-2.png",
+    "cotizador": {
+      "modo": "inline-accidentes",
+      "titulo": "Cotizá tu cobertura",
+      "descripcion": "Formulario inicial online para edad, actividad o profesión y capital asegurado deseado.",
+      "ctaLabel": "Cotizá gratis"
+    },
+    "variantes": [
+      {
+        "titulo": "Básico",
+        "descripcion": "Muerte accidental + incapacidad permanente."
+      },
+      {
+        "titulo": "Completo",
+        "descripcion": "Suma incapacidad temporaria + asistencia médica."
+      },
+      {
+        "titulo": "Full",
+        "descripcion": "Suma gastos de sepelio + cobertura 24/7."
+      }
+    ],
+    "coberturas": [
+      {
+        "titulo": "Muerte accidental",
+        "descripcion": "El grupo familiar recibe el capital asegurado ante el fallecimiento por accidente."
+      },
+      {
+        "titulo": "Incapacidad permanente",
+        "descripcion": "Un accidente puede cambiar tu vida. Esta cobertura te da respaldo económico si quedás con una incapacidad física permanente."
+      },
+      {
+        "titulo": "Incapacidad temporaria",
+        "descripcion": "Si no podés trabajar por un tiempo, te compensamos mientras te recuperás."
+      },
+      {
+        "titulo": "Asistencia médica de urgencia",
+        "descripcion": "Gastos de primeros auxilios, ambulancia y guardia médica."
+      },
+      {
+        "titulo": "Gastos de sepelio",
+        "descripcion": "Un momento difícil no debería ser también un problema económico."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Cubre accidentes en el trabajo y fuera?",
+        "respuesta": "Cubre gastos médicos por accidente, internación, cirugías, rehabilitación y traslados. También indemnización por fallecimiento accidental o invalidez. Todo con respaldo de aseguradoras de primera línea."
+      },
+      {
+        "pregunta": "¿Qué diferencia hay con ART?",
+        "respuesta": "La ART cubre solo accidentes laborales y la paga el empleador. Este seguro cubre todo el tiempo y lo contratás vos para vos o para tu equipo."
+      },
+      {
+        "pregunta": "¿Cómo aviso si tuve un accidente?",
+        "respuesta": "Por WhatsApp, por el 0800 o desde tu panel. Avisanos dentro de las 72 horas del accidente."
+      }
+    ],
+    "ctaTitulo": "Elegí tu cobertura y seguí tranquilo.",
+    "ctaSubtitulo": "Si necesitás ayuda para definir capital y plan, te acompaña una persona del equipo.",
+    "ctaPrimario": {
+      "label": "Cotizá gratis"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/seguro-de-vida-empresas",
+      "personas/caucion-alquiler"
+    ],
+    "pendientesValidacion": [],
+    "pasos": [
+      {
+        "numero": "01",
+        "titulo": "Cotizá online",
+        "descripcion": "Elegí tu cobertura y recibí tu precio al instante. Sin datos personales ni formularios."
+      },
+      {
+        "numero": "02",
+        "titulo": "Contratá",
+        "descripcion": "Pagá con Mercado Pago con tarjeta de crédito, débito o transferencia."
+      },
+      {
+        "numero": "03",
+        "titulo": "Listo, estás cubierto",
+        "descripcion": "Tu póliza llega al instante a tu celular. Siempre disponible en tu cuenta Woranz."
+      }
+    ]
+  },
+  {
+    "segmento": "personas",
+    "slug": "caucion-turismo-estudiantil",
+    "nombre": "Caución Turismo Estudiantil",
+    "badge": "Caución Turismo Estudiantil",
+    "headline": "El viaje está respaldado desde el primer día",
+    "subtitulo": "Antes de firmar, podés verificar que existe una póliza real que garantiza el viaje.",
+    "heroImageSrc": "/images/products/caucion-turismo-estudiantil-hero-v2.png",
+    "cotizador": {
+      "modo": "contacto",
+      "titulo": "Chequeá la póliza de tu agencia",
+      "descripcion": "La póliza la contrata la agencia de turismo estudiantil. Vos solo necesitás validarla antes de firmar.",
+      "ctaLabel": "Chequeá la póliza",
+      "ctaHref": "https://wa.me/5491160061771"
+    },
+    "coberturas": [
+      {
+        "titulo": "Incumplimiento del contrato",
+        "descripcion": "Si la agencia no cumple con el viaje, la póliza responde."
+      },
+      {
+        "titulo": "Respaldo económico al pasajero",
+        "descripcion": "Respaldo económico concreto para el estudiante y su familia."
+      },
+      {
+        "titulo": "Cobertura total del viaje",
+        "descripcion": "Cubre el total del servicio turístico contratado."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Qué es este seguro exactamente?",
+        "respuesta": "Es una garantía de cumplimiento de contrato. Si la agencia no realiza el viaje pactado, Woranz responde. No es un seguro de viaje personal."
+      },
+      {
+        "pregunta": "¿Mi hijo necesita contratar algo?",
+        "respuesta": "No. La agencia es la que contrata el seguro. Vos solo verificás que tenga cobertura vigente con Woranz."
+      },
+      {
+        "pregunta": "¿Cómo sé si la agencia tiene cobertura?",
+        "respuesta": "Pedile el número de póliza a la agencia. También podés escribirnos a turismo@woranz.com o al WhatsApp 11 6006-1771."
+      },
+      {
+        "pregunta": "¿Qué hago si hay un problema?",
+        "respuesta": "Escribinos a turismo@woranz.com o al WhatsApp 11 6006-1771. Lunes a viernes de 10 a 17hs."
+      }
+    ],
+    "ctaTitulo": "Si querés chequear la póliza, escribinos.",
+    "ctaSubtitulo": "Te confirmamos si la agencia viaja con respaldo Woranz.",
+    "ctaPrimario": {
+      "label": "Chequeá la póliza",
+      "href": "https://wa.me/5491160061771"
+    },
+    "ctaSecundario": {
+      "label": "Escribinos por mail",
+      "href": "mailto:turismo@woranz.com"
+    },
+    "productosRelacionados": [
+      "personas/accidentes-personales",
+      "empresas/caucion-turismo-estudiantil-agencias"
+    ],
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "personas",
+    "slug": "seguro-de-hogar",
+    "nombre": "Seguro de Hogar",
+    "badge": "Seguro de Hogar",
+    "headline": "El seguro de hogar más completo que podés cotizar en el momento",
+    "subtitulo": "Protegés tu casa y todo lo que hay adentro, con una cobertura que se adapta a vos.",
+    "cotizador": {
+      "modo": "contacto",
+      "titulo": "Cotizá tu hogar",
+      "descripcion": "Protegés tu casa y todo lo que hay adentro, con una cobertura que se adapta a vos.",
+      "ctaLabel": "Cotizá tu hogar"
+    },
+    "variantes": [
+      {
+        "titulo": "Básico",
+        "descripcion": "Incendio + robo."
+      },
+      {
+        "titulo": "Completo",
+        "descripcion": "Suma rotura de cristales, daños por agua y RC frente a terceros."
+      },
+      {
+        "titulo": "Full",
+        "descripcion": "Suma rotura de artefactos eléctricos + asistencia del hogar 24/7."
+      }
+    ],
+    "coberturas": [
+      {
+        "titulo": "Incendio",
+        "descripcion": "Si hay un incendio, cubrimos el inmueble y lo que hay adentro."
+      },
+      {
+        "titulo": "Robo de bienes",
+        "descripcion": "Si te roban, recuperás el valor de tus cosas."
+      },
+      {
+        "titulo": "Daños por agua",
+        "descripcion": "Filtraciones, caños rotos, inundaciones. Todo cubierto."
+      },
+      {
+        "titulo": "Responsabilidad civil",
+        "descripcion": "Si alguien se lastima en tu casa, respondemos nosotros."
+      },
+      {
+        "titulo": "Rotura de cristales",
+        "descripcion": "Ventanas y vidrios cubiertos."
+      },
+      {
+        "titulo": "Asistencia en el hogar",
+        "descripcion": "Plomero, electricista, cerrajero. Cuando lo necesités."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Funciona si soy inquilino?",
+        "respuesta": "Sí. Podés asegurar el contenido de tu hogar aunque no seas dueño del inmueble."
+      },
+      {
+        "pregunta": "¿Tengo que hacer una inspección?",
+        "respuesta": "No. La contratación es 100% online, sin visitas."
+      },
+      {
+        "pregunta": "¿Cómo aviso si me pasa algo?",
+        "respuesta": "Por WhatsApp, por el 0800 o desde tu panel. Tenés 72 horas para avisarnos."
+      }
+    ],
+    "ctaTitulo": "Cotizá tu hogar en minutos.",
+    "ctaSubtitulo": "Simple, online y sin inspecciones. Cotizalo ahora.",
+    "ctaPrimario": {
+      "label": "Cotizá tu hogar"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "personas/caucion-alquiler",
+      "personas/accidentes-personales"
+    ],
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "personas",
+    "slug": "robo-bici",
+    "nombre": "Robo de Bici",
+    "badge": "Robo de Bici",
+    "headline": "Tu bici vale. Cubrila como corresponde.",
+    "subtitulo": "Si te la roban, tenés cómo recuperarla.",
+    "cotizador": {
+      "modo": "contacto",
+      "titulo": "Cotizá tu bici",
+      "descripcion": "Si te la roban, tenés cómo recuperarla.",
+      "ctaLabel": "Cotizá tu bici"
+    },
+    "coberturas": [
+      {
+        "titulo": "Robo con violencia o arrebato",
+        "descripcion": "Te cubrimos si te la sacan por la fuerza."
+      },
+      {
+        "titulo": "Robo con rotura o forzamiento",
+        "descripcion": "Si revientan la cadena o el candado, también."
+      },
+      {
+        "titulo": "Daños accidentales",
+        "descripcion": "Según plan, cobertura ante golpes y roturas."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Cómo aviso si me robaron?",
+        "respuesta": "Primero hacé la denuncia policial. Después nos avisás dentro de las 72 horas."
+      },
+      {
+        "pregunta": "¿Cubre si la olvidé en algún lado?",
+        "respuesta": "No, el extravío no está cubierto. Sí lo está el robo con violencia, arrebato o fractura."
+      },
+      {
+        "pregunta": "¿Puedo asegurar un objeto usado?",
+        "respuesta": "Sí, siempre que podamos determinar su valor de mercado actual."
+      }
+    ],
+    "ctaTitulo": "Cotizá tu bici.",
+    "ctaSubtitulo": "Simple, online y al toque. Cubrí tu bici.",
+    "ctaPrimario": {
+      "label": "Cotizá tu bici"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "personas/seguro-de-hogar"
+    ],
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "personas",
+    "slug": "robo-monopatin",
+    "nombre": "Robo de Monopatín",
+    "badge": "Robo de Monopatín",
+    "headline": "Tu monopatín es tu transporte. No te quedes a pata.",
+    "subtitulo": "Bici, monopatín, celular o notebook cubiertos en minutos. Cobertura online, directamente desde tu teléfono.",
+    "cotizador": {
+      "modo": "contacto",
+      "titulo": "Cotizá tu objeto",
+      "descripcion": "Cotizador ultra simple por objeto con tipo, marca, modelo y valor de mercado.",
+      "ctaLabel": "Cotizá gratis"
+    },
+    "coberturas": [
+      {
+        "titulo": "Robo con violencia o arrebato",
+        "descripcion": "Si te lo llevan de la calle o de un traslado cotidiano, está cubierto."
+      },
+      {
+        "titulo": "Robo con escalo o llave falsa",
+        "descripcion": "Si rompen o fuerzan algo para llevárselo, está cubierto."
+      },
+      {
+        "titulo": "Hurto en lugar custodiado",
+        "descripcion": "Cobertura propuesta para cuando desaparece de un lugar controlado."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Cómo aviso si me robaron?",
+        "respuesta": "Hacé la denuncia policial y después escribinos dentro de las 72 horas."
+      },
+      {
+        "pregunta": "¿Cubre extravío?",
+        "respuesta": "No. Cubre robo con violencia, arrebato o fractura."
+      }
+    ],
+    "ctaTitulo": "No te quedes sin tu movilidad.",
+    "ctaSubtitulo": "Cuando este producto quede validado, lo publicamos con cotización simple.",
+    "ctaPrimario": {
+      "label": "Cotizá gratis"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "personas/seguro-de-hogar"
+    ],
+    "pendientesValidacion": [
+      "Producto nuevo: validar portfolio y coberturas con el equipo.",
+      "Confirmar variables y lógica del cotizador por objeto.",
+      "Confirmar si el hurto en lugar custodiado aplica y en qué planes."
+    ]
+  },
+  {
+    "segmento": "personas",
+    "slug": "robo-celular",
+    "nombre": "Robo de Celular",
+    "badge": "Robo de Celular",
+    "headline": "Si te lo sacan, no te quedás sin nada",
+    "subtitulo": "Cubrir tu celular es cubrir algo que usás todo el día.",
+    "cotizador": {
+      "modo": "contacto",
+      "titulo": "Cotizá tu celular",
+      "descripcion": "Cubrir tu celular es cubrir algo que usás todo el día.",
+      "ctaLabel": "Cotizá tu celular"
+    },
+    "coberturas": [
+      {
+        "titulo": "Robo con violencia",
+        "descripcion": "Te cubrimos si te lo sacan por la fuerza."
+      },
+      {
+        "titulo": "Robo en vía pública o domicilio",
+        "descripcion": "En la calle o en tu casa, estás cubierto."
+      },
+      {
+        "titulo": "Reposición o indemnización",
+        "descripcion": "Recuperás el valor de tu equipo."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Cómo aviso si me robaron?",
+        "respuesta": "Primero hacé la denuncia policial. Después nos avisás dentro de las 72 horas."
+      },
+      {
+        "pregunta": "¿Cubre si lo olvidé en algún lado?",
+        "respuesta": "No. El extravío no está cubierto."
+      },
+      {
+        "pregunta": "¿Puedo asegurar un equipo usado?",
+        "respuesta": "Sí, si podemos determinar su valor de mercado actual."
+      }
+    ],
+    "ctaTitulo": "Cotizá tu celular.",
+    "ctaSubtitulo": "Cobertura online, directa, sin vueltas.",
+    "ctaPrimario": {
+      "label": "Cotizá tu celular"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "personas/seguro-de-hogar"
+    ],
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "personas",
+    "slug": "robo-notebook",
+    "nombre": "Robo de Notebook",
+    "badge": "Robo de Notebook",
+    "headline": "Si tu notebook es clave, no puede quedar descubierta",
+    "subtitulo": "Protegés tu herramienta de trabajo o estudio frente a robos.",
+    "cotizador": {
+      "modo": "contacto",
+      "titulo": "Cotizá tu notebook",
+      "descripcion": "Protegés tu herramienta de trabajo o estudio frente a robos.",
+      "ctaLabel": "Cotizá tu notebook"
+    },
+    "coberturas": [
+      {
+        "titulo": "Robo con violencia",
+        "descripcion": "Cobertura ante arrebato o asalto."
+      },
+      {
+        "titulo": "Robo en tránsito o domicilio",
+        "descripcion": "Ya sea en tu casa o mientras te movés."
+      },
+      {
+        "titulo": "Daños accidentales",
+        "descripcion": "Según plan, cobertura ante golpes y caídas."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Cómo aviso si me robaron?",
+        "respuesta": "Primero hacé la denuncia policial y después escribinos dentro de las 72 horas."
+      },
+      {
+        "pregunta": "¿Cubre extravío?",
+        "respuesta": "No. Cubre robo con violencia, arrebato o fractura."
+      }
+    ],
+    "ctaTitulo": "Cotizá tu notebook.",
+    "ctaSubtitulo": "Cobertura online, directa, sin vueltas.",
+    "ctaPrimario": {
+      "label": "Cotizá tu notebook"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "personas/seguro-de-hogar"
+    ],
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "empresas",
+    "slug": "caucion-alquiler-beneficios-corporativos",
+    "nombre": "Caución de Alquiler - Beneficios Corporativos",
+    "badge": "Beneficios Corporativos",
+    "headline": "Ayudá a tu equipo a mudarse al depto que quiere.",
+    "subtitulo": "Garantía de alquiler preferencial para todos tus empleados. Cero trámite de tu parte.",
+    "coberturas": [
+      {
+        "titulo": "Precio preferencial",
+        "descripcion": "Precio preferencial para empleados de la empresa."
+      },
+      {
+        "titulo": "Preaprobación inmediata",
+        "descripcion": "Al ser corporativo, tenemos acceso verificado a los ingresos, lo que acelera la aprobación."
+      },
+      {
+        "titulo": "Emisión en 24 horas hábiles",
+        "descripcion": "La póliza llega por mail, certificada por la SSN."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Qué hace la empresa exactamente?",
+        "respuesta": "Se contacta con nuestro equipo para habilitar el beneficio. El empleado contrata y paga su propia garantía con precio preferencial."
+      },
+      {
+        "pregunta": "¿Tiene costo para la empresa?",
+        "respuesta": "No. Es un beneficio para empleados, sin costo para la empresa."
+      }
+    ],
+    "ctaTitulo": "Convertí la mudanza en un beneficio real.",
+    "ctaSubtitulo": "Cuando validemos el flujo final, lo publicamos con el mecanismo correcto para RH.",
+    "ctaPrimario": {
+      "label": "Hablemos"
+    },
+    "ctaSecundario": {
+      "label": "Conocé más →"
+    },
+    "productosRelacionados": [
+      "empresas/seguro-de-vida-empresas",
+      "personas/accidentes-personales"
+    ],
+    "pendientesValidacion": [
+      "Confirmar el flujo exacto para habilitar el beneficio: link especial, código o WhatsApp.",
+      "Confirmar si existe algún acuerdo comercial formal con la empresa."
+    ]
+  },
+  {
+    "segmento": "empresas",
+    "slug": "seguro-de-vida-empresas",
+    "nombre": "Seguro de Vida Colectivo",
+    "badge": "Seguro de Vida",
+    "headline": "Una sola póliza para cubrir todas las necesidades de tu equipo",
+    "subtitulo": "Desde lo obligatorio hasta beneficios adicionales. Todo ordenado, en un solo esquema.",
+    "variantes": [
+      {
+        "titulo": "Vida LCT",
+        "descripcion": "Obligatorio. Fallecimiento por cualquier causa según normativa."
+      },
+      {
+        "titulo": "Vida Obligatorio (Decreto vigente)",
+        "descripcion": "Seguro base para empleados en relación de dependencia."
+      },
+      {
+        "titulo": "Vida Convenio",
+        "descripcion": "Según convenio colectivo. Capitales y condiciones por actividad."
+      },
+      {
+        "titulo": "Vida Colectivo adicional",
+        "descripcion": "Capital definido como múltiplo del salario. Beneficio para el equipo."
+      },
+      {
+        "titulo": "Invalidez total y permanente",
+        "descripcion": "Protección del ingreso ante incapacidad."
+      },
+      {
+        "titulo": "Gastos de sepelio",
+        "descripcion": "Resolución inmediata como complemento."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿El seguro de vida es obligatorio?",
+        "respuesta": "El Seguro de Vida Ley Contrato de Trabajo sí es obligatorio para todos los empleadores. Los demás son complementarios."
+      },
+      {
+        "pregunta": "¿El empleado elige a sus beneficiarios?",
+        "respuesta": "Sí, cada empleado designa a sus beneficiarios al incorporarse a la póliza."
+      },
+      {
+        "pregunta": "¿Cómo se liquida si hay un siniestro?",
+        "respuesta": "El grupo familiar presenta la documentación y nuestro equipo gestiona el pago de principio a fin."
+      }
+    ],
+    "ctaTitulo": "Armá una cobertura de vida a medida.",
+    "ctaSubtitulo": "Desde lo obligatorio hasta lo que querés sumar. Todo ordenado en un solo esquema.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/seguro-de-sepelio",
+      "empresas/accidentes-personales"
+    ],
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "empresas",
+    "slug": "seguro-de-sepelio",
+    "nombre": "Seguro de Sepelio",
+    "badge": "Seguro de Sepelio",
+    "headline": "Un llamado, y está resuelto",
+    "subtitulo": "En un momento difícil, lo operativo no puede ser un problema.",
+    "variantes": [
+      {
+        "titulo": "Sepelio Prestacional",
+        "descripcion": "Con un solo llamado al 0800, coordinás todo. Nuestro equipo deriva al prestador más cómodo para la familia."
+      },
+      {
+        "titulo": "Sepelio por Reintegro",
+        "descripcion": "La familia elige el prestador que quiera. Presenta la factura y Woranz reintegra según los límites de la suma asegurada."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Qué diferencia hay entre las dos modalidades?",
+        "respuesta": "En el prestacional, Woranz coordina el servicio directamente. En el de reintegro, elegís vos el prestador y te devolvemos el costo hasta el límite asegurado."
+      },
+      {
+        "pregunta": "¿Cubre al grupo familiar?",
+        "respuesta": "Depende del plan contratado."
+      }
+    ],
+    "ctaTitulo": "Dale a tu equipo una ayuda real en el momento más difícil.",
+    "ctaSubtitulo": "Para que la familia solo tenga que estar junta. Prestacional o por reintegro.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/seguro-de-vida-empresas"
+    ],
+    "pendientesValidacion": [],
+    "coberturas": [
+      {
+        "titulo": "Servicio prestacional",
+        "descripcion": "Con un llamado coordinamos todo el servicio."
+      },
+      {
+        "titulo": "Reintegro de gastos",
+        "descripcion": "La familia elige el prestador. Woranz reintegra."
+      },
+      {
+        "titulo": "Grupo familiar",
+        "descripcion": "Según plan, extensible al grupo familiar."
+      }
+    ]
+  },
+  {
+    "segmento": "empresas",
+    "slug": "accidentes-personales",
+    "nombre": "Accidentes Personales - Empresas",
+    "badge": "Accidentes Personales",
+    "headline": "Tu equipo cubierto, dentro y fuera del trabajo",
+    "subtitulo": "Una cobertura simple para un riesgo que no distingue horario.",
+    "cotizador": {
+      "modo": "contacto",
+      "titulo": "Cotizador empresarial",
+      "descripcion": "Formulario para cantidad de empleados, actividad principal y capital por persona deseado.",
+      "ctaLabel": "Hablá con un especialista"
+    },
+    "variantes": [],
+    "coberturas": [
+      {
+        "titulo": "Muerte accidental",
+        "descripcion": "El grupo familiar recibe el capital asegurado."
+      },
+      {
+        "titulo": "Incapacidad permanente",
+        "descripcion": "Respaldo económico si queda con una incapacidad física."
+      },
+      {
+        "titulo": "Incapacidad temporaria",
+        "descripcion": "Le compensamos mientras se recupera."
+      },
+      {
+        "titulo": "Asistencia médica de urgencia",
+        "descripcion": "Ambulancia, guardia y primeros auxilios cubiertos."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Esto reemplaza a la ART?",
+        "respuesta": "No. La ART es obligatoria y cubre riesgos del trabajo. Este seguro amplía la cobertura y puede incluir accidentes fuera del trabajo también."
+      },
+      {
+        "pregunta": "¿Puedo cotizar para un equipo pequeño?",
+        "respuesta": "Sí, tenemos opciones desde grupos reducidos."
+      },
+      {
+        "pregunta": "¿Cómo se gestiona si un empleado tiene un accidente?",
+        "respuesta": "El empleado o la empresa nos avisa. Nuestro equipo acompaña el proceso de reclamo de principio a fin."
+      }
+    ],
+    "ctaTitulo": "Completá el paquete de beneficios con AP colectivo.",
+    "ctaSubtitulo": "Una cobertura simple para un riesgo que no distingue horario.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/seguro-de-vida-empresas",
+      "empresas/seguro-de-sepelio"
+    ],
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "empresas",
+    "slug": "caucion-turismo-estudiantil-agencias",
+    "nombre": "Caución Turismo Estudiantil - Agencias",
+    "badge": "Caución Turismo Estudiantil",
+    "headline": "Tus viajes, respaldados de verdad",
+    "subtitulo": "Una póliza que le da tranquilidad a los padres y solidez a tu operación.",
+    "heroImageSrc": "/images/products/caucion-turismo-estudiantil-hero-v2.png",
+    "cotizador": {
+      "modo": "contacto",
+      "titulo": "Hablemos, te armamos una propuesta",
+      "descripcion": "La prima depende del volumen de operaciones y contratos del ciclo lectivo.",
+      "ctaLabel": "Hablemos, te armamos una propuesta",
+      "ctaHref": "mailto:turismo@woranz.com"
+    },
+    "coberturas": [
+      {
+        "titulo": "Cumplimiento del contrato turístico",
+        "descripcion": "Garantía de que el viaje se cumple según lo pactado."
+      },
+      {
+        "titulo": "Respaldo económico al pasajero",
+        "descripcion": "Protección directa para el estudiante y su familia."
+      },
+      {
+        "titulo": "Cobertura total del servicio",
+        "descripcion": "Cubre el 100% del servicio contratado."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Qué documentación necesito para contratar?",
+        "respuesta": "Nuestro equipo de turismo te guía en todo el proceso. Escribinos a turismo@woranz.com."
+      },
+      {
+        "pregunta": "¿Puedo contratar en cualquier momento del año?",
+        "respuesta": "Sí, aunque recomendamos cerrar antes del inicio de la temporada de viajes."
+      },
+      {
+        "pregunta": "¿Qué pasa si un grupo de estudiantes reclama?",
+        "respuesta": "El reclamante inicia el proceso con la documentación requerida. Woranz gestiona y resuelve conforme a la póliza."
+      }
+    ],
+    "ctaTitulo": "Si sos agencia, armemos la propuesta juntos.",
+    "ctaSubtitulo": "Contanos tu operación y armamos una propuesta para esta temporada.",
+    "ctaPrimario": {
+      "label": "Escribinos",
+      "href": "mailto:turismo@woranz.com"
+    },
+    "ctaSecundario": {
+      "label": "WhatsApp",
+      "href": "https://wa.me/5491160061771"
+    },
+    "productosRelacionados": [
+      "personas/caucion-turismo-estudiantil"
+    ],
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "empresas",
+    "slug": "caucion-servicios",
+    "nombre": "Caución de Servicios",
+    "badge": "Cauciones",
+    "headline": "Tenés el contrato. Nosotros te desbloqueamos la garantía.",
+    "subtitulo": "Para prestadores de servicios que necesitan garantizar el cumplimiento de sus contratos ante clientes públicos o privados. Sin inmovilizar capital.",
+    "coberturas": [
+      {
+        "titulo": "Cumplimiento de contrato",
+        "descripcion": "Garantía para prestadores de servicios frente a clientes públicos o privados."
+      }
+    ],
+    "ctaTitulo": "Si ya tenés el contrato, hablemos.",
+    "ctaSubtitulo": "Esta landing queda en borrador hasta confirmar variantes y montos típicos.",
+    "ctaPrimario": {
+      "label": "Quiero hablar con alguien"
+    },
+    "ctaSecundario": {
+      "label": "Explorá coberturas →"
+    },
+    "productosRelacionados": [
+      "empresas/caucion-obra",
+      "empresas/caucion-suministro"
+    ],
+    "pendientesValidacion": [
+      "Unificado en cauciones-tradicionales"
+    ]
+  },
+  {
+    "segmento": "empresas",
+    "slug": "caucion-obra",
+    "nombre": "Caución de Obra",
+    "badge": "Cauciones",
+    "headline": "Ganaste la licitación. La garantía, resuelta en 24 horas.",
+    "subtitulo": "Para constructoras, contratistas y empresas que necesitan presentar garantías de oferta, anticipo, cumplimiento y calidad. Más ágil y generalmente más conveniente que un aval bancario.",
+    "coberturas": [
+      {
+        "titulo": "Garantías de obra",
+        "descripcion": "Oferta, anticipo, cumplimiento y calidad para contratos de obra."
+      }
+    ],
+    "ctaTitulo": "Resolvé la garantía sin inmovilizar capital.",
+    "ctaSubtitulo": "Queda como draft hasta cerrar el mapa exacto de variantes.",
+    "ctaPrimario": {
+      "label": "Quiero hablar con alguien"
+    },
+    "ctaSecundario": {
+      "label": "Explorá coberturas →"
+    },
+    "productosRelacionados": [
+      "empresas/caucion-servicios",
+      "empresas/caucion-suministro"
+    ],
+    "pendientesValidacion": [
+      "Unificado en cauciones-tradicionales"
+    ]
+  },
+  {
+    "segmento": "empresas",
+    "slug": "caucion-suministro",
+    "nombre": "Caución de Suministro",
+    "badge": "Cauciones",
+    "headline": "Entregás. Woranz garantiza.",
+    "subtitulo": "Para proveedores que necesitan garantizar el cumplimiento de contratos de suministro de materiales o insumos.",
+    "coberturas": [
+      {
+        "titulo": "Cumplimiento de suministro",
+        "descripcion": "Garantía para contratos de provisión de materiales o insumos."
+      }
+    ],
+    "ctaTitulo": "Si tu operación depende de una garantía, la destrabamos.",
+    "ctaSubtitulo": "Se carga ahora y queda oculta hasta validar las variantes exactas.",
+    "ctaPrimario": {
+      "label": "Quiero hablar con alguien"
+    },
+    "ctaSecundario": {
+      "label": "Explorá coberturas →"
+    },
+    "productosRelacionados": [
+      "empresas/caucion-servicios",
+      "empresas/garantias-aduaneras"
+    ],
+    "pendientesValidacion": [
+      "Unificado en cauciones-tradicionales"
+    ]
+  },
+  {
+    "segmento": "empresas",
+    "slug": "garantias-aduaneras",
+    "nombre": "Garantías Aduaneras",
+    "badge": "Cauciones",
+    "headline": "Operás en comercio exterior. La garantía no te puede frenar.",
+    "subtitulo": "Resolvés garantías aduaneras sin tocar tu línea bancaria.",
+    "coberturas": [
+      {
+        "titulo": "Importación temporaria",
+        "descripcion": "Para ingreso temporal de mercadería."
+      },
+      {
+        "titulo": "Exportación",
+        "descripcion": "Garantía para operaciones de exportación."
+      },
+      {
+        "titulo": "Tránsito aduanero",
+        "descripcion": "Garantía para traslado de mercadería entre puntos."
+      },
+      {
+        "titulo": "Pago de tributos",
+        "descripcion": "Cobertura ante obligaciones tributarias de aduana."
+      }
+    ],
+    "ctaTitulo": "Liberá tu línea bancaria para lo que importa.",
+    "ctaSubtitulo": "Emitimos rápido. Tu línea bancaria queda libre.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/caucion-suministro"
+    ],
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "empresas",
+    "slug": "caucion-actividad-o-profesion",
+    "nombre": "Caución de Actividad o Profesión",
+    "badge": "Cauciones",
+    "headline": "Tu habilitación, garantizada.",
+    "subtitulo": "Para profesionales y actividades que necesitan una caución como requisito habilitante ante organismos reguladores.",
+    "coberturas": [
+      {
+        "titulo": "Garantía habilitante",
+        "descripcion": "Respaldo para actividades o profesiones reguladas que deben presentar una caución."
+      }
+    ],
+    "ctaTitulo": "Si tu matrícula depende de una garantía, la resolvemos.",
+    "ctaSubtitulo": "Queda cargada y en borrador hasta definir qué rubros acepta Woranz.",
+    "ctaPrimario": {
+      "label": "Quiero hablar con alguien"
+    },
+    "ctaSecundario": {
+      "label": "Explorá coberturas →"
+    },
+    "productosRelacionados": [
+      "empresas/caucion-servicios"
+    ],
+    "pendientesValidacion": [
+      "Unificado en cauciones-tradicionales"
+    ]
+  },
+  {
+    "segmento": "empresas",
+    "slug": "caucion-alquiler-comercial",
+    "nombre": "Caución de Alquiler Comercial",
+    "badge": "Cauciones",
+    "headline": "Alquilás sin inmovilizar capital",
+    "subtitulo": "El depósito deja de ser un problema.",
+    "cotizador": {
+      "modo": "contacto",
+      "titulo": "Cotización comercial",
+      "descripcion": "Producto similar al residencial, potencialmente con cotizador comparable.",
+      "ctaLabel": "Hablá con un especialista"
+    },
+    "coberturas": [
+      {
+        "titulo": "Alquiler impago",
+        "descripcion": "Si no pagás, la póliza responde al propietario."
+      },
+      {
+        "titulo": "Expensas",
+        "descripcion": "Expensas impagas cubiertas."
+      },
+      {
+        "titulo": "Servicios",
+        "descripcion": "Servicios e impuestos cubiertos."
+      },
+      {
+        "titulo": "Daños al inmueble",
+        "descripcion": "Según plan, daños a la propiedad cubiertos."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Cualquier empresa puede contratarlo?",
+        "respuesta": "Analizamos el perfil de la empresa en la suscripción."
+      },
+      {
+        "pregunta": "¿El propietario del local lo acepta?",
+        "respuesta": "Sí, es una garantía legal válida. Muchas inmobiliarias comerciales lo prefieren."
+      }
+    ],
+    "ctaTitulo": "Empezá el proyecto sin inmovilizar capital.",
+    "ctaSubtitulo": "Tu capital sigue trabajando para vos.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/integral-de-comercio",
+      "empresas/caucion-servicios"
+    ],
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "empresas",
+    "slug": "caucion-judicial",
+    "nombre": "Caución Judicial",
+    "badge": "Cauciones",
+    "headline": "Cuando hay un proceso judicial, necesitás seguir operando",
+    "subtitulo": "La garantía se resuelve sin inmovilizar activos.",
+    "coberturas": [
+      {
+        "titulo": "Sustitución de embargo",
+        "descripcion": "Cambiás el embargo por una póliza y seguís operando."
+      },
+      {
+        "titulo": "Garantía para apelación",
+        "descripcion": "La garantía que te piden para apelar, resuelta."
+      },
+      {
+        "titulo": "Contracautelas",
+        "descripcion": "Garantía para medidas cautelares sin inmovilizar activos."
+      }
+    ],
+    "ctaTitulo": "Si el caso ya empezó, avancemos igual.",
+    "ctaSubtitulo": "Tu operación sigue, la garantía se resuelve en paralelo.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/caucion-servicios"
+    ],
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "empresas",
+    "slug": "seguro-de-salud",
+    "nombre": "Seguro de Salud",
+    "badge": "Tu Negocio",
+    "headline": "Tu equipo cubierto, tu empresa funcionando.",
+    "subtitulo": "Seguro de salud grupal para que tu gente esté bien y vos puedas enfocarte en hacer crecer el negocio.",
+    "ctaTitulo": "Si salud grupal entra en portfolio, esta página ya está pensada.",
+    "ctaSubtitulo": "Se carga ahora como draft técnico hasta validar oferta real.",
+    "ctaPrimario": {
+      "label": "Quiero hablar con alguien"
+    },
+    "ctaSecundario": {
+      "label": "Explorá coberturas →"
+    },
+    "productosRelacionados": [
+      "empresas/seguro-de-vida-empresas"
+    ],
+    "pendientesValidacion": [
+      "Producto nuevo: confirmar si Woranz ofrece o está desarrollando salud grupal."
+    ]
+  },
+  {
+    "segmento": "empresas",
+    "slug": "integral-de-consorcio",
+    "nombre": "Integral de Consorcio",
+    "badge": "Tu Negocio",
+    "headline": "El edificio cubierto como una unidad",
+    "subtitulo": "Una sola póliza para todo lo que pasa en un consorcio.",
+    "ctaTitulo": "Un solo seguro para todo el consorcio.",
+    "ctaSubtitulo": "Todo lo que pasa en el edificio, cubierto en una póliza.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/incendio",
+      "empresas/responsabilidad-civil"
+    ],
+    "pendientesValidacion": [],
+    "coberturas": [
+      {
+        "titulo": "Incendio del edificio",
+        "descripcion": "Partes comunes cubiertas ante daños por fuego."
+      },
+      {
+        "titulo": "Responsabilidad civil",
+        "descripcion": "Si alguien reclama, el consorcio responde con respaldo."
+      },
+      {
+        "titulo": "Daños por agua",
+        "descripcion": "Filtraciones, roturas y daños en espacios comunes."
+      },
+      {
+        "titulo": "Accidentes del personal",
+        "descripcion": "Encargados y empleados del consorcio cubiertos."
+      }
+    ]
+  },
+  {
+    "segmento": "empresas",
+    "slug": "integral-de-comercio",
+    "nombre": "Integral de Comercio",
+    "badge": "Tu Negocio",
+    "headline": "Tu negocio cubierto en una sola póliza",
+    "subtitulo": "Todo lo importante, en un mismo lugar.",
+    "ctaTitulo": "Protegé el local y todo lo que pasa adentro.",
+    "ctaSubtitulo": "Incendio, robo, RC, cristales. Todo en una.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/caucion-alquiler-comercial",
+      "empresas/responsabilidad-civil"
+    ],
+    "pendientesValidacion": [],
+    "coberturas": [
+      {
+        "titulo": "Incendio",
+        "descripcion": "El local y su contenido, cubiertos ante fuego."
+      },
+      {
+        "titulo": "Robo",
+        "descripcion": "Mercadería y bienes cubiertos ante robo."
+      },
+      {
+        "titulo": "Responsabilidad civil",
+        "descripcion": "Si un tercero se lastima en tu local, respondemos."
+      },
+      {
+        "titulo": "Rotura de cristales",
+        "descripcion": "Vidrieras y cristales cubiertos."
+      },
+      {
+        "titulo": "Daños eléctricos",
+        "descripcion": "Cortocircuitos y daños en instalaciones cubiertos."
+      }
+    ]
+  },
+  {
+    "segmento": "empresas",
+    "slug": "responsabilidad-civil",
+    "nombre": "Responsabilidad Civil",
+    "badge": "Tu Negocio",
+    "headline": "Si tu actividad genera un daño, tenés respaldo",
+    "subtitulo": "Operás con tranquilidad frente a terceros.",
+    "variantes": [
+      {
+        "titulo": "RC Explotación",
+        "descripcion": "Cobertura por daños a terceros en la operación."
+      },
+      {
+        "titulo": "RC Productos",
+        "descripcion": "Cobertura por daños derivados de productos."
+      },
+      {
+        "titulo": "RC Profesional",
+        "descripcion": "Cobertura para actividades profesionales."
+      },
+      {
+        "titulo": "RC Locativa",
+        "descripcion": "Cobertura para el inmueble donde operás."
+      },
+      {
+        "titulo": "RC Patronal / Cruzada de Contratistas",
+        "descripcion": "Variantes para relaciones laborales y contratistas."
+      }
+    ],
+    "ctaTitulo": "Defensa y respaldo frente a terceros.",
+    "ctaSubtitulo": "Tu patrimonio protegido frente a reclamos de terceros.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/responsabilidad-civil-uso-ia",
+      "empresas/hecho-por-humanos",
+      "empresas/integral-de-comercio"
+    ],
+    "pendientesValidacion": [],
+    "coberturas": [
+      {
+        "titulo": "Daños a terceros",
+        "descripcion": "Si tu actividad causa un daño material o personal, estás cubierto."
+      },
+      {
+        "titulo": "Defensa legal",
+        "descripcion": "Los gastos legales los cubrimos nosotros."
+      },
+      {
+        "titulo": "RC Explotación",
+        "descripcion": "Cubre la actividad general de tu empresa."
+      },
+      {
+        "titulo": "RC Productos",
+        "descripcion": "Si tu producto causa un daño a un tercero."
+      },
+      {
+        "titulo": "RC Profesional",
+        "descripcion": "Para errores u omisiones en servicios profesionales."
+      }
+    ]
+  },
+  {
+    "segmento": "empresas",
+    "slug": "incendio",
+    "nombre": "Incendio - Empresas",
+    "badge": "Tu Negocio",
+    "headline": "Protegés lo que sostiene tu operación",
+    "subtitulo": "Un evento no debería poner en riesgo todo tu negocio.",
+    "ctaTitulo": "Si tu operación depende de un inmueble, tiene que estar cubierto.",
+    "ctaSubtitulo": "Inmuebles, instalaciones y bienes cubiertos.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/integral-de-comercio",
+      "empresas/integral-de-consorcio"
+    ],
+    "pendientesValidacion": [],
+    "coberturas": [
+      {
+        "titulo": "Incendio",
+        "descripcion": "Inmuebles e instalaciones cubiertos ante fuego."
+      },
+      {
+        "titulo": "Explosión",
+        "descripcion": "Daños por explosión cubiertos."
+      },
+      {
+        "titulo": "Daños por rayo",
+        "descripcion": "Protección ante impacto de rayo."
+      },
+      {
+        "titulo": "Pérdidas materiales",
+        "descripcion": "Maquinaria, mercadería y mobiliario cubiertos."
+      }
+    ]
+  },
+  {
+    "segmento": "empresas",
+    "slug": "aeronavegacion",
+    "nombre": "Aeronavegación",
+    "badge": "Especialidades",
+    "headline": "Cobertura para operar en aire, con respaldo en tierra",
+    "subtitulo": "Seguros pensados para aeronaves, pilotos y operaciones aéreas.",
+    "ctaTitulo": "Volá cubierto. Nosotros respondemos en tierra.",
+    "ctaSubtitulo": "Casco, RC, pasajeros y drones. Todo en una póliza.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/responsabilidad-civil"
+    ],
+    "pendientesValidacion": [],
+    "coberturas": [
+      {
+        "titulo": "Casco de aeronave",
+        "descripcion": "Daños al equipo cubiertos."
+      },
+      {
+        "titulo": "Responsabilidad civil aeronáutica",
+        "descripcion": "Reclamos de terceros en tierra, cubiertos."
+      },
+      {
+        "titulo": "Cobertura de pasajeros",
+        "descripcion": "Pasajeros a bordo cubiertos."
+      },
+      {
+        "titulo": "Operaciones con drones",
+        "descripcion": "Drones y operaciones no tripuladas cubiertos."
+      }
+    ]
+  },
+  {
+    "segmento": "empresas",
+    "slug": "hecho-por-humanos",
+    "nombre": "Hecho por Humanos",
+    "badge": "Hecho por Humanos",
+    "headline": "Hecho por humanos. Asegurado.",
+    "subtitulo": "Hay momentos donde necesitás saber que hay una persona del otro lado. Nosotros lo aseguramos.",
+    "heroImageSrc": "/images/feature-2.png",
+    "variantes": [
+      {
+        "titulo": "Atención al cliente",
+        "descripcion": "Call centers, soporte por chat, atención digital con escalamiento humano."
+      },
+      {
+        "titulo": "Contenido y creatividad",
+        "descripcion": "Copywriting, diseño, campañas, producción creativa."
+      },
+      {
+        "titulo": "Editorial y comunicación",
+        "descripcion": "Artículos, contenido periodístico, publicaciones."
+      },
+      {
+        "titulo": "Procesos profesionales",
+        "descripcion": "Informes, evaluaciones, validaciones técnicas."
+      }
+    ],
+    "ctaTitulo": "Si está hecho por una persona, asegurarlo es lógico.",
+    "ctaSubtitulo": "Si hay una persona, hay una póliza.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/responsabilidad-civil-uso-ia",
+      "empresas/responsabilidad-civil"
+    ],
+    "pendientesValidacion": [],
+    "destacado": true,
+    "orden": 1,
+    "coberturas": [
+      {
+        "titulo": "Intervención humana verificable",
+        "descripcion": "Garantiza que hubo una persona real participando del proceso."
+      },
+      {
+        "titulo": "Responsable identificable",
+        "descripcion": "Deja claro quién estuvo a cargo y puede responder por ese trabajo."
+      },
+      {
+        "titulo": "Validación por una persona",
+        "descripcion": "Asegura una revisión humana antes de entregar, publicar o decidir."
+      },
+      {
+        "titulo": "Proceso no completamente automatizado",
+        "descripcion": "Respalda que la tarea no quedó librada de punta a punta a un sistema automático."
+      },
+      {
+        "titulo": "Trazabilidad de la decisión o interacción",
+        "descripcion": "Permite mostrar qué intervención humana hubo y en qué parte del proceso."
+      }
+    ],
+    "requisitos": {
+      "titulo": "Qué asegura",
+      "items": [
+        "Intervención humana verificable",
+        "Responsable identificable",
+        "Validación por una persona",
+        "Proceso no completamente automatizado",
+        "Trazabilidad de la decisión o interacción"
+      ]
+    }
+  },
+  {
+    "segmento": "empresas",
+    "slug": "responsabilidad-civil-uso-ia",
+    "nombre": "Responsabilidad Civil por uso de IA",
+    "badge": "Responsabilidad Civil por uso de IA",
+    "headline": "Usás inteligencia artificial. Tenés que responder igual.",
+    "subtitulo": "La tecnología acelera. La responsabilidad sigue siendo tuya. Nosotros te cubrimos.",
+    "heroImageSrc": "/images/feature-1.png",
+    "variantes": [
+      {
+        "titulo": "Profesionales",
+        "descripcion": "Consultores, abogados, contadores, analistas."
+      },
+      {
+        "titulo": "Empresas",
+        "descripcion": "Plataformas digitales, fintech, insurtech, e-commerce."
+      },
+      {
+        "titulo": "Atención al cliente",
+        "descripcion": "Chatbots, call centers con IA, soporte automatizado."
+      },
+      {
+        "titulo": "Creatividad",
+        "descripcion": "Agencias, productoras, creadores de contenido."
+      }
+    ],
+    "ctaTitulo": "Usar IA es parte del presente. Estar cubierto también.",
+    "ctaSubtitulo": "Cobertura ante errores, reclamos y gastos legales por uso de IA.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "productosRelacionados": [
+      "empresas/hecho-por-humanos",
+      "empresas/responsabilidad-civil"
+    ],
+    "pendientesValidacion": [],
+    "destacado": true,
+    "orden": 2,
+    "coberturas": [
+      {
+        "titulo": "Errores en contenido generado con IA",
+        "descripcion": "Cubre reclamos cuando un contenido generado con IA causa un perjuicio a un tercero."
+      },
+      {
+        "titulo": "Información incorrecta o incompleta",
+        "descripcion": "Respalda casos donde la respuesta automatizada sale mal, corta o directamente errada."
+      },
+      {
+        "titulo": "Respuestas automatizadas con perjuicio",
+        "descripcion": "Aplica cuando una interacción automática deriva en un daño reclamable."
+      },
+      {
+        "titulo": "Decisiones asistidas por IA",
+        "descripcion": "Contempla reclamos vinculados a decisiones tomadas con apoyo de sistemas de IA."
+      },
+      {
+        "titulo": "Uso indebido de datos",
+        "descripcion": "Suma cobertura frente a reclamos por uso inapropiado de datos en procesos automatizados."
+      },
+      {
+        "titulo": "Reclamos de terceros",
+        "descripcion": "Incluye el frente principal del problema: cuando alguien te reclama por un daño."
+      },
+      {
+        "titulo": "Gastos legales",
+        "descripcion": "Acompaña con los gastos de defensa y gestión del reclamo, según la póliza."
+      }
+    ],
+    "requisitos": {
+      "titulo": "Qué cubre",
+      "items": [
+        "Errores en contenido generado con IA",
+        "Información incorrecta o incompleta",
+        "Respuestas automatizadas con perjuicio",
+        "Decisiones asistidas por IA",
+        "Uso indebido de datos",
+        "Reclamos de terceros",
+        "Gastos legales"
+      ]
+    }
+  },
+  {
+    "segmento": "personas",
+    "slug": "incendio",
+    "nombre": "Incendio",
+    "badge": "Incendio",
+    "headline": "Cobertura concreta para uno de los riesgos más grandes",
+    "subtitulo": "Protegés tu propiedad frente a daños que pueden cambiarlo todo.",
+    "cotizador": {
+      "modo": "contacto"
+    },
+    "coberturas": [
+      {
+        "titulo": "Incendio total o parcial",
+        "descripcion": "Cubrimos daños totales o parciales por fuego en tu propiedad."
+      },
+      {
+        "titulo": "Explosión",
+        "descripcion": "Si hay una explosión, también estás cubierto."
+      },
+      {
+        "titulo": "Daños por rayo",
+        "descripcion": "Daños por impacto de rayo."
+      },
+      {
+        "titulo": "Daños por humo o calor",
+        "descripcion": "Humo, calor y daños indirectos del fuego."
+      },
+      {
+        "titulo": "Remoción de escombros",
+        "descripcion": "Cubrimos la limpieza y remoción después del incendio."
+      }
+    ],
+    "ctaTitulo": "Protegé tu propiedad.",
+    "ctaSubtitulo": "Cotizá tu cobertura de incendio en minutos.",
+    "ctaPrimario": {
+      "label": "Cotizá tu cobertura"
+    },
+    "ctaSecundario": {
+      "label": "Hablá con nosotros →"
+    },
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "empresas",
+    "slug": "cauciones-tradicionales",
+    "nombre": "Cauciones Tradicionales",
+    "badge": "Cauciones",
+    "headline": "Todas las garantías que tu operación necesita, en una sola línea",
+    "subtitulo": "Licitar, contratar, operar. Sin frenar capital ni procesos.",
+    "cotizador": {
+      "modo": "contacto"
+    },
+    "variantes": [
+      {
+        "titulo": "Garantía de mantenimiento de oferta",
+        "descripcion": "Obligatoria en licitaciones. Respalda tu propuesta."
+      },
+      {
+        "titulo": "Garantía de cumplimiento de contrato",
+        "descripcion": "Garantía obligatoria para la ejecución del contrato."
+      },
+      {
+        "titulo": "Garantía de anticipo financiero",
+        "descripcion": "Protección de fondos adelantados por el comitente."
+      },
+      {
+        "titulo": "Garantía de fondo de reparo",
+        "descripcion": "Sustitución de retenciones al finalizar la obra."
+      },
+      {
+        "titulo": "Caución de suministro",
+        "descripcion": "Garantía para contratos de provisión continua."
+      },
+      {
+        "titulo": "Caución de servicios",
+        "descripcion": "Garantía para prestaciones de servicios."
+      },
+      {
+        "titulo": "Caución de actividad o profesión",
+        "descripcion": "Requisito regulatorio para operar en determinadas actividades."
+      }
+    ],
+    "ctaTitulo": "Tu operación no puede esperar.",
+    "ctaSubtitulo": "Emitimos garantías con la agilidad que tu negocio necesita.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Ver todas las garantías →"
+    },
+    "pendientesValidacion": []
+  },
+  {
+    "segmento": "empresas",
+    "slug": "vida-saldo-deudor",
+    "nombre": "Seguro de Vida Saldo Deudor",
+    "badge": "Vida Saldo Deudor",
+    "headline": "Si pasa algo, la deuda no queda",
+    "subtitulo": "Protegés el crédito y a la persona al mismo tiempo.",
+    "cotizador": {
+      "modo": "contacto"
+    },
+    "coberturas": [
+      {
+        "titulo": "Cancelación por fallecimiento",
+        "descripcion": "Si el titular fallece, el saldo se cancela."
+      },
+      {
+        "titulo": "Cancelación por incapacidad",
+        "descripcion": "Ante incapacidad total y permanente, también."
+      },
+      {
+        "titulo": "Ajuste automático",
+        "descripcion": "Se adapta automáticamente al saldo del crédito."
+      }
+    ],
+    "ctaTitulo": "Protegé tu operación de crédito.",
+    "ctaSubtitulo": "Cobertura que acompaña el ciclo de cada préstamo.",
+    "ctaPrimario": {
+      "label": "Hablá con un especialista"
+    },
+    "ctaSecundario": {
+      "label": "Conocé más →"
+    },
+    "pendientesValidacion": []
+  }
+]

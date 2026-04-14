@@ -2,18 +2,12 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { ProductPageTemplate } from "@/components/templates/product-page"
-import {
-  getHomePageData,
-  getHomePageFallbackMetadata,
-} from "@/lib/home-page-source"
-import { buildPageMetadata } from "@/lib/metadata"
+import { getHomePageData } from "@/lib/home-page-source"
 
-export async function generateMetadata(): Promise<Metadata> {
-  const page = await getHomePageData("productores")
-
-  return buildPageMetadata(
-    page?.metadata || getHomePageFallbackMetadata("productores")
-  )
+export const metadata: Metadata = {
+  title: "Woranz — Productores",
+  description:
+    "Cotizá, emití y gestioná todas tus coberturas desde un solo lugar. Sin Excel, sin papel, sin drama.",
 }
 
 export default async function ProductoresPage() {

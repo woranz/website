@@ -25,59 +25,44 @@ export function BreadcrumbStepper({
   title,
   className,
 }: BreadcrumbStepperProps) {
-  const current = steps[currentStep - 1]
-
   return (
-    <>
-      {/* Mobile: compact current step indicator */}
-      <div className={cn("flex items-center justify-center gap-2 md:hidden", className)}>
-        <span className="text-sm text-woranz-muted">
-          {currentStep}/{steps.length}
-        </span>
-        <span className="text-sm font-semibold text-woranz-ink">
-          {current?.title}
-        </span>
-      </div>
+    <nav className={cn("flex items-center justify-center gap-1.5 overflow-x-auto", className)}>
+      {title && (
+        <>
+          <span className="shrink-0 text-sm font-semibold text-woranz-ink">{title}</span>
+          <ChevronRight className="h-3 w-3 shrink-0 text-woranz-light" />
+        </>
+      )}
+      {steps.map((s, i) => {
+        const stepNum = i + 1
+        const isCompleted = stepNum < currentStep
+        const isCurrent = stepNum === currentStep
+        const isFuture = stepNum > currentStep
 
-      {/* Desktop: full breadcrumb */}
-      <nav className={cn("hidden items-center justify-center gap-1.5 md:flex", className)}>
-        {title && (
-          <>
-            <span className="shrink-0 text-sm font-semibold text-woranz-ink">{title}</span>
-            <ChevronRight className="h-3 w-3 shrink-0 text-woranz-light" />
-          </>
-        )}
-        {steps.map((s, i) => {
-          const stepNum = i + 1
-          const isCompleted = stepNum < currentStep
-          const isCurrent = stepNum === currentStep
-          const isFuture = stepNum > currentStep
-
-          return (
-            <Fragment key={s.id}>
-              {i > 0 && (
-                <ChevronRight className="h-3 w-3 shrink-0 text-woranz-light" />
+        return (
+          <Fragment key={s.id}>
+            {i > 0 && (
+              <ChevronRight className="h-3 w-3 shrink-0 text-woranz-light" />
+            )}
+            <button
+              type="button"
+              onClick={() => isCompleted && onStepClick?.(stepNum)}
+              disabled={!isCompleted}
+              className={cn(
+                "flex shrink-0 items-center gap-1.5 rounded-full py-1 text-sm transition-colors",
+                isCompleted && "text-woranz-text hover:text-woranz-ink cursor-pointer",
+                isCurrent && "font-semibold text-woranz-ink",
+                isFuture && "text-woranz-muted cursor-default"
               )}
-              <button
-                type="button"
-                onClick={() => isCompleted && onStepClick?.(stepNum)}
-                disabled={!isCompleted}
-                className={cn(
-                  "flex shrink-0 items-center gap-1.5 rounded-full py-1 text-sm transition-colors",
-                  isCompleted && "text-woranz-text hover:text-woranz-ink cursor-pointer",
-                  isCurrent && "font-semibold text-woranz-ink",
-                  isFuture && "text-woranz-muted cursor-default"
-                )}
-              >
-                {isCompleted && (
-                  <Check className="h-3.5 w-3.5 text-emerald-500" strokeWidth={2.5} />
-                )}
-                <span>{s.title}</span>
-              </button>
-            </Fragment>
-          )
-        })}
-      </nav>
-    </>
+            >
+              {isCompleted && (
+                <Check className="h-3.5 w-3.5 text-emerald-500" strokeWidth={2.5} />
+              )}
+              <span>{s.title}</span>
+            </button>
+          </Fragment>
+        )
+      })}
+    </nav>
   )
 }

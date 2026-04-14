@@ -42,6 +42,7 @@ export type PackageCarouselItem = {
 export type ProductCarouselItem = {
   href?: string
   imageSrc: string
+  subtitle?: string
   title: string
 }
 
@@ -146,6 +147,7 @@ type StepsSection = {
 export type ProductGridItem = {
   href?: string
   imageSrc: string
+  subtitle?: string
   title: string
 }
 
@@ -153,6 +155,12 @@ type ProductGridSection = {
   items: ProductGridItem[]
   title: string
   type: "product-grid"
+}
+
+type ProductSearchListSection = {
+  items: ProductGridItem[]
+  title: string
+  type: "product-search-list"
 }
 
 export type ProductPageSection =
@@ -166,6 +174,7 @@ export type ProductPageSection =
   | CtaSection
   | StepsSection
   | ProductGridSection
+  | ProductSearchListSection
 
 export type ProductPageData = {
   hero: ProductHero

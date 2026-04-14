@@ -26,7 +26,7 @@ export const ALLOWED_ATTACHMENT_TYPES = [
 
 function buildFieldSchema(field: FormFieldConfig) {
   const maxLength = field.validation?.maxLength ?? DEFAULT_MAX_LENGTH
-  let schema = z
+  let schema: z.ZodType<string> = z
     .string()
     .transform((value) => value.trim())
     .pipe(z.string().max(maxLength, `Máximo ${maxLength} caracteres.`))
