@@ -766,7 +766,10 @@ function CarouselSection({
   section: Extract<ProductPageSection, { type: "carousel" }>
 }) {
   return (
-    <section className="w-full py-section-mobile md:py-section">
+    <section
+      id={section.variant === "product" ? "seguros" : undefined}
+      className="w-full py-section-mobile md:py-section scroll-mt-24"
+    >
       <CarouselWithHeader title={section.title} fullWidth>
         {section.variant === "package"
           ? section.items.map((item) => (
@@ -849,7 +852,7 @@ function ProductGridSection({
   section: Extract<ProductPageSection, { type: "product-grid" }>
 }) {
   return (
-    <section className="w-full bg-woranz-warm-1">
+    <section id="coberturas" className="w-full bg-woranz-warm-1 scroll-mt-24">
       <div className="page-shell gap-8 px-page-mobile py-section-mobile md:gap-10 md:px-page-wide md:py-section">
         <h2 className="section-title">{section.title}</h2>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
