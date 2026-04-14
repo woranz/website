@@ -34,4 +34,9 @@ export const RATE_LIMITS: Record<string, RateLimitConfig> = {
     windowMs: 10 * 60_000,
   },
   formsSubmit: { key: "forms-submit", limit: 5, windowMs: 10 * 60_000 },
+  aeronavegacionLookup: {
+    key: "aeronavegacion-lookup",
+    limit: 20,
+    windowMs: 60_000,
+  },
 }

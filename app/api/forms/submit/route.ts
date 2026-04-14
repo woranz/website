@@ -6,6 +6,7 @@ import {
   buildContactFormSchema,
   type ContactFormPayload,
   accidentesCotizacionSchema,
+  aeronavegacionSolicitudSchema,
   caucionPreaprobacionSchema,
 } from "@/lib/api/schemas/forms"
 import {
@@ -17,6 +18,7 @@ import {
 import { getFormConfig } from "@/lib/forms/registry"
 
 import { handleAccidentesCotizacion } from "./handlers/accidentes-cotizacion"
+import { handleAeronavegacionSolicitud } from "./handlers/aeronavegacion-solicitud"
 import { handleCaucionPreaprobacion } from "./handlers/caucion-preaprobacion"
 import { handleContacto } from "./handlers/contacto"
 
@@ -118,6 +120,59 @@ export async function POST(request: Request) {
       })
 
       await handleCaucionPreaprobacion(payload)
+      return jsonData({ success: true }, { rateLimit })
+    }
+
+    if (formType === "aeronavegacion-solicitud") {
+      const payload = aeronavegacionSolicitudSchema.parse({
+        dni: getString(formData, "dni"),
+        cuit: getString(formData, "cuit"),
+        nombreCompleto: getString(formData, "nombreCompleto"),
+        email: getString(formData, "email"),
+        telefono: getString(formData, "telefono"),
+        condicionFiscal: getString(formData, "condicionFiscal"),
+        localidad: getString(formData, "localidad"),
+        provincia: getString(formData, "provincia"),
+        matricula: getString(formData, "matricula"),
+        marca: getString(formData, "marca"),
+        modelo: getString(formData, "modelo"),
+        anio: getString(formData, "anio"),
+        nroSerie: getString(formData, "nroSerie"),
+        tipoAeronave: getString(formData, "tipoAeronave"),
+        asientosTripulantes: getString(formData, "asientosTripulantes"),
+        asientosPasajeros: getString(formData, "asientosPasajeros"),
+        ultimoOverhaul: getString(formData, "ultimoOverhaul"),
+        vencimientoPoliza: getString(formData, "vencimientoPoliza"),
+        siniestraliadAeronave: getString(formData, "siniestraliadAeronave"),
+        usoAnualHoras: getString(formData, "usoAnualHoras"),
+        actividades: getString(formData, "actividades"),
+        baseOperaciones: getString(formData, "baseOperaciones"),
+        limiteGeografico: getString(formData, "limiteGeografico"),
+        coberturas: getString(formData, "coberturas"),
+        hasFerryFlight: getString(formData, "hasFerryFlight") === "true",
+        ferryRuta: getString(formData, "ferryRuta"),
+        ferrySalida: getString(formData, "ferrySalida"),
+        ferryArribo: getString(formData, "ferryArribo"),
+        comandante: getString(formData, "comandante"),
+        copiloto: getString(formData, "copiloto"),
+        hasAirportPresence: getString(formData, "hasAirportPresence") === "true",
+        edificiosHangares: getString(formData, "edificiosHangares"),
+        ocupacion: getString(formData, "ocupacion"),
+        vehiculosEquipos: getString(formData, "vehiculosEquipos"),
+        actividadesPrincipales: getString(formData, "actividadesPrincipales"),
+        siniestraliadRC: getString(formData, "siniestraliadRC"),
+        isHangarista: getString(formData, "isHangarista") === "true",
+        valorPromedioCustodia: getString(formData, "valorPromedioCustodia"),
+        valorMaximoCustodia: getString(formData, "valorMaximoCustodia"),
+        nroPromedioAeronaves: getString(formData, "nroPromedioAeronaves"),
+        siniestraliadAsegurado: getString(formData, "siniestraliadAsegurado"),
+        comentarios: getString(formData, "comentarios"),
+        modoContacto: getString(formData, "modoContacto"),
+        contactoValor: getString(formData, "contactoValor"),
+        archivos: getFiles(formData, "archivos"),
+      })
+
+      await handleAeronavegacionSolicitud(payload)
       return jsonData({ success: true }, { rateLimit })
     }
 

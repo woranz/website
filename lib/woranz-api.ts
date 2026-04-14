@@ -169,3 +169,55 @@ export async function lookupPersonaFull(
 ): Promise<WoranzPersona | null> {
   return fetchPersonaRecord(dni)
 }
+
+export type InfoexpertoPersona = {
+  cuit: string
+  nombreCompleto: string
+  sexo: string
+  fechaNacimiento: string
+  localidad: string
+  provincia: string
+  tipoEntidad: string
+}
+
+/**
+ * Look up a person by DNI using the infoexperto endpoint.
+ * Returns CUIT, full name, locality, province, and demographic data.
+ */
+export async function lookupPersonaInfoexperto(
+  dni: string
+): Promise<InfoexpertoPersona | null> {
+  const token = await authenticate()
+
+  const res = await fetch(`${FRONTAPI_URL}/personas/infoexperto`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id: dni }),
+  })
+
+  if (!res.ok) {
+    return null
+  }
+
+  const json = await res.json()
+  const data = json.data
+
+  if (!data || !Array.isArray(data) || data.length === 0) {
+    return null
+  }
+
+  const persona = data[0]
+
+  return {
+    cuit: persona.cuit ?? "",
+    nombreCompleto: persona.nombre_completo ?? persona.razonSocial ?? "",
+    sexo: persona.sexo ?? "",
+    fechaNacimiento: persona.fecha_nacimiento ?? "",
+    localidad: (persona.localidad ?? "").replace(/<BR>/gi, ", "),
+    provincia: (persona.provincia ?? "").replace(/<BR>/gi, ", "),
+    tipoEntidad: persona.tipo_entidad ?? "",
+  }
+}
