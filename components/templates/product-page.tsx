@@ -8,7 +8,11 @@ import {
   ChevronRight,
   CreditCard,
   FileText,
+  Headphones,
   Package,
+  Palette,
+  Newspaper,
+  ClipboardCheck,
   Scale,
   ShieldCheck,
   User,
@@ -187,6 +191,7 @@ function HeroSection({ page }: { page: ProductPageData }) {
           priority
           quality={90}
           className="object-cover"
+          style={page.hero.imagePosition ? { objectPosition: page.hero.imagePosition } : undefined}
           sizes="(max-width: 768px) 100vw, 1200px"
         />
       </div>
@@ -417,25 +422,26 @@ function VariantsSection({
   )
 }
 
+const VARIANT_ICON_MAP: Record<string, typeof Briefcase> = {
+  "mantenimiento-oferta": FileText,
+  "cumplimiento-contrato": ShieldCheck,
+  "anticipo-financiero": CreditCard,
+  "fondo-reparo": ShieldCheck,
+  "suministro": Package,
+  "servicios": Briefcase,
+  "actividad-profesion": Building,
+  "judicial": Scale,
+  "atencion-cliente": Headphones,
+  "contenido-creatividad": Palette,
+  "editorial-comunicacion": Newspaper,
+  "procesos-profesionales": ClipboardCheck,
+  "profesionales": Briefcase,
+  "empresas": Building,
+  "creatividad": Palette,
+}
+
 function VariantIcon({ icon }: { icon?: string }) {
-  const Icon =
-    icon === "mantenimiento-oferta"
-      ? FileText
-      : icon === "cumplimiento-contrato"
-        ? ShieldCheck
-        : icon === "anticipo-financiero"
-          ? CreditCard
-          : icon === "fondo-reparo"
-            ? ShieldCheck
-            : icon === "suministro"
-              ? Package
-              : icon === "servicios"
-                ? Briefcase
-                : icon === "actividad-profesion"
-                  ? Building
-                  : icon === "judicial"
-                    ? Scale
-                    : Briefcase
+  const Icon = (icon && VARIANT_ICON_MAP[icon]) || Briefcase
 
   return (
     <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/85 text-woranz-slate shadow-sm">

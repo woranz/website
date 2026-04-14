@@ -1252,9 +1252,9 @@
       "label": "Hablá con nosotros →"
     },
     "productosRelacionados": [
+      "empresas/integral-de-comercio",
       "empresas/responsabilidad-civil-uso-ia",
-      "empresas/hecho-por-humanos",
-      "empresas/integral-de-comercio"
+      "empresas/accidentes-personales"
     ],
     "pendientesValidacion": [],
     "coberturas": [
@@ -1365,22 +1365,27 @@
     "headline": "Hecho por humanos. Asegurado.",
     "subtitulo": "Hay momentos donde necesitás saber que hay una persona del otro lado. Nosotros lo aseguramos.",
     "heroImageSrc": "/images/feature-2.png",
+    "variantesTitulo": "Dónde aplica",
     "variantes": [
       {
         "titulo": "Atención al cliente",
-        "descripcion": "Call centers, soporte por chat, atención digital con escalamiento humano."
+        "descripcion": "Call centers, soporte por chat, atención digital con escalamiento humano.",
+        "icon": "atencion-cliente"
       },
       {
         "titulo": "Contenido y creatividad",
-        "descripcion": "Copywriting, diseño, campañas, producción creativa."
+        "descripcion": "Copywriting, diseño, campañas, producción creativa.",
+        "icon": "contenido-creatividad"
       },
       {
         "titulo": "Editorial y comunicación",
-        "descripcion": "Artículos, contenido periodístico, publicaciones."
+        "descripcion": "Artículos, contenido periodístico, publicaciones.",
+        "icon": "editorial-comunicacion"
       },
       {
         "titulo": "Procesos profesionales",
-        "descripcion": "Informes, evaluaciones, validaciones técnicas."
+        "descripcion": "Informes, evaluaciones, validaciones técnicas.",
+        "icon": "procesos-profesionales"
       }
     ],
     "ctaTitulo": "Si está hecho por una persona, asegurarlo es lógico.",
@@ -1439,22 +1444,27 @@
     "headline": "Usás inteligencia artificial. Tenés que responder igual.",
     "subtitulo": "La tecnología acelera. La responsabilidad sigue siendo tuya. Nosotros te cubrimos.",
     "heroImageSrc": "/images/feature-1.png",
+    "variantesTitulo": "A quién está dirigido",
     "variantes": [
       {
         "titulo": "Profesionales",
-        "descripcion": "Consultores, abogados, contadores, analistas."
+        "descripcion": "Consultores, abogados, contadores, analistas.",
+        "icon": "profesionales"
       },
       {
         "titulo": "Empresas",
-        "descripcion": "Plataformas digitales, fintech, insurtech, e-commerce."
+        "descripcion": "Plataformas digitales, fintech, insurtech, e-commerce.",
+        "icon": "empresas"
       },
       {
         "titulo": "Atención al cliente",
-        "descripcion": "Chatbots, call centers con IA, soporte automatizado."
+        "descripcion": "Chatbots, call centers con IA, soporte automatizado.",
+        "icon": "atencion-cliente"
       },
       {
         "titulo": "Creatividad",
-        "descripcion": "Agencias, productoras, creadores de contenido."
+        "descripcion": "Agencias, productoras, creadores de contenido.",
+        "icon": "creatividad"
       }
     ],
     "ctaTitulo": "Usar IA es parte del presente. Estar cubierto también.",
@@ -1555,6 +1565,32 @@
     "ctaSecundario": {
       "label": "Hablá con nosotros →"
     },
+    "faqs": [
+      {
+        "pregunta": "¿Qué cubre exactamente una póliza de incendio?",
+        "respuesta": "Cubre daños materiales causados por fuego, explosión, impacto de rayo y sus consecuencias directas como humo y calor. También incluye los gastos de remoción de escombros. El alcance exacto depende del plan contratado."
+      },
+      {
+        "pregunta": "¿Es obligatorio tener seguro de incendio?",
+        "respuesta": "Si tenés un crédito hipotecario, sí: el banco lo exige como condición. Si no tenés hipoteca, no es obligatorio pero sí recomendable para proteger tu patrimonio."
+      },
+      {
+        "pregunta": "¿Cubre también si soy inquilino?",
+        "respuesta": "Sí. Podés asegurar el contenido de tu vivienda como inquilino. La estructura del inmueble la asegura el propietario, pero tus bienes son tu responsabilidad."
+      },
+      {
+        "pregunta": "¿Necesito una inspección previa para contratar?",
+        "respuesta": "Depende del valor asegurado y del tipo de propiedad. En muchos casos no se requiere inspección para montos estándar. Te lo confirmamos al cotizar."
+      },
+      {
+        "pregunta": "¿Cómo se define el monto de indemnización?",
+        "respuesta": "Se basa en la suma asegurada que elegiste al contratar. Es importante que refleje el valor real de reposición de tu propiedad para evitar infraseguro."
+      },
+      {
+        "pregunta": "¿Qué tengo que hacer si hay un siniestro?",
+        "respuesta": "Contactanos lo antes posible con los datos del incidente. Vas a necesitar la denuncia policial si corresponde y documentación del daño. Te guiamos en todo el proceso."
+      }
+    ],
     "pendientesValidacion": []
   },
   {
