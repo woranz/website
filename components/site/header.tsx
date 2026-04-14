@@ -115,6 +115,7 @@ const NAV_COVERAGE: Record<"personas" | "empresas", NavCoverageItem[]> = {
     { title: "Aeronavegación", description: "Cobertura para operaciones aéreas.", href: "/empresas/coberturas/aeronavegacion", icon: "plane" },
     { title: "Hecho por Humanos", description: "Intervención humana verificable.", href: "/empresas/coberturas/hecho-por-humanos", icon: "handshake" },
     { title: "RC por uso de IA", description: "Cobertura para IA.", href: "/empresas/coberturas/responsabilidad-civil-uso-ia", icon: "cpu" },
+    { title: "Sepelio Colectivo", description: "Cobertura para tu equipo.", href: "/empresas/coberturas/seguro-de-sepelio", icon: "heart" },
   ],
 }
 
