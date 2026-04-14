@@ -86,4 +86,125 @@ describe("transformSanityProduct", () => {
     expect(overridden.hero.primaryCta).toBe("Cotizar")
     expect(overridden.hero.primaryCtaHref).toBe("#cotizador")
   })
+
+  it("injects the shared personas feature carousel after the final CTA", () => {
+    const page = transformSanityProduct(
+      {
+        nombre: "Seguro de Hogar",
+        segmento: "personas",
+        slug: { current: "seguro-de-hogar" },
+        headline: "Protegé tu casa",
+        subtitulo: "Respaldo real para tu hogar.",
+        secciones: [
+          {
+            _type: "seccionExplicacion",
+            titulo: "Qué es",
+            cuerpo: "Una cobertura simple para tu casa.",
+          },
+          { _type: "seccionCta" },
+        ],
+      },
+      undefined,
+      createPageSourceContext(
+        "product",
+        "personas/seguro-de-hogar",
+        "/personas/coberturas/seguro-de-hogar",
+        false
+      )
+    )
+
+    expect(page).toBeDefined()
+
+    const ctaIndex = page!.sections.findIndex((section) => section.type === "cta")
+    const featureIndex = page!.sections.findIndex(
+      (section) => section.type === "carousel" && section.variant === "feature"
+    )
+
+    expect(ctaIndex).toBeGreaterThan(-1)
+    expect(featureIndex).toBe(ctaIndex + 1)
+  })
+
+  it("injects empresas FAQ fallback before the CTA and feature carousel after it", () => {
+    const page = transformSanityProduct(
+      {
+        nombre: "Incendio - Empresas",
+        segmento: "empresas",
+        slug: { current: "incendio" },
+        headline: "Protegés lo que sostiene tu operación",
+        subtitulo: "Un evento no debería poner en riesgo todo tu negocio.",
+        secciones: [
+          {
+            _type: "seccionExplicacion",
+            titulo: "Qué es",
+            cuerpo: "Protección para activos críticos de tu operación.",
+          },
+          { _type: "seccionCta" },
+        ],
+      },
+      undefined,
+      createPageSourceContext(
+        "product",
+        "empresas/incendio",
+        "/empresas/coberturas/incendio",
+        false
+      )
+    )
+
+    expect(page).toBeDefined()
+
+    const faqIndex = page!.sections.findIndex((section) => section.type === "faq")
+    const ctaIndex = page!.sections.findIndex((section) => section.type === "cta")
+    const featureIndex = page!.sections.findIndex(
+      (section) => section.type === "carousel" && section.variant === "feature"
+    )
+
+    expect(faqIndex).toBeGreaterThan(-1)
+    expect(ctaIndex).toBeGreaterThan(faqIndex)
+    expect(featureIndex).toBe(ctaIndex + 1)
+  })
+
+  it("does not duplicate an authored FAQ section for empresas", () => {
+    const page = transformSanityProduct(
+      {
+        nombre: "Incendio - Empresas",
+        segmento: "empresas",
+        slug: { current: "incendio" },
+        headline: "Protegés lo que sostiene tu operación",
+        subtitulo: "Un evento no debería poner en riesgo todo tu negocio.",
+        secciones: [
+          {
+            _type: "seccionFaq",
+            items: [
+              {
+                pregunta: "¿Esta pregunta viene de Sanity?",
+                respuesta: "Sí, y no debe duplicarse con el fallback.",
+              },
+            ],
+          },
+          { _type: "seccionCta" },
+        ],
+      },
+      undefined,
+      createPageSourceContext(
+        "product",
+        "empresas/incendio",
+        "/empresas/coberturas/incendio",
+        false
+      )
+    )
+
+    expect(page).toBeDefined()
+
+    const faqSections = page!.sections.filter((section) => section.type === "faq")
+
+    expect(faqSections).toHaveLength(1)
+    expect(faqSections[0]).toMatchObject({
+      mobileItems: [
+        {
+          question: "¿Esta pregunta viene de Sanity?",
+          answer: "Sí, y no debe duplicarse con el fallback.",
+        },
+      ],
+    })
+  })
 })
