@@ -234,11 +234,11 @@ export function StepReview({
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
             <Label className="text-woranz-ink">Asientos tripulantes {isExtracted("asientosTripulantes") && <ExtractedBadge />}</Label>
-            <Input inputMode="numeric" {...register("asientosTripulantes")} />
+            <Input type="number" min={0} {...register("asientosTripulantes")} />
           </div>
           <div className="flex flex-col gap-1.5">
             <Label className="text-woranz-ink">Asientos pasajeros {isExtracted("asientosPasajeros") && <ExtractedBadge />}</Label>
-            <Input inputMode="numeric" {...register("asientosPasajeros")} />
+            <Input type="number" min={0} {...register("asientosPasajeros")} />
           </div>
         </div>
 

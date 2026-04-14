@@ -49,12 +49,11 @@ export function StepUpload({
           <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-woranz-yellow" />
           <div>
             <p className="text-sm font-semibold text-woranz-ink">
-              Completamos el formulario por vos
+              Subí tus documentos, nosotros leemos
             </p>
             <p className="mt-1 text-sm text-woranz-text">
-              Subí tu póliza vigente, certificado de aeronavegabilidad u otra
-              documentación y extraemos los datos automáticamente. Solo vas a
-              tener que revisar y confirmar.
+              Póliza vigente, certificado de aeronavegabilidad o matrícula.
+              Extraemos los datos y vos solo revisás.
             </p>
           </div>
         </div>

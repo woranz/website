@@ -7,7 +7,7 @@ import {
   jsonError,
   parseJsonBody,
 } from "@/lib/api/request"
-import { lookupPersonaInfoexperto } from "@/lib/woranz-api"
+import { lookupPersonaInfoexperto, lookupPersonaFull } from "@/lib/woranz-api"
 
 export async function POST(request: Request) {
   const rateLimit = checkRateLimit(request, RATE_LIMITS.aeronavegacionLookup)
@@ -29,8 +29,28 @@ export async function POST(request: Request) {
   }
 
   try {
-    const persona = await lookupPersonaInfoexperto(parsed.data.dni)
-    return jsonData({ data: persona ?? null }, { rateLimit })
+    // Call both endpoints: infoexperto (cuit, nombre, localidad, provincia)
+    // and personas/all with type=tomador (domicilio, emails)
+    const [infoexperto, personaFull] = await Promise.all([
+      lookupPersonaInfoexperto(parsed.data.dni),
+      lookupPersonaFull(parsed.data.dni),
+    ])
+
+    if (!infoexperto && !personaFull) {
+      return jsonData({ data: null }, { rateLimit })
+    }
+
+    const email = personaFull?.emails?.[0]?.email ?? ""
+
+    const data = {
+      cuit: infoexperto?.cuit ?? "",
+      nombreCompleto: infoexperto?.nombreCompleto ?? "",
+      localidad: infoexperto?.localidad ?? "",
+      provincia: infoexperto?.provincia ?? "",
+      email,
+    }
+
+    return jsonData({ data }, { rateLimit })
   } catch {
     return jsonError("Error al buscar los datos. Intentá de nuevo.", 500, {
       rateLimit,

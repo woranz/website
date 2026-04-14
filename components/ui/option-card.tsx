@@ -21,7 +21,7 @@ function OptionCard({
         "flex w-full items-center gap-3 rounded-field px-5 py-4 text-left text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         active
           ? "border-2 border-woranz-ink bg-white text-woranz-ink"
-          : "border border-woranz-border bg-woranz-warm-2 text-woranz-slate hover:border-woranz-muted"
+          : "border-2 border-woranz-border bg-woranz-warm-2 text-woranz-slate hover:border-woranz-muted"
       )}
     >
       <div
@@ -54,7 +54,7 @@ function CheckboxCard({
         "flex w-full items-center gap-3 rounded-field px-5 py-3.5 text-left text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         checked
           ? "border-2 border-woranz-ink bg-white text-woranz-ink"
-          : "border border-woranz-border bg-woranz-warm-2 text-woranz-slate hover:border-woranz-muted"
+          : "border-2 border-woranz-border bg-woranz-warm-2 text-woranz-slate hover:border-woranz-muted"
       )}
     >
       <div
