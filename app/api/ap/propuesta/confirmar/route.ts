@@ -1,44 +1,57 @@
-import { NextResponse } from "next/server"
-
+import { RATE_LIMITS } from "@/lib/api/limits"
+import { checkRateLimit } from "@/lib/api/rate-limit"
+import { propuestaConfirmarSchema } from "@/lib/api/schemas/ap"
+import {
+  enforceSameOrigin,
+  jsonData,
+  jsonError,
+  parseJsonBody,
+} from "@/lib/api/request"
 import { woranzFetch } from "@/lib/woranz-api"
+import { getWoranzErrorMessage } from "@/lib/woranz-api"
 
 export async function POST(request: Request) {
+  const rateLimit = checkRateLimit(request, RATE_LIMITS.apPropuestaConfirmar)
+  if (!rateLimit.allowed) {
+    return jsonError("Too many requests.", 429, { rateLimit })
+  }
+
+  const originError = enforceSameOrigin(request, { rateLimit })
+  if (originError) {
+    return originError
+  }
+
+  const parsed = await parseJsonBody(request, propuestaConfirmarSchema, {
+    invalidBodyMessage: "ID de emisión requerido",
+    rateLimit,
+  })
+  if (!parsed.success) {
+    return parsed.response
+  }
+
   try {
-    const body = await request.json()
-    const { idEmision } = body
-
-    if (!idEmision) {
-      return NextResponse.json(
-        { error: "ID de emisión requerido" },
-        { status: 400 }
-      )
-    }
-
-    const res = await woranzFetch(`/ap/propuesta/confirmar/${idEmision}`, {
-      method: "POST",
-    })
-
+    const res = await woranzFetch(
+      `/ap/propuesta/confirmar/${parsed.data.idEmision}`,
+      {
+        method: "POST",
+      }
+    )
     const json = await res.json()
 
     if (json.error) {
-      // "La propuesta ya fue confirmada" is not a real error
-      if (
-        typeof json.error.message === "string" &&
-        json.error.message.includes("ya fue confirmada")
-      ) {
-        return NextResponse.json({ data: { alreadyConfirmed: true } })
-      }
-      return NextResponse.json(
-        { error: json.error.message ?? "Error al confirmar propuesta" },
-        { status: 422 }
+      const message = getWoranzErrorMessage(
+        json.error,
+        "Error al confirmar propuesta"
       )
+      if (message.includes("ya fue confirmada")) {
+        return jsonData({ data: { alreadyConfirmed: true } }, { rateLimit })
+      }
+
+      return jsonError(message, 422, { rateLimit })
     }
 
-    return NextResponse.json({ data: json.data })
+    return jsonData({ data: json.data }, { rateLimit })
   } catch {
-    return NextResponse.json(
-      { error: "Error al confirmar propuesta" },
-      { status: 500 }
-    )
+    return jsonError("Error al confirmar propuesta", 500, { rateLimit })
   }
 }
