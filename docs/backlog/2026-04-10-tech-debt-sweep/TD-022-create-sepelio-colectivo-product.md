@@ -2,7 +2,7 @@
 
 Prioridad: Media
 Tipo: Producto / Content
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex
