@@ -19,6 +19,6 @@ describe("buildPageMetadata", () => {
       follow: false,
     })
     expect(metadata.openGraph?.title).toBe("Cotización AP — Woranz")
-    expect(metadata.twitter?.card).toBe("summary_large_image")
+    expect((metadata.twitter as Record<string, unknown>)?.card).toBe("summary_large_image")
   })
 })
