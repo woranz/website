@@ -3,13 +3,14 @@ import type { Metadata } from "next"
 import { AeronavegacionSolicitudForm } from "@/components/AeronavegacionSolicitudForm"
 import { SiteHeader } from "@/components/site/header"
 import { buildPageMetadata } from "@/lib/metadata"
+import { buildProductSubpath } from "@/lib/product-paths"
 import { SUPPORT_NAVIGATION_LINKS } from "@/lib/site-links"
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Solicitud Aeronavegación — Woranz",
   description:
     "Completá los datos de tu aeronave y operación para recibir una cotización de seguro de aeronavegación.",
-  canonicalPath: "/empresas/coberturas/aeronavegacion/solicitud",
+  canonicalPath: buildProductSubpath("empresas", "aeronavegacion", "solicitud"),
   noIndex: true,
 })
 

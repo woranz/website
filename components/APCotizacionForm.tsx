@@ -28,6 +28,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { buildProductSubpath } from "@/lib/product-paths"
 import { EntityListItem, LookupSection } from "@/components/ui/entity-list"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -1278,7 +1279,7 @@ export function APCotizacionForm({
             tomador: buildMercadoPagoTomadorPayload(tomador, email),
           },
           base_url: baseUrl,
-          source_url: `${baseUrl}/${currentSegment}/coberturas/accidentes-personales/cotizacion`,
+          source_url: `${baseUrl}${buildProductSubpath(currentSegment, "accidentes-personales", "cotizacion")}`,
         }),
       }).then((r) => r.json())
       if (mpRes.error) throw new Error(mpRes.error)

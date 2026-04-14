@@ -11,12 +11,13 @@ import { Calendar } from "@/components/ui/calendar"
 import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { buildProductSubpath } from "@/lib/product-paths"
 import { cn } from "@/lib/utils"
 import { usePathname } from "next/navigation"
 
 function inferCotizacionPath(pathname: string) {
   const segment = pathname.startsWith("/empresas") ? "empresas" : "personas"
-  return `/${segment}/coberturas/accidentes-personales/cotizacion`
+  return buildProductSubpath(segment, "accidentes-personales", "cotizacion")
 }
 
 const CANTIDAD_PRESETS = [

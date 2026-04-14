@@ -21,12 +21,12 @@
       {
         "titulo": "Alquiler Comercial",
         "descripcion": "Para alquilar un local, oficina o inmueble comercial.",
-        "href": "/empresas/coberturas/caucion-alquiler-comercial"
+        "href": "/empresas/caucion-alquiler-comercial"
       },
       {
         "titulo": "Beneficios Corporativos",
         "descripcion": "Para empresas que ofrecen la garantía como beneficio a sus empleados. Precio preferencial + pre aprobación inmediata.",
-        "href": "/empresas/coberturas/caucion-alquiler-beneficios-corporativos"
+        "href": "/empresas/caucion-alquiler-beneficios-corporativos"
       }
     ],
     "requisitos": {

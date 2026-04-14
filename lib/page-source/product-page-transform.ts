@@ -28,7 +28,11 @@ import {
   resolveProductCtaHref,
   WORANZ_WHATSAPP_HREF,
 } from "@/lib/site-links"
-import { buildProductPath, type ProductSegment } from "@/lib/product-paths"
+import {
+  buildProductPath,
+  normalizeInternalHref,
+  type ProductSegment,
+} from "@/lib/product-paths"
 import type {
   CoverageItem,
   FaqItem,
@@ -167,7 +171,7 @@ function mapVariantItems(
     .map((item) => ({
       title: item?.titulo?.trim() || "Variante",
       description: item?.descripcion?.trim(),
-      href: item?.href?.trim() || undefined,
+      href: normalizeInternalHref(item?.href) || undefined,
       icon: item?.icono?.trim() || undefined,
       items: item?.items?.filter(Boolean),
     }))
@@ -185,7 +189,7 @@ function mapRequirementItems(
 
 function resolveDefaultCtaHrefs(settings?: SanitySettings) {
   const secondaryHref =
-    settings?.ctaSecundarioHref ||
+    normalizeInternalHref(settings?.ctaSecundarioHref) ||
     buildWhatsappHref(settings?.whatsappNumero) ||
     WORANZ_WHATSAPP_HREF ||
     (settings?.emailContacto
@@ -193,7 +197,7 @@ function resolveDefaultCtaHrefs(settings?: SanitySettings) {
       : undefined)
 
   const primaryHref =
-    settings?.ctaPrimarioHref ||
+    normalizeInternalHref(settings?.ctaPrimarioHref) ||
     secondaryHref ||
     (settings?.emailContacto
       ? `mailto:${settings.emailContacto}`
@@ -219,7 +223,7 @@ function resolveContextualCtaLink({
   link: SanityCtaLink | undefined
 }) {
   const label = link?.label?.trim() || fallbackLabel
-  const authoredHref = link?.href?.trim()
+  const authoredHref = normalizeInternalHref(link?.href)
   const contextualHref = resolveProductCtaHref({
     label,
     href: authoredHref,

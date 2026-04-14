@@ -20,6 +20,7 @@ import {
 import { BreadcrumbStepper } from "@/components/ui/breadcrumb-stepper"
 import { CiudadSearch } from "@/components/ui/georef-search"
 import { Input } from "@/components/ui/input"
+import { buildProductPath } from "@/lib/product-paths"
 import { cn } from "@/lib/utils"
 
 // ── Constants ───────────────────────────────────────────────────────
@@ -659,7 +660,7 @@ export function AeronavegacionSolicitudForm() {
           en menos de 24hs.
         </p>
         <a
-          href="/empresas/coberturas/aeronavegacion"
+          href={buildProductPath("empresas", "aeronavegacion")}
           className="mt-8 inline-flex items-center justify-center rounded-xl bg-woranz-yellow px-6 py-3 text-sm font-semibold text-woranz-ink transition-colors hover:bg-woranz-yellow/80"
         >
           Volver al inicio

@@ -7,12 +7,12 @@ describe("buildPageMetadata", () => {
     const metadata = buildPageMetadata({
       title: "Cotización AP — Woranz",
       description: "Flujo transaccional",
-      canonicalPath: "/personas/coberturas/accidentes-personales/cotizacion",
+      canonicalPath: "/personas/accidentes-personales/cotizacion",
       noIndex: true,
     })
 
     expect(metadata.alternates?.canonical).toBe(
-      "https://www.woranz.com/personas/coberturas/accidentes-personales/cotizacion"
+      "https://www.woranz.com/personas/accidentes-personales/cotizacion"
     )
     expect(metadata.robots).toMatchObject({
       index: false,

@@ -52,7 +52,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import type { ProductSegment } from "@/lib/product-paths"
+import { buildProductPath, type ProductSegment } from "@/lib/product-paths"
 import { cn } from "@/lib/utils"
 import { DEFAULT_LOGIN_LINKS } from "@/lib/site-links"
 
@@ -98,28 +98,28 @@ type SiteHeaderProps = {
 
 const NAV_COVERAGE: Record<"personas" | "empresas", NavCoverageItem[]> = {
   personas: [
-    { title: "Caución de Alquiler", description: "Tu garantía en 24hs.", href: "/personas/coberturas/caucion-alquiler", icon: "key" },
-    { title: "Hogar", description: "Tu casa cubierta.", href: "/personas/coberturas/seguro-de-hogar", icon: "home" },
-    { title: "Accidentes Personales", description: "Cobertura ante imprevistos.", href: "/personas/coberturas/accidentes-personales", icon: "shield" },
-    { title: "Incendio", description: "Protegé tu propiedad.", href: "/personas/coberturas/incendio", icon: "flame" },
-    { title: "Turismo Estudiantil", description: "El viaje respaldado.", href: "/personas/coberturas/caucion-turismo-estudiantil", icon: "graduation-cap" },
-    { title: "Robo de Celular", description: "Tu celu cubierto.", href: "/personas/coberturas/robo-celular", icon: "smartphone" },
-    { title: "Robo de Bici", description: "Tu bici asegurada.", href: "/personas/coberturas/robo-bici", icon: "bike" },
-    { title: "Robo de Notebook", description: "Tu herramienta protegida.", href: "/personas/coberturas/robo-notebook", icon: "laptop" },
+    { title: "Caución de Alquiler", description: "Tu garantía en 24hs.", href: buildProductPath("personas", "caucion-alquiler"), icon: "key" },
+    { title: "Hogar", description: "Tu casa cubierta.", href: buildProductPath("personas", "seguro-de-hogar"), icon: "home" },
+    { title: "Accidentes Personales", description: "Cobertura ante imprevistos.", href: buildProductPath("personas", "accidentes-personales"), icon: "shield" },
+    { title: "Incendio", description: "Protegé tu propiedad.", href: buildProductPath("personas", "incendio"), icon: "flame" },
+    { title: "Turismo Estudiantil", description: "El viaje respaldado.", href: buildProductPath("personas", "caucion-turismo-estudiantil"), icon: "graduation-cap" },
+    { title: "Robo de Celular", description: "Tu celu cubierto.", href: buildProductPath("personas", "robo-celular"), icon: "smartphone" },
+    { title: "Robo de Bici", description: "Tu bici asegurada.", href: buildProductPath("personas", "robo-bici"), icon: "bike" },
+    { title: "Robo de Notebook", description: "Tu herramienta protegida.", href: buildProductPath("personas", "robo-notebook"), icon: "laptop" },
   ],
   empresas: [
-    { title: "Cauciones Tradicionales", description: "Garantías para operar.", href: "/empresas/coberturas/cauciones-tradicionales", icon: "file-check" },
-    { title: "Garantía Aduanera", description: "Garantías para operar en aduana.", href: "/empresas/coberturas/garantias-aduaneras", icon: "container" },
-    { title: "Caución Judicial", description: "Garantías para procesos judiciales.", href: "/empresas/coberturas/caucion-judicial", icon: "gavel" },
-    { title: "Vida Colectivo", description: "Todo tu equipo cubierto.", href: "/empresas/coberturas/seguro-de-vida-empresas", icon: "users" },
-    { title: "Accidentes Personales", description: "Dentro y fuera del trabajo.", href: "/empresas/coberturas/accidentes-personales", icon: "shield-check" },
-    { title: "Responsabilidad Civil", description: "Operá tranquilo.", href: "/empresas/coberturas/responsabilidad-civil", icon: "scale" },
-    { title: "Incendio", description: "Protegé tu operación.", href: "/empresas/coberturas/incendio", icon: "flame" },
-    { title: "Integral de Comercio", description: "Tu negocio en una póliza.", href: "/empresas/coberturas/integral-de-comercio", icon: "store" },
-    { title: "Aeronavegación", description: "Cobertura para operaciones aéreas.", href: "/empresas/coberturas/aeronavegacion", icon: "plane" },
-    { title: "Hecho por Humanos", description: "Intervención humana verificable.", href: "/empresas/coberturas/hecho-por-humanos", icon: "handshake" },
-    { title: "RC por uso de IA", description: "Cobertura para IA.", href: "/empresas/coberturas/responsabilidad-civil-uso-ia", icon: "cpu" },
-    { title: "Sepelio Colectivo", description: "Cobertura para tu equipo.", href: "/empresas/coberturas/seguro-de-sepelio", icon: "heart" },
+    { title: "Cauciones Tradicionales", description: "Garantías para operar.", href: buildProductPath("empresas", "cauciones-tradicionales"), icon: "file-check" },
+    { title: "Garantía Aduanera", description: "Garantías para operar en aduana.", href: buildProductPath("empresas", "garantias-aduaneras"), icon: "container" },
+    { title: "Caución Judicial", description: "Garantías para procesos judiciales.", href: buildProductPath("empresas", "caucion-judicial"), icon: "gavel" },
+    { title: "Vida Colectivo", description: "Todo tu equipo cubierto.", href: buildProductPath("empresas", "seguro-de-vida-empresas"), icon: "users" },
+    { title: "Accidentes Personales", description: "Dentro y fuera del trabajo.", href: buildProductPath("empresas", "accidentes-personales"), icon: "shield-check" },
+    { title: "Responsabilidad Civil", description: "Operá tranquilo.", href: buildProductPath("empresas", "responsabilidad-civil"), icon: "scale" },
+    { title: "Incendio", description: "Protegé tu operación.", href: buildProductPath("empresas", "incendio"), icon: "flame" },
+    { title: "Integral de Comercio", description: "Tu negocio en una póliza.", href: buildProductPath("empresas", "integral-de-comercio"), icon: "store" },
+    { title: "Aeronavegación", description: "Cobertura para operaciones aéreas.", href: buildProductPath("empresas", "aeronavegacion"), icon: "plane" },
+    { title: "Hecho por Humanos", description: "Intervención humana verificable.", href: buildProductPath("empresas", "hecho-por-humanos"), icon: "handshake" },
+    { title: "RC por uso de IA", description: "Cobertura para IA.", href: buildProductPath("empresas", "responsabilidad-civil-uso-ia"), icon: "cpu" },
+    { title: "Sepelio Colectivo", description: "Cobertura para tu equipo.", href: buildProductPath("empresas", "seguro-de-sepelio"), icon: "heart" },
   ],
 }
 

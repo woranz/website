@@ -1,4 +1,5 @@
 import { WORANZ_WHATSAPP_HREF } from "@/lib/site-config"
+import { normalizeInternalHref } from "@/lib/product-paths"
 
 export type SiteLink = {
   href: string
@@ -34,10 +35,10 @@ export function resolveProductCtaHref({
   hasQuoteSection: boolean
   label: string
 }) {
-  const trimmedHref = href?.trim()
+  const normalizedHref = normalizeInternalHref(href)
 
-  if (trimmedHref && trimmedHref !== "#") {
-    return trimmedHref
+  if (normalizedHref && normalizedHref !== "#") {
+    return normalizedHref
   }
 
   if (hasQuoteSection && QUOTE_LABEL_PATTERN.test(label)) {
