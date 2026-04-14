@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { ContratacionView } from "./contratacion-view"
 import { SiteHeader } from "@/components/site/header"
 import { getFormConfig } from "@/lib/forms/registry"
+import { buildPageMetadata } from "@/lib/metadata"
 import { getProductPageByParams } from "@/lib/product-page-source"
 import { isProductSegment } from "@/lib/product-paths"
 import { SUPPORT_NAVIGATION_LINKS } from "@/lib/site-links"
@@ -24,10 +25,14 @@ export async function generateMetadata({
   const page = await getProductPageByParams(params.segmento, params.slug)
   if (!page) return {}
 
-  return {
+  return buildPageMetadata({
     title: `Contratar ${page.hero.title} — Woranz`,
     description: `Completá tus datos para contratar ${page.hero.title}.`,
-  }
+    canonicalPath: `${page.path}/contratacion`,
+    imageUrl: page.metadata.imageUrl,
+    imageAlt: page.metadata.imageAlt || page.hero.title,
+    noIndex: true,
+  })
 }
 
 export default async function ContratacionPage({

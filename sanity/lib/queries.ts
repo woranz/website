@@ -20,6 +20,11 @@ export const productoByRouteQuery = groq`
     ctaPrimario,
     ctaSecundario,
     ocultarCtaSecundario,
+    seo {
+      title,
+      description,
+      image,
+    },
     secciones[] {
       _type,
       ...,
@@ -90,6 +95,11 @@ export const paginaHomeQuery = groq`
     heroImagen,
     ctaPrimario,
     ctaSecundario,
+    seo {
+      title,
+      description,
+      image,
+    },
     secciones[] {
       _type,
       ...,

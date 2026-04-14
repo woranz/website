@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { ContactForm } from "@/components/ContactForm"
 import { SiteHeader } from "@/components/site/header"
 import { getFormConfig } from "@/lib/forms/registry"
+import { buildPageMetadata } from "@/lib/metadata"
 import { getProductPageByParams } from "@/lib/product-page-source"
 import { isProductSegment } from "@/lib/product-paths"
 import { SUPPORT_NAVIGATION_LINKS } from "@/lib/site-links"
@@ -27,10 +28,14 @@ export async function generateMetadata({
   const config = getFormConfig(page.slug)
   if (!config) return {}
 
-  return {
+  return buildPageMetadata({
     title: `${config.titulo} — Woranz`,
     description: config.descripcionExito ?? `Completá el formulario de ${page.hero.title} y te contactamos.`,
-  }
+    canonicalPath: `${page.path}/contacto`,
+    imageUrl: page.metadata.imageUrl,
+    imageAlt: page.metadata.imageAlt || page.hero.title,
+    noIndex: true,
+  })
 }
 
 export default async function ContactoPage({

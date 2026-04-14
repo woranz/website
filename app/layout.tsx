@@ -4,6 +4,7 @@ import localFont from 'next/font/local'
 import { VisualEditing } from 'next-sanity'
 import { draftMode } from 'next/headers'
 import { AgentationDevtools } from '@/components/agentation-devtools'
+import { buildRootMetadata } from '@/lib/metadata'
 import './globals.css'
 
 const inter = Inter({
@@ -19,11 +20,7 @@ const noeDisplay = localFont({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  title: 'Woranz - Accidentes Personales | Seguro 100% Online',
-  description: 'Protección real para tu día a día. Seguro de accidentes personales 100% online. Individual, familiar, deportiva o escolar.',
-  keywords: ['seguro', 'accidentes personales', 'woranz', 'seguro online', 'argentina'],
-}
+export const metadata: Metadata = buildRootMetadata()
 
 export default async function RootLayout({
   children,

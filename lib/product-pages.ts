@@ -1,3 +1,4 @@
+import type { PageMetadataConfig } from "@/lib/metadata"
 import type { ProductSegment } from "@/lib/product-paths"
 
 export type ProductHero = {
@@ -169,10 +170,7 @@ export type ProductPageSection =
 export type ProductPageData = {
   hero: ProductHero
   isHome?: boolean
-  metadata: {
-    description: string
-    title: string
-  }
+  metadata: PageMetadataConfig
   path: string
   sections: ProductPageSection[]
   segment: ProductSegment

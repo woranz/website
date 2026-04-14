@@ -2,13 +2,16 @@ import type { Metadata } from "next"
 
 import { APCotizacionForm } from "@/components/APCotizacionForm"
 import { SiteHeader } from "@/components/site/header"
+import { buildPageMetadata } from "@/lib/metadata"
 import { SUPPORT_NAVIGATION_LINKS } from "@/lib/site-links"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Cotización Accidentes Personales — Woranz",
   description:
     "Cotizá tu seguro de accidentes personales para tu empresa. Elegí tu plan, completá tus datos y pagá online.",
-}
+  canonicalPath: "/empresas/coberturas/accidentes-personales/cotizacion",
+  noIndex: true,
+})
 
 export default async function CotizacionAPEmpresasPage({
   searchParams,

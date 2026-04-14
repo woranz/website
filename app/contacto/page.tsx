@@ -1,12 +1,14 @@
 import type { Metadata } from "next"
 
 import { PlaceholderPage } from "@/components/site/placeholder-page"
+import { buildPageMetadata } from "@/lib/metadata"
 import { WORANZ_WHATSAPP_HREF } from "@/lib/site-links"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Contacto — Woranz",
   description: "Canales de contacto temporales de Woranz.",
-}
+  canonicalPath: "/contacto",
+})
 
 export default function ContactoPage() {
   return (
