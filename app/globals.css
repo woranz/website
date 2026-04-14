@@ -79,6 +79,14 @@
     @apply flex flex-col;
   }
 
+  .section-padding {
+    @apply py-section-mobile md:py-section;
+  }
+
+  .section-gap {
+    @apply gap-8 md:gap-10;
+  }
+
   .eyebrow-badge {
     @apply inline-flex items-center justify-center rounded-pill bg-woranz-warm-1 px-5 py-2 text-sm font-semibold text-woranz-ink;
   }

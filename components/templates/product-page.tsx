@@ -228,7 +228,7 @@ function QuoteSection({ section, basePath }: { section: Extract<ProductPageSecti
   return (
     <section
       id={PRODUCT_QUOTER_SECTION_ID}
-      className="page-shell gap-8 px-page-mobile py-section-mobile md:gap-10 md:px-page-wide md:py-section scroll-mt-24"
+      className="page-shell section-gap section-padding px-page-mobile md:px-page-wide scroll-mt-24"
     >
       <div className="flex flex-col items-center gap-8">
         <SectionHeader title={section.title} description={section.description} />
@@ -355,7 +355,7 @@ function ExplanationSection({
   const mobileParagraphs = mobileText.split(/\n\n+/).filter(Boolean)
 
   return (
-    <section className="page-shell gap-4 px-page-mobile py-section-mobile md:gap-5 md:px-page-wide md:py-section">
+    <section className="page-shell section-padding gap-4 px-page-mobile md:gap-5 md:px-page-wide">
       <h2 className="section-title">{section.title}</h2>
       <div className="flex flex-col gap-3 md:max-w-[50%] md:gap-4">
         {desktopParagraphs.map((p, i) => (
@@ -387,7 +387,7 @@ function CoverageSection({
   const mobileItems = section.columns.flat()
 
   return (
-    <section className="page-shell gap-8 px-page-mobile py-section-mobile md:gap-10 md:px-page-wide md:py-section">
+    <section className="page-shell section-gap section-padding px-page-mobile md:px-page-wide">
       <h2 className="section-title">{section.title}</h2>
 
       <div className="hidden grid-cols-2 gap-16 md:grid">
@@ -411,7 +411,7 @@ function VariantsSection({
   return (
     <section
       id={PRODUCT_COVERAGES_SECTION_ID}
-      className="w-full scroll-mt-24 py-section-mobile md:py-section"
+      className="w-full scroll-mt-24 section-padding"
     >
       <CarouselWithHeader title={section.title} fullWidth>
         {section.items.map((item) => (
@@ -502,7 +502,7 @@ function RequirementsSection({
   const items = (section.items ?? []).filter(Boolean)
 
   return (
-    <section className="page-shell gap-8 px-page-mobile py-section-mobile md:gap-10 md:px-page-wide md:py-section">
+    <section className="page-shell section-gap section-padding px-page-mobile md:px-page-wide">
       <div className="mx-auto flex w-full max-w-content flex-col gap-6 rounded-2xl bg-woranz-warm-1 px-6 py-7 md:px-10 md:py-10">
         <SectionHeader title={section.title} description={section.description} />
         <ul className="grid gap-3 md:grid-cols-2 md:gap-x-8 md:gap-y-4">
@@ -568,7 +568,7 @@ function FaqSection({ section }: { section: Extract<ProductPageSection, { type: 
   const mobileItems = section.mobileItems ?? section.desktopColumns.flat()
 
   return (
-    <section className="page-shell gap-8 px-page-mobile py-section-mobile md:gap-10 md:px-page-wide md:py-section">
+    <section className="page-shell section-gap section-padding px-page-mobile md:px-page-wide">
       <h2 className="section-title">{section.title}</h2>
 
       <div className="md:hidden">
@@ -629,7 +629,7 @@ function FaqAccordion({
 
 function CtaSection({ section }: { section: Extract<ProductPageSection, { type: "cta" }> }) {
   return (
-    <section className="page-shell px-page-mobile py-section-mobile md:px-page-wide md:py-section">
+    <section className="page-shell section-padding px-page-mobile md:px-page-wide">
       <div className="surface-cta px-8 py-10 md:px-16 md:py-16">
         <div className="flex flex-col items-center gap-6 md:gap-8">
           <div className="flex max-w-cta flex-col items-center gap-4">
@@ -775,7 +775,7 @@ function CarouselSection({
   return (
     <section
       id={section.variant === "product" ? "seguros" : undefined}
-      className="w-full py-section-mobile md:py-section scroll-mt-24"
+      className="w-full section-padding scroll-mt-24"
     >
       <CarouselWithHeader title={section.title} fullWidth>
         {section.variant === "package"
@@ -804,7 +804,7 @@ function StandaloneStepsSection({
   section: Extract<ProductPageSection, { type: "steps" }>
 }) {
   return (
-    <section className="page-shell px-page-mobile py-section-mobile md:px-page-wide md:py-section">
+    <section className="page-shell section-padding px-page-mobile md:px-page-wide">
       <div className="w-full">
         {/* Desktop: horizontal row */}
         <div className="hidden w-full md:flex md:items-stretch">
@@ -860,7 +860,7 @@ function ProductGridSection({
 }) {
   return (
     <section id="coberturas" className="w-full bg-woranz-warm-1 scroll-mt-24">
-      <div className="page-shell gap-8 px-page-mobile py-section-mobile md:gap-10 md:px-page-wide md:py-section">
+      <div className="page-shell section-gap section-padding px-page-mobile md:px-page-wide">
         <h2 className="section-title">{section.title}</h2>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {section.items.map((item) => {

@@ -228,6 +228,12 @@ const config: Config = {
       letterSpacing: {
         step: "-0.125rem",
       },
+      transitionDuration: {
+        nav: "350ms",
+      },
+      transitionTimingFunction: {
+        nav: "cubic-bezier(0.22, 1, 0.36, 1)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
