@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Conversion / Form flow / Productores onboarding
-Estado: Todo
+Estado: Done (commit 0fb4c39)
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex

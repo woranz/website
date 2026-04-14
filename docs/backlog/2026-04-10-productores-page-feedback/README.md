@@ -22,13 +22,15 @@ Mapeo del feedback original:
 
 Tasks creadas en este batch:
 1. `PRD-001` [Expand tools carousel on productores home](./PRD-001-expand-tools-carousel-on-productores-home.md)
-2. `PRD-002` [Create producer signup form for productores home](./PRD-002-create-producer-signup-form-for-productores-home.md)
+2. `PRD-002` [Create producer signup form for productores home](./PRD-002-create-producer-signup-form-for-productores-home.md) — **Done** (commit `0fb4c39`)
 3. `PRD-003` [Normalize hero CTA behavior on productores home](./PRD-003-normalize-hero-cta-behavior-on-productores-home.md) — **Done** (PR #17)
 
 Prioridad sugerida para arrancar:
+1. `PRD-001`
+
+Tasks resueltas:
 1. `PRD-002`
 2. `PRD-003`
-3. `PRD-001`
 
 Notas:
 - `PRD-002` y `PRD-003` conviene resolverlos juntos porque el CTA primario del hero debe terminar apuntando al alta real de productores.
