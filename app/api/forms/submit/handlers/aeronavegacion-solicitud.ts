@@ -1,4 +1,5 @@
 import { sendEmail, type EmailAttachment } from "@/lib/email/send"
+import { DEV_EMAIL, isNonProductionEnv } from "@/lib/email/dev-override"
 import {
   buildAeronavegacionEmail,
   type AeronavegacionEmailData,
@@ -101,7 +102,7 @@ export async function handleAeronavegacionSolicitud(formData: FormData) {
   const html = buildAeronavegacionEmail(data)
 
   await sendEmail({
-    to: process.env.NODE_ENV === "development" ? "live@woranz.com" : "patrimoniales@woranz.com",
+    to: isNonProductionEnv() ? DEV_EMAIL : "patrimoniales@woranz.com",
     subject: `Solicitud Aeronavegación — ${data.nombreCompleto} — ${data.matricula}`,
     html,
     attachments: attachments.length > 0 ? attachments : undefined,
