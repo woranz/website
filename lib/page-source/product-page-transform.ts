@@ -789,13 +789,29 @@ export function transformSanityProduct(
 }
 
 export function applyProductPageOverrides(page: ProductPageData): ProductPageData {
-  if (
-    page.segment !== "empresas" ||
-    page.slug !== "accidentes-personales"
-  ) {
-    return page
-  }
+  const key = `${page.segment}/${page.slug}`
 
+  switch (key) {
+    case "empresas/accidentes-personales":
+      return applyAccidentesPersonalesOverrides(page)
+    case "empresas/hecho-por-humanos":
+      return applyHechoPorHumanosOverrides(page)
+    case "empresas/responsabilidad-civil-uso-ia":
+      return applyRcUsoIaOverrides(page)
+    case "empresas/integral-de-comercio":
+      return applyIntegralComercioOverrides(page)
+    // RCE-004: related products updated in product-catalog.json — apply via Sanity migration
+    // case "empresas/responsabilidad-civil":
+    case "personas/incendio":
+      return applyIncendioOverrides(page)
+    default:
+      return page
+  }
+}
+
+/* ── empresas/accidentes-personales ── */
+
+function applyAccidentesPersonalesOverrides(page: ProductPageData): ProductPageData {
   const quoteHref = `#${PRODUCT_QUOTER_SECTION_ID}`
   const whatsappHref = buildWhatsappCtaHref(page.path)
   const normalizedQuoteTitle = "Cotizá la cobertura"
@@ -878,4 +894,139 @@ export function applyProductPageOverrides(page: ProductPageData): ProductPageDat
     },
     sections: hasRenderableQuote ? sections : [defaultQuoteSection, ...sections],
   }
+}
+
+/* ── HPH-001: empresas/hecho-por-humanos ── */
+
+function applyHechoPorHumanosOverrides(page: ProductPageData): ProductPageData {
+  const sections = page.sections.map((section) => {
+    if (section.type === "variants") {
+      return {
+        ...section,
+        title: "Dónde aplica",
+        items: section.items.map((item) => ({
+          ...item,
+          icon:
+            item.icon ||
+            (item.title.toLowerCase().includes("atención")
+              ? "atencion-cliente"
+              : item.title.toLowerCase().includes("contenido")
+                ? "contenido-creatividad"
+                : item.title.toLowerCase().includes("editorial")
+                  ? "editorial-comunicacion"
+                  : item.title.toLowerCase().includes("procesos")
+                    ? "procesos-profesionales"
+                    : undefined),
+        })),
+      }
+    }
+
+    return section
+  })
+
+  return { ...page, sections }
+}
+
+/* ── RUI-002: empresas/responsabilidad-civil-uso-ia ── */
+
+function applyRcUsoIaOverrides(page: ProductPageData): ProductPageData {
+  const sections = page.sections.map((section) => {
+    if (section.type === "variants") {
+      return {
+        ...section,
+        title: "A quién está dirigido",
+        items: section.items.map((item) => ({
+          ...item,
+          icon:
+            item.icon ||
+            (item.title.toLowerCase().includes("profesional")
+              ? "profesionales"
+              : item.title.toLowerCase().includes("empresa")
+                ? "empresas"
+                : item.title.toLowerCase().includes("atención")
+                  ? "atencion-cliente"
+                  : item.title.toLowerCase().includes("creatividad")
+                    ? "creatividad"
+                    : undefined),
+        })),
+      }
+    }
+
+    return section
+  })
+
+  return { ...page, sections }
+}
+
+/* ── ICE-001: empresas/integral-de-comercio ── */
+
+function applyIntegralComercioOverrides(page: ProductPageData): ProductPageData {
+  return {
+    ...page,
+    hero: {
+      ...page.hero,
+      imagePosition: "center 20%",
+    },
+  }
+}
+
+/* ── INF-003: personas/incendio ── */
+
+const INCENDIO_FAQS: FaqItem[] = [
+  {
+    question: "¿Qué cubre exactamente una póliza de incendio?",
+    answer:
+      "Cubre daños materiales causados por fuego, explosión, impacto de rayo y sus consecuencias directas como humo y calor. También incluye los gastos de remoción de escombros. El alcance exacto depende del plan contratado.",
+  },
+  {
+    question: "¿Es obligatorio tener seguro de incendio?",
+    answer:
+      "Si tenés un crédito hipotecario, sí: el banco lo exige como condición. Si no tenés hipoteca, no es obligatorio pero sí recomendable para proteger tu patrimonio.",
+  },
+  {
+    question: "¿Cubre también si soy inquilino?",
+    answer:
+      "Sí. Podés asegurar el contenido de tu vivienda como inquilino. La estructura del inmueble la asegura el propietario, pero tus bienes son tu responsabilidad.",
+  },
+  {
+    question: "¿Necesito una inspección previa para contratar?",
+    answer:
+      "Depende del valor asegurado y del tipo de propiedad. En muchos casos no se requiere inspección para montos estándar. Te lo confirmamos al cotizar.",
+  },
+  {
+    question: "¿Cómo se define el monto de indemnización?",
+    answer:
+      "Se basa en la suma asegurada que elegiste al contratar. Es importante que refleje el valor real de reposición de tu propiedad para evitar infraseguro.",
+  },
+  {
+    question: "¿Qué tengo que hacer si hay un siniestro?",
+    answer:
+      "Contactanos lo antes posible con los datos del incidente. Vas a necesitar la denuncia policial si corresponde y documentación del daño. Te guiamos en todo el proceso.",
+  },
+]
+
+function applyIncendioOverrides(page: ProductPageData): ProductPageData {
+  const hasFaq = page.sections.some((s) => s.type === "faq")
+
+  if (hasFaq) {
+    return page
+  }
+
+  const ctaIndex = page.sections.findIndex((s) => s.type === "cta")
+  const faqSection: Extract<ProductPageSection, { type: "faq" }> = {
+    type: "faq",
+    title: "Preguntas frecuentes",
+    mobileItems: INCENDIO_FAQS,
+    desktopColumns: splitIntoColumns(INCENDIO_FAQS),
+  }
+
+  const sections = [...page.sections]
+
+  if (ctaIndex >= 0) {
+    sections.splice(ctaIndex, 0, faqSection)
+  } else {
+    sections.push(faqSection)
+  }
+
+  return { ...page, sections }
 }

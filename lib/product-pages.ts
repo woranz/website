@@ -7,6 +7,7 @@ export type ProductHero = {
   descriptionMobile?: string
   features?: Array<{ icon: string; label: string }>
   imageAlt: string
+  imagePosition?: string
   imageSrc: string
   primaryCtaHref?: string
   primaryCta: string
