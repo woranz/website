@@ -169,8 +169,94 @@ export const caucionPreaprobacionSchema = z.object({
   }
 )
 
+export const aeronavegacionSolicitudSchema = z.object({
+  // Asegurado
+  dni: dniSchema,
+  cuit: z.string().trim().max(20).default(""),
+  nombreCompleto: z.string().trim().min(1, "Nombre obligatorio.").max(200),
+  email: emailSchema,
+  telefono: z.string().trim().min(1, "Teléfono obligatorio.").max(30),
+  condicionFiscal: z.string().trim().min(1, "Condición fiscal obligatoria.").max(60),
+  localidad: z.string().trim().max(200).default(""),
+  provincia: z.string().trim().max(120).default(""),
+
+  // Aeronave
+  matricula: z.string().trim().min(1, "Matrícula obligatoria.").max(20),
+  marca: z.string().trim().min(1, "Marca obligatoria.").max(120),
+  modelo: z.string().trim().min(1, "Modelo obligatorio.").max(120),
+  anio: z.string().trim().max(4).default(""),
+  nroSerie: z.string().trim().max(60).default(""),
+  tipoAeronave: z.string().trim().min(1, "Tipo de aeronave obligatorio.").max(60),
+  asientosTripulantes: z.string().trim().max(10).default(""),
+  asientosPasajeros: z.string().trim().max(10).default(""),
+  ultimoOverhaul: z.string().trim().max(30).default(""),
+  vencimientoPoliza: z.string().trim().max(30).default(""),
+  siniestraliadAeronave: z.string().trim().max(2000).default(""),
+
+  // Operación
+  usoAnualHoras: z.string().trim().max(10).default(""),
+  actividades: z.string().trim().max(2000).default(""),
+  baseOperaciones: z.string().trim().max(200).default(""),
+  limiteGeografico: z.string().trim().max(200).default(""),
+
+  // Coberturas (JSON string)
+  coberturas: z.string().trim().max(4000).default(""),
+
+  // Ferry
+  hasFerryFlight: z.boolean().default(false),
+  ferryRuta: z.string().trim().max(500).default(""),
+  ferrySalida: z.string().trim().max(30).default(""),
+  ferryArribo: z.string().trim().max(30).default(""),
+  comandante: z.string().trim().max(4000).default(""),
+  copiloto: z.string().trim().max(4000).default(""),
+
+  // RC ARIEL
+  hasAirportPresence: z.boolean().default(false),
+  edificiosHangares: z.string().trim().max(2000).default(""),
+  ocupacion: z.string().trim().max(200).default(""),
+  vehiculosEquipos: z.string().trim().max(2000).default(""),
+  actividadesPrincipales: z.string().trim().max(2000).default(""),
+  siniestraliadRC: z.string().trim().max(2000).default(""),
+
+  // Hangarista
+  isHangarista: z.boolean().default(false),
+  valorPromedioCustodia: z.string().trim().max(30).default(""),
+  valorMaximoCustodia: z.string().trim().max(30).default(""),
+  nroPromedioAeronaves: z.string().trim().max(10).default(""),
+
+  // Envío
+  siniestraliadAsegurado: z.string().trim().max(2000).default(""),
+  comentarios: z.string().trim().max(5000).default(""),
+  modoContacto: z.enum(["email", "llamada", "whatsapp"], {
+    message: "Modo de contacto obligatorio.",
+  }),
+  contactoValor: z.string().trim().min(1, "Dato de contacto obligatorio.").max(160),
+
+  // Archivos
+  archivos: z
+    .array(fileSchema)
+    .max(MAX_FILE_COUNT, `Podés adjuntar hasta ${MAX_FILE_COUNT} archivos.`)
+    .refine(
+      (files) => files.reduce((total, file) => total + file.size, 0) <= MAX_FILE_SIZE,
+      "Los archivos adjuntos superan el límite de 10MB."
+    )
+    .default([]),
+}).refine(
+  (value) =>
+    value.modoContacto === "email"
+      ? emailSchema.safeParse(value.contactoValor).success
+      : PHONE_REGEX.test(value.contactoValor.replace(/[^\d]/g, "")),
+  {
+    message: "Dato de contacto inválido.",
+    path: ["contactoValor"],
+  }
+)
+
 export type ContactFormPayload = z.infer<ReturnType<typeof buildContactFormSchema>>
 export type AccidentesCotizacionPayload = z.infer<typeof accidentesCotizacionSchema>
 export type CaucionPreaprobacionPayload = z.infer<
   typeof caucionPreaprobacionSchema
+>
+export type AeronavegacionSolicitudPayload = z.infer<
+  typeof aeronavegacionSolicitudSchema
 >
