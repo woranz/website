@@ -166,6 +166,26 @@ export const FEATURE_CAROUSEL_DEFAULTS: Record<
         text: "Tu cartera, simplificada\nen una sola plataforma.",
         textMobile: "Tu cartera,\nsimplificada.",
       },
+      {
+        imageSrc: "/images/features/personas-1-online.webp",
+        text: "Multicotizador para comparar\nopciones al instante.",
+        textMobile: "Compará opciones\nal instante.",
+      },
+      {
+        imageSrc: "/images/features/empresas-3-medida.webp",
+        text: "Catálogo amplio para cada\nperfil de cliente.",
+        textMobile: "Catálogo amplio\npara cada cliente.",
+      },
+      {
+        imageSrc: "/images/features/personas-4-simple.webp",
+        text: "Emisión 100% digital,\nsin papeles ni demoras.",
+        textMobile: "Emisión digital,\nsin papeles.",
+      },
+      {
+        imageSrc: "/images/features/empresas-4-simple.webp",
+        text: "Materiales de venta listos\npara compartir con tu cliente.",
+        textMobile: "Materiales listos\npara compartir.",
+      },
     ],
   },
 }
