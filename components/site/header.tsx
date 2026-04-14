@@ -99,7 +99,7 @@ type SiteHeaderProps = {
 const NAV_COVERAGE: Record<"personas" | "empresas", NavCoverageItem[]> = {
   personas: [
     { title: "Caución de Alquiler", description: "Tu garantía en 24hs.", href: "/personas/coberturas/caucion-alquiler", icon: "key" },
-    { title: "Seguro de Hogar", description: "Tu casa cubierta.", href: "/personas/coberturas/seguro-de-hogar", icon: "home" },
+    { title: "Hogar", description: "Tu casa cubierta.", href: "/personas/coberturas/seguro-de-hogar", icon: "home" },
     { title: "Accidentes Personales", description: "Cobertura ante imprevistos.", href: "/personas/coberturas/accidentes-personales", icon: "shield" },
     { title: "Incendio", description: "Protegé tu propiedad.", href: "/personas/coberturas/incendio", icon: "flame" },
     { title: "Turismo Estudiantil", description: "El viaje respaldado.", href: "/personas/coberturas/caucion-turismo-estudiantil", icon: "graduation-cap" },
