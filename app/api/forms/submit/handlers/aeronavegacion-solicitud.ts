@@ -30,50 +30,24 @@ export async function handleAeronavegacionSolicitud(formData: FormData) {
     tipoAeronave: getString("tipoAeronave"),
     asientosTripulantes: getString("asientosTripulantes"),
     asientosPasajeros: getString("asientosPasajeros"),
-    ultimoOverhaul: getString("ultimoOverhaul"),
     vencimientoPoliza: getString("vencimientoPoliza"),
-    siniestraliadAeronave: getString("siniestraliadAeronave"),
 
     // Operación
-    usoAnualHoras: getString("usoAnualHoras"),
     actividades: getString("actividades"),
-    baseOperaciones: getString("baseOperaciones"),
-    limiteGeografico: getString("limiteGeografico"),
-
-    // Coberturas
     coberturas: getString("coberturas"),
 
-    // Ferry
-    hasFerryFlight: getString("hasFerryFlight") === "true",
-    ferryRuta: getString("ferryRuta"),
-    ferrySalida: getString("ferrySalida"),
-    ferryArribo: getString("ferryArribo"),
-    comandante: getString("comandante"),
-    copiloto: getString("copiloto"),
-
-    // RC ARIEL
-    hasAirportPresence: getString("hasAirportPresence") === "true",
-    edificiosHangares: getString("edificiosHangares"),
-    ocupacion: getString("ocupacion"),
-    vehiculosEquipos: getString("vehiculosEquipos"),
-    actividadesPrincipales: getString("actividadesPrincipales"),
-    siniestraliadRC: getString("siniestraliadRC"),
-
-    // Hangarista
-    isHangarista: getString("isHangarista") === "true",
-    valorPromedioCustodia: getString("valorPromedioCustodia"),
-    valorMaximoCustodia: getString("valorMaximoCustodia"),
-    nroPromedioAeronaves: getString("nroPromedioAeronaves"),
-
-    // Envío
-    siniestraliadAsegurado: getString("siniestraliadAsegurado"),
+    // Contacto
     comentarios: getString("comentarios"),
     modoContacto: getString("modoContacto"),
     contactoValor: getString("contactoValor"),
   }
 
   // Validate required fields
-  const required = ["dni", "nombreCompleto", "email", "telefono", "matricula", "marca", "modelo", "tipoAeronave", "modoContacto", "contactoValor"] as const
+  const required = [
+    "dni", "nombreCompleto", "email", "telefono",
+    "matricula", "marca", "modelo", "tipoAeronave",
+    "modoContacto", "contactoValor",
+  ] as const
   for (const field of required) {
     if (!data[field]) {
       throw new Error(`El campo "${field}" es obligatorio.`)

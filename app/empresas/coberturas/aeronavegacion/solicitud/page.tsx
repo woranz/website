@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 
-import { AeronavegacionSolicitudForm } from "@/components/AeronavegacionSolicitudForm"
+import { AeronavegacionSolicitudForm } from "@/components/forms/aeronavegacion"
 import { SiteHeader } from "@/components/site/header"
 import { buildPageMetadata } from "@/lib/metadata"
 import { buildProductSubpath } from "@/lib/product-paths"

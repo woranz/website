@@ -20,43 +20,13 @@ export type AeronavegacionEmailData = {
   tipoAeronave: string
   asientosTripulantes: string
   asientosPasajeros: string
-  ultimoOverhaul: string
   vencimientoPoliza: string
-  siniestraliadAeronave: string
 
   // Operación
-  usoAnualHoras: string
   actividades: string
-  baseOperaciones: string
-  limiteGeografico: string
-
-  // Coberturas
   coberturas: string
 
-  // Ferry
-  hasFerryFlight: boolean
-  ferryRuta: string
-  ferrySalida: string
-  ferryArribo: string
-  comandante: string
-  copiloto: string
-
-  // RC ARIEL
-  hasAirportPresence: boolean
-  edificiosHangares: string
-  ocupacion: string
-  vehiculosEquipos: string
-  actividadesPrincipales: string
-  siniestraliadRC: string
-
-  // Hangarista
-  isHangarista: boolean
-  valorPromedioCustodia: string
-  valorMaximoCustodia: string
-  nroPromedioAeronaves: string
-
-  // Envío
-  siniestraliadAsegurado: string
+  // Contacto
   comentarios: string
   modoContacto: string
   contactoValor: string
@@ -68,36 +38,6 @@ function parseCoberturas(json: string): Array<{ tipo: string; suma: string }> {
   } catch {
     return []
   }
-}
-
-function parsePiloto(json: string): Record<string, string> | null {
-  try {
-    const data = JSON.parse(json)
-    return data && typeof data === "object" ? data : null
-  } catch {
-    return null
-  }
-}
-
-function pilotoRows(label: string, json: string): string {
-  const data = parsePiloto(json)
-  if (!data) return ""
-
-  return `
-    ${emailSectionTitle(label)}
-    ${emailTable(
-      emailRow("Nombre", data.nombre || "") +
-      emailRow("Edad", data.edad || "") +
-      emailRow("DNI", data.dni || "") +
-      emailRow("Licencia", data.licencia || "") +
-      emailRow("Vencimiento CMA", data.vencimientoCMA || "") +
-      emailRow("Horas totales", data.horasTotal || "") +
-      emailRow("Horas en tipo", data.horasTipo || "") +
-      emailRow("Horas en marca/modelo", data.horasMarcaModelo || "") +
-      emailRow("Horas otros", data.horasOtros || "") +
-      emailRow("Siniestralidad", data.siniestralidad || "")
-    )}
-  `
 }
 
 export function buildAeronavegacionEmail(data: AeronavegacionEmailData): string {
@@ -139,60 +79,19 @@ export function buildAeronavegacionEmail(data: AeronavegacionEmailData): string 
       emailRow("Tipo", data.tipoAeronave) +
       emailRow("Asientos tripulantes", data.asientosTripulantes) +
       emailRow("Asientos pasajeros", data.asientosPasajeros) +
-      emailRow("Último overhaul", data.ultimoOverhaul) +
-      emailRow("Vencimiento póliza vigente", data.vencimientoPoliza) +
-      emailRow("Siniestralidad aeronave (5 años)", data.siniestraliadAeronave)
+      emailRow("Vencimiento póliza vigente", data.vencimientoPoliza)
     )}
 
-    ${emailSectionTitle("Operación")}
-    ${emailTable(
-      emailRow("Uso anual (horas)", data.usoAnualHoras) +
-      emailRow("Actividades", data.actividades) +
-      emailRow("Base de operaciones", data.baseOperaciones) +
-      emailRow("Límite geográfico", data.limiteGeografico)
-    )}
+    ${data.actividades ? `
+      ${emailSectionTitle("Actividades")}
+      <p style="margin:8px 0;font-size:14px;color:#1A1A2E;">${data.actividades}</p>
+    ` : ""}
 
     ${coberturas.length > 0 ? `
       ${emailSectionTitle("Coberturas solicitadas")}
       ${emailTable(
         coberturas.map((c) => emailRow(c.tipo, c.suma ? `$ ${c.suma}` : "—")).join("")
       )}
-    ` : ""}
-
-    ${data.hasFerryFlight ? `
-      ${emailSectionTitle("Vuelo Ferry")}
-      ${emailTable(
-        emailRow("Ruta", data.ferryRuta) +
-        emailRow("Fecha salida", data.ferrySalida) +
-        emailRow("Fecha arribo", data.ferryArribo)
-      )}
-      ${pilotoRows("Comandante", data.comandante)}
-      ${pilotoRows("Copiloto", data.copiloto)}
-    ` : ""}
-
-    ${data.hasAirportPresence ? `
-      ${emailSectionTitle("Ubicación en aeropuerto")}
-      ${emailTable(
-        emailRow("Edificios/hangares", data.edificiosHangares) +
-        emailRow("Ocupación", data.ocupacion) +
-        emailRow("Vehículos y equipos", data.vehiculosEquipos) +
-        emailRow("Actividades principales", data.actividadesPrincipales) +
-        emailRow("Siniestralidad RC (5 años)", data.siniestraliadRC)
-      )}
-    ` : ""}
-
-    ${data.isHangarista ? `
-      ${emailSectionTitle("Hangarista")}
-      ${emailTable(
-        emailRow("Valor promedio custodia", data.valorPromedioCustodia) +
-        emailRow("Valor máximo custodia", data.valorMaximoCustodia) +
-        emailRow("Nro. promedio aeronaves", data.nroPromedioAeronaves)
-      )}
-    ` : ""}
-
-    ${data.siniestraliadAsegurado ? `
-      ${emailSectionTitle("Siniestralidad del asegurado")}
-      <p style="margin:8px 0;font-size:14px;color:#1A1A2E;">${data.siniestraliadAsegurado}</p>
     ` : ""}
 
     ${data.comentarios ? `
