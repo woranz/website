@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Copy / Hero messaging
-Estado: Todo
+Estado: Done (copy aprobado en doc Contenidos Web)
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex
