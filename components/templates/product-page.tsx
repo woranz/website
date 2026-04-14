@@ -233,12 +233,7 @@ function QuoteSection({ section, basePath }: { section: Extract<ProductPageSecti
       <div className="flex flex-col items-center gap-8">
         <SectionHeader title={section.title} description={section.description} />
         <Card
-          className={cn(
-            "quote-card w-full border-none px-0 py-0 ring-0",
-            section.maxWidth === "wide"
-              ? "max-w-quoter md:max-w-quoter"
-              : "max-w-quoter-mobile md:max-w-none"
-          )}
+          className="quote-card w-full max-w-quoter border-none px-0 py-0 ring-0"
         >
           <CardContent className="p-0">
             {section.quoter === "contacto" && contactConfig ? (
