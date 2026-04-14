@@ -2,7 +2,7 @@
 
 Prioridad: Alta
 Tipo: Copy / Hero / Product positioning
-Estado: Todo
+Estado: Done (copy aprobado en doc Contenidos Web)
 Split de ejecucion:
 - Estructural: no aplica
 - Visual: si

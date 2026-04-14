@@ -2,7 +2,7 @@
 
 Prioridad: Media
 Tipo: Content consistency / Trust signal
-Estado: Todo
+Estado: Done
 Split de ejecucion:
 - Estructural: si
 - Owner estructural: Codex
