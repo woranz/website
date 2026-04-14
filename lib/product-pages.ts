@@ -1,3 +1,4 @@
+import type { PageMetadataConfig } from "@/lib/metadata"
 import type { ProductSegment } from "@/lib/product-paths"
 
 export type ProductHero = {
@@ -10,7 +11,7 @@ export type ProductHero = {
   primaryCtaHref?: string
   primaryCta: string
   secondaryCtaHref?: string
-  secondaryCta: string
+  secondaryCta?: string
   title: string
 }
 
@@ -41,12 +42,14 @@ export type PackageCarouselItem = {
 export type ProductCarouselItem = {
   href?: string
   imageSrc: string
+  subtitle?: string
   title: string
 }
 
 export type VariantItem = {
   description?: string
   href?: string
+  icon?: string
   items?: string[]
   title: string
 }
@@ -59,9 +62,11 @@ export type FeatureCarouselItem = {
 
 type QuoteSection = {
   description: string
+  formConfigId?: string
   maxWidth?: "default" | "wide"
   mobileSteps?: boolean
-  quoter: "accidentes" | "caucion"
+  quoter: "accidentes" | "caucion" | "contacto" | "generico"
+  quoterConfigId?: string
   steps: ProductStep[]
   title: string
   type: "quote"
@@ -119,7 +124,7 @@ type CtaSection = {
   primaryCtaHref?: string
   primaryCta: string
   secondaryCtaHref?: string
-  secondaryCta: string
+  secondaryCta?: string
   teamCount: string
   teamLabel: string
   title: string
@@ -142,6 +147,7 @@ type StepsSection = {
 export type ProductGridItem = {
   href?: string
   imageSrc: string
+  subtitle?: string
   title: string
 }
 
@@ -149,6 +155,12 @@ type ProductGridSection = {
   items: ProductGridItem[]
   title: string
   type: "product-grid"
+}
+
+type ProductSearchListSection = {
+  items: ProductGridItem[]
+  title: string
+  type: "product-search-list"
 }
 
 export type ProductPageSection =
@@ -162,14 +174,12 @@ export type ProductPageSection =
   | CtaSection
   | StepsSection
   | ProductGridSection
+  | ProductSearchListSection
 
 export type ProductPageData = {
   hero: ProductHero
   isHome?: boolean
-  metadata: {
-    description: string
-    title: string
-  }
+  metadata: PageMetadataConfig
   path: string
   sections: ProductPageSection[]
   segment: ProductSegment

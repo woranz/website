@@ -49,6 +49,7 @@ export const productosQuery = groq`
     nombre,
     slug,
     badge,
+    subtitulo,
     heroImage,
     cardImage
   }

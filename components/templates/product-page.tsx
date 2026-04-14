@@ -7,23 +7,33 @@ import {
   ArrowRight,
   ChevronRight,
   CreditCard,
+  FileText,
+  Package,
+  Scale,
   ShieldCheck,
   User,
   Users,
   Zap,
 } from "lucide-react"
 
+import { ProductSearchList } from "@/components/ProductSearchList"
 import { CarouselWithHeader } from "@/components/Carousel"
+import { ContactForm } from "@/components/ContactForm"
 import { CaucionQuoterDesktop, CaucionQuoterMobile } from "@/components/CaucionQuoter"
+import { GenericQuoterDesktop, GenericQuoterMobile } from "@/components/GenericQuoter"
 import { QuoterDesktop, QuoterMobile } from "@/components/Quoter"
 import { SiteFooter } from "@/components/site/footer"
-import { SiteHeader, type SiteNavLink } from "@/components/site/header"
+import { SiteHeader } from "@/components/site/header"
 import { SegmentTabs } from "@/components/site/segment-tabs"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { TeamAvatars } from "@/components/ui/team-avatars"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import {
+  PRODUCT_QUOTER_SECTION_ID,
+  SUPPORT_NAVIGATION_LINKS,
+} from "@/lib/site-links"
 import type {
   CoverageItem,
   FaqItem,
@@ -35,12 +45,15 @@ import type {
   ProductPageSection,
   ProductStep,
 } from "@/lib/product-pages"
+import { getFormConfig } from "@/lib/forms/registry"
 import { cn } from "@/lib/utils"
 
-const SITE_NAVIGATION: SiteNavLink[] = [
-  { href: "#", label: "Nosotros" },
-  { href: "#", label: "Contacto" },
-]
+const PRODUCERS_HERO_CTA = {
+  href: "/productores/registro",
+  label: "Registrate como productor",
+} as const
+
+const PRODUCT_COVERAGES_SECTION_ID = "coberturas"
 
 function ActionButton({
   className,
@@ -74,6 +87,37 @@ function ActionButton({
   )
 }
 
+function HeroActions({ page }: { page: ProductPageData }) {
+  if (page.isHome && page.segment === "productores") {
+    return (
+      <div className="flex w-full flex-col items-center gap-4 pt-6 md:w-auto md:flex-row md:gap-6 md:pt-8 lg:pt-6">
+        <ActionButton
+          className="btn-primary-hero"
+          href={PRODUCERS_HERO_CTA.href}
+          label={PRODUCERS_HERO_CTA.label}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex w-full flex-col items-center gap-4 pt-6 md:w-auto md:flex-row md:gap-6 md:pt-8 lg:pt-6">
+      <ActionButton
+        className="btn-primary-hero"
+        href={page.hero.primaryCtaHref}
+        label={page.hero.primaryCta}
+      />
+      {page.hero.secondaryCta ? (
+        <ActionButton
+          className="btn-secondary-outline"
+          href={page.hero.secondaryCtaHref}
+          label={page.hero.secondaryCta}
+        />
+      ) : null}
+    </div>
+  )
+}
+
 const FEATURE_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   briefcase: Briefcase,
   building: Building,
@@ -104,7 +148,7 @@ function HeroFeatures({ features }: { features: Array<{ icon: string; label: str
 
 function HeroSection({ page }: { page: ProductPageData }) {
   return (
-    <section className="page-shell items-center gap-8 px-page-mobile pt-10 md:gap-10 md:px-page md:pt-hero-top">
+    <section className="page-shell items-center gap-12 px-page-mobile pt-10 md:gap-16 md:px-page md:pt-hero-top">
       {page.isHome ? <SegmentTabs /> : null}
       <div className="flex flex-col items-center gap-4">
         {page.hero.badge ? (
@@ -130,18 +174,7 @@ function HeroSection({ page }: { page: ProductPageData }) {
           </p>
         </div>
 
-        <div className="flex w-full flex-col items-center gap-4 md:w-auto md:flex-row md:gap-6 pt-6 md:pt-8 lg:pt-6">
-          <ActionButton
-            className="btn-primary-hero"
-            href={page.hero.primaryCtaHref}
-            label={page.hero.primaryCta}
-          />
-          <ActionButton
-            className="btn-secondary-outline"
-            href={page.hero.secondaryCtaHref}
-            label={page.hero.secondaryCta}
-          />
-        </div>
+        <HeroActions page={page} />
 
         {page.hero.features?.length ? <HeroFeatures features={page.hero.features} /> : null}
       </div>
@@ -177,9 +210,20 @@ function SectionHeader({
   )
 }
 
-function QuoteSection({ section }: { section: Extract<ProductPageSection, { type: "quote" }> }) {
+function QuoteSection({ section, basePath }: { section: Extract<ProductPageSection, { type: "quote" }>; basePath: string }) {
+  const contactConfig =
+    section.quoter === "contacto" && section.formConfigId
+      ? getFormConfig(section.formConfigId)
+      : undefined
+
+  if (section.quoter === "contacto" && !contactConfig) return null
+  if (section.quoter === "generico" && !section.quoterConfigId) return null
+
   return (
-    <section className="page-shell gap-8 px-page-mobile py-section-mobile md:gap-10 md:px-page-wide md:py-section">
+    <section
+      id={PRODUCT_QUOTER_SECTION_ID}
+      className="page-shell gap-8 px-page-mobile py-section-mobile md:gap-10 md:px-page-wide md:py-section scroll-mt-24"
+    >
       <div className="flex flex-col items-center gap-8">
         <SectionHeader title={section.title} description={section.description} />
         <Card
@@ -191,10 +235,22 @@ function QuoteSection({ section }: { section: Extract<ProductPageSection, { type
           )}
         >
           <CardContent className="p-0">
-            {section.quoter === "caucion" ? (
+            {section.quoter === "contacto" && contactConfig ? (
+              <ContactForm
+                config={contactConfig}
+                embedded
+                productName={section.title}
+                returnHref={basePath}
+              />
+            ) : section.quoter === "caucion" ? (
               <>
                 <CaucionQuoterMobile />
                 <CaucionQuoterDesktop />
+              </>
+            ) : section.quoter === "generico" && section.quoterConfigId ? (
+              <>
+                <GenericQuoterMobile configId={section.quoterConfigId} basePath={basePath} />
+                <GenericQuoterDesktop configId={section.quoterConfigId} basePath={basePath} />
               </>
             ) : (
               <>
@@ -287,18 +343,31 @@ function ExplanationSection({
 }: {
   section: Extract<ProductPageSection, { type: "explanation" }>
 }) {
+  const desktopText = section.body
+  const mobileText = section.bodyMobile ?? section.body
+  const desktopParagraphs = desktopText.split(/\n\n+/).filter(Boolean)
+  const mobileParagraphs = mobileText.split(/\n\n+/).filter(Boolean)
+
   return (
-    <section className="page-shell px-page-mobile py-section-mobile md:px-page-wide md:py-section">
-      <div className="mx-auto w-full max-w-content rounded-2xl bg-woranz-warm-1 px-8 py-10 md:px-16 md:py-14">
-        <div className="flex flex-col gap-4 md:gap-5">
-          <h2 className="text-lg font-bold text-woranz-slate md:text-2xl">
-            {section.title}
-          </h2>
-          <p className="text-body leading-relaxed text-woranz-text md:text-lg md:leading-8">
-            <span className="hidden md:inline whitespace-pre-line">{section.body}</span>
-            <span className="md:hidden whitespace-pre-line">{section.bodyMobile ?? section.body}</span>
+    <section className="page-shell gap-4 px-page-mobile py-section-mobile md:gap-5 md:px-page-wide md:py-section">
+      <h2 className="section-title">{section.title}</h2>
+      <div className="flex flex-col gap-3 md:max-w-[50%] md:gap-4">
+        {desktopParagraphs.map((p, i) => (
+          <p
+            key={i}
+            className="hidden text-body leading-relaxed text-woranz-text md:block md:text-lg md:leading-8"
+          >
+            {p}
           </p>
-        </div>
+        ))}
+        {mobileParagraphs.map((p, i) => (
+          <p
+            key={i}
+            className="text-body leading-relaxed text-woranz-text md:hidden"
+          >
+            {p}
+          </p>
+        ))}
       </div>
     </section>
   )
@@ -334,60 +403,87 @@ function VariantsSection({
   section: Extract<ProductPageSection, { type: "variants" }>
 }) {
   return (
-    <section className="w-full py-section-mobile md:py-section">
-      <div className="flex flex-col gap-8">
-        <div className="carousel-header-centered">
-          <h2 className="section-title">{section.title}</h2>
-        </div>
-        <div className="carousel-slides-centered">
-          <div className="flex gap-6 overflow-x-auto scrollbar-hide pb-4">
-            {section.items.map((item) => {
-              const card = (
-                <div
-                  key={item.title}
-                  className="flex w-[280px] shrink-0 flex-col justify-between rounded-2xl bg-woranz-warm-1 p-8 md:w-[360px] md:p-10"
-                  style={{ boxShadow: "0 8px 24px rgba(0,0,0,0.03)", minHeight: "360px" }}
-                >
-                  <div className="flex flex-col gap-4">
-                    <h3 className="text-xl font-semibold text-woranz-slate md:text-2xl">
-                      {item.title}
-                    </h3>
-                    {item.description ? (
-                      <p className="text-[15px] leading-relaxed text-woranz-text">{item.description}</p>
-                    ) : null}
-                    {item.items?.length ? (
-                      <ul className="flex flex-col gap-2 text-[15px] text-woranz-text">
-                        {item.items.map((detail) => (
-                          <li key={detail} className="flex gap-2">
-                            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-woranz-yellow" />
-                            <span>{detail}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </div>
-                  {item.href ? (
-                    <span className="inline-flex items-center gap-2 pt-6 text-[15px] font-semibold text-woranz-slate">
-                      Ver cobertura
-                      <ChevronRight className="h-4 w-4" />
-                    </span>
-                  ) : null}
-                </div>
-              )
-
-              if (item.href) {
-                return (
-                  <Link key={item.title} href={item.href} className="block shrink-0">
-                    {card}
-                  </Link>
-                )
-              }
-              return <div key={item.title} className="shrink-0">{card}</div>
-            })}
-          </div>
-        </div>
-      </div>
+    <section
+      id={PRODUCT_COVERAGES_SECTION_ID}
+      className="w-full scroll-mt-24 py-section-mobile md:py-section"
+    >
+      <CarouselWithHeader title={section.title} fullWidth>
+        {section.items.map((item) => (
+          <CoverageVariantCard key={item.title} item={item} />
+        ))}
+      </CarouselWithHeader>
     </section>
+  )
+}
+
+function VariantIcon({ icon }: { icon?: string }) {
+  const Icon =
+    icon === "mantenimiento-oferta"
+      ? FileText
+      : icon === "cumplimiento-contrato"
+        ? ShieldCheck
+        : icon === "anticipo-financiero"
+          ? CreditCard
+          : icon === "fondo-reparo"
+            ? ShieldCheck
+            : icon === "suministro"
+              ? Package
+              : icon === "servicios"
+                ? Briefcase
+                : icon === "actividad-profesion"
+                  ? Building
+                  : icon === "judicial"
+                    ? Scale
+                    : Briefcase
+
+  return (
+    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/85 text-woranz-slate shadow-sm">
+      <Icon className="h-7 w-7" strokeWidth={1.8} />
+    </div>
+  )
+}
+
+function CoverageVariantCard({ item }: { item: Extract<ProductPageSection, { type: "variants" }>["items"][number] }) {
+  return (
+    <Card
+      className="flex h-full w-[280px] border-none bg-woranz-warm-1 p-0 shadow-elevated ring-0 md:w-[360px]"
+      style={{ minHeight: "380px" }}
+    >
+      <CardContent className="flex h-full flex-col justify-between gap-8 p-8 md:p-10">
+        <div className="flex flex-col gap-5">
+          <VariantIcon icon={item.icon} />
+          <div className="flex flex-col gap-3">
+            <h3 className="text-xl font-semibold text-woranz-slate md:text-2xl">
+              {item.title}
+            </h3>
+            {item.description ? (
+              <p className="text-[15px] leading-relaxed text-woranz-text md:text-base md:leading-7">
+                {item.description}
+              </p>
+            ) : null}
+          </div>
+          {item.items?.length ? (
+            <ul className="flex flex-col gap-2.5 text-sm text-woranz-text md:text-[15px]">
+              {item.items.map((detail) => (
+                <li key={detail} className="flex gap-2.5">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-woranz-yellow" />
+                  <span>{detail}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+        {item.href ? (
+          <Link
+            href={item.href}
+            className="btn-link-brand inline-flex items-center w-fit whitespace-nowrap px-0 text-sm md:text-body"
+          >
+            Solicitar esta cobertura
+            <ArrowRight className="ml-2 h-4 w-4 shrink-0 self-center" />
+          </Link>
+        ) : null}
+      </CardContent>
+    </Card>
   )
 }
 
@@ -396,25 +492,25 @@ function RequirementsSection({
 }: {
   section: Extract<ProductPageSection, { type: "requirements" }>
 }) {
-  const columns: CoverageItem[][] = section.columns ?? (() => {
-    const items = (section.items ?? []).map((item) => ({ title: item, description: "" }))
-    const mid = Math.ceil(items.length / 2)
-    return [items.slice(0, mid), items.slice(mid)]
-  })()
-  const mobileItems = columns.flat()
+  const items = (section.items ?? []).filter(Boolean)
 
   return (
     <section className="page-shell gap-8 px-page-mobile py-section-mobile md:gap-10 md:px-page-wide md:py-section">
-      <h2 className="section-title">{section.title}</h2>
-
-      <div className="hidden grid-cols-2 gap-16 md:grid">
-        {columns.map((column, index) => (
-          <AccordionColumn key={index} items={column} />
-        ))}
-      </div>
-
-      <div className="md:hidden">
-        <AccordionColumn items={mobileItems} mobile />
+      <div className="mx-auto flex w-full max-w-content flex-col gap-6 rounded-2xl bg-woranz-warm-1 px-6 py-7 md:px-10 md:py-10">
+        <SectionHeader title={section.title} description={section.description} />
+        <ul className="grid gap-3 md:grid-cols-2 md:gap-x-8 md:gap-y-4">
+          {items.map((item, index) => (
+            <li
+              key={`${item}-${index}`}
+              className="flex items-start gap-3 rounded-xl bg-white/70 px-4 py-4"
+            >
+              <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-woranz-yellow" />
+              <span className="text-sm leading-6 text-woranz-slate md:text-base md:leading-7">
+                {item}
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   )
@@ -525,8 +621,6 @@ function FaqAccordion({
 }
 
 function CtaSection({ section }: { section: Extract<ProductPageSection, { type: "cta" }> }) {
-  const secondaryHref = section.secondaryCtaHref ?? "/contacto"
-
   return (
     <section className="page-shell px-page-mobile py-section-mobile md:px-page-wide md:py-section">
       <div className="surface-cta px-8 py-10 md:px-16 md:py-16">
@@ -556,11 +650,13 @@ function CtaSection({ section }: { section: Extract<ProductPageSection, { type: 
               href={section.primaryCtaHref}
               label={section.primaryCta}
             />
-            <ActionButton
-              className="btn-secondary-outline w-full md:w-auto"
-              href={secondaryHref}
-              label={section.secondaryCta}
-            />
+            {section.secondaryCta ? (
+              <ActionButton
+                className="btn-secondary-outline w-full md:w-auto"
+                href={section.secondaryCtaHref ?? "/contacto"}
+                label={section.secondaryCta}
+              />
+            ) : null}
           </div>
         </div>
       </div>
@@ -788,10 +884,10 @@ function ProductGridSection({
   )
 }
 
-function renderSection(section: ProductPageSection) {
+function renderSection(section: ProductPageSection, basePath: string) {
   switch (section.type) {
     case "quote":
-      return <QuoteSection section={section} />
+      return <QuoteSection section={section} basePath={basePath} />
     case "explanation":
       return <ExplanationSection section={section} />
     case "variants":
@@ -806,6 +902,8 @@ function renderSection(section: ProductPageSection) {
       return <StandaloneStepsSection section={section} />
     case "product-grid":
       return <ProductGridSection section={section} />
+    case "product-search-list":
+      return <ProductSearchList title={section.title} items={section.items} />
     case "faq":
       return <FaqSection section={section} />
     case "cta":
@@ -818,11 +916,11 @@ function renderSection(section: ProductPageSection) {
 function ProductPageTemplate({ page }: { page: ProductPageData }) {
   return (
     <div className="flex flex-col bg-white">
-      <SiteHeader links={SITE_NAVIGATION} />
+      <SiteHeader links={SUPPORT_NAVIGATION_LINKS} />
       <main className="flex flex-col">
         <HeroSection page={page} />
         {page.sections.map((section, index) => (
-          <div key={`${section.type}-${index}`}>{renderSection(section)}</div>
+          <div key={`${section.type}-${index}`}>{renderSection(section, page.path)}</div>
         ))}
       </main>
       <SiteFooter />

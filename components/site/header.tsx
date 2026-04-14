@@ -4,6 +4,7 @@ import Link from "next/link"
 import {
   Bike,
   Building,
+  Container,
   FileCheck,
   Flame,
   Gavel,
@@ -79,6 +80,7 @@ const NAV_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   scale: Scale,
   store: Store,
   building: Building,
+  container: Container,
   plane: Plane,
   handshake: Handshake,
   heart: Heart,
@@ -105,6 +107,8 @@ const NAV_COVERAGE: Record<"personas" | "empresas", NavCoverageItem[]> = {
   ],
   empresas: [
     { title: "Cauciones Tradicionales", description: "Garantías para operar.", href: "/empresas/coberturas/cauciones-tradicionales", icon: "file-check" },
+    { title: "Garantía Aduanera", description: "Garantías para operar en aduana.", href: "/empresas/coberturas/garantias-aduaneras", icon: "container" },
+    { title: "Caución Judicial", description: "Garantías para procesos judiciales.", href: "/empresas/coberturas/caucion-judicial", icon: "gavel" },
     { title: "Vida Colectivo", description: "Todo tu equipo cubierto.", href: "/empresas/coberturas/seguro-de-vida-empresas", icon: "users" },
     { title: "Accidentes Personales", description: "Dentro y fuera del trabajo.", href: "/empresas/coberturas/accidentes-personales", icon: "shield-check" },
     { title: "Responsabilidad Civil", description: "Operá tranquilo.", href: "/empresas/coberturas/responsabilidad-civil", icon: "scale" },
@@ -112,6 +116,7 @@ const NAV_COVERAGE: Record<"personas" | "empresas", NavCoverageItem[]> = {
     { title: "Integral de Comercio", description: "Tu negocio en una póliza.", href: "/empresas/coberturas/integral-de-comercio", icon: "store" },
     { title: "Hecho por Humanos", description: "Intervención humana verificable.", href: "/empresas/coberturas/hecho-por-humanos", icon: "handshake" },
     { title: "RC por uso de IA", description: "Cobertura para IA.", href: "/empresas/coberturas/responsabilidad-civil-uso-ia", icon: "cpu" },
+    { title: "Sepelio Colectivo", description: "Cobertura para tu equipo.", href: "/empresas/coberturas/seguro-de-sepelio", icon: "heart" },
   ],
 }
 
