@@ -1,4 +1,5 @@
 import { defineLocations, type PresentationPluginOptions } from 'sanity/presentation'
+import { buildProductPath } from '@/lib/product-paths'
 
 export const resolve: PresentationPluginOptions['resolve'] = {
   locations: {
@@ -14,7 +15,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
             ? [
                 {
                   title: doc.nombre || 'Producto',
-                  href: `/${doc.segmento}/coberturas/${doc.slug}`,
+                  href: buildProductPath(doc.segmento, doc.slug),
                 },
               ]
             : []),

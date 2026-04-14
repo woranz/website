@@ -23,7 +23,10 @@ import type {
   ProductPageSection,
   ProductStep,
 } from "@/lib/product-pages"
-import type { ProductSegment } from "@/lib/product-paths"
+import {
+  normalizeInternalHref,
+  type ProductSegment,
+} from "@/lib/product-paths"
 
 type SanityHeroFeature = {
   icon?: string
@@ -177,11 +180,11 @@ function transformSection(
         teamLabel: section.teamLabel?.trim() || ctaDefaults.teamLabel,
         primaryCta:
           section.ctaPrimario?.label?.trim() || ctaDefaults.primaryCta,
-        primaryCtaHref: section.ctaPrimario?.href?.trim(),
+        primaryCtaHref: normalizeInternalHref(section.ctaPrimario?.href),
         secondaryCta:
           section.ctaSecundario?.label?.trim() || ctaDefaults.secondaryCta,
         secondaryCtaHref:
-          section.ctaSecundario?.href?.trim() || whatsappHref,
+          normalizeInternalHref(section.ctaSecundario?.href) || whatsappHref,
       }
     }
 
@@ -284,10 +287,13 @@ export function transformSanityHome(
           label: feature.texto?.trim() || feature.label?.trim() || "",
         })),
       primaryCta: data.ctaPrimario?.label?.trim() || fallback.primaryCta,
-      primaryCtaHref: data.ctaPrimario?.href?.trim() ?? (segment === "empresas" ? "#coberturas" : undefined),
+      primaryCtaHref:
+        normalizeInternalHref(data.ctaPrimario?.href) ??
+        (segment === "empresas" ? "#coberturas" : undefined),
       secondaryCta:
         data.ctaSecundario?.label?.trim() || fallback.secondaryCta,
-      secondaryCtaHref: data.ctaSecundario?.href?.trim() || whatsappHref,
+      secondaryCtaHref:
+        normalizeInternalHref(data.ctaSecundario?.href) || whatsappHref,
       imageSrc: heroImage,
       imageAlt: fallback.imageAlt,
     },

@@ -3,13 +3,14 @@ import type { Metadata } from "next"
 import { PreaprobacionForm } from "@/components/PreaprobacionForm"
 import { SiteHeader } from "@/components/site/header"
 import { buildPageMetadata } from "@/lib/metadata"
+import { buildProductSubpath } from "@/lib/product-paths"
 import { SUPPORT_NAVIGATION_LINKS } from "@/lib/site-links"
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Pre-aprobación Caución de Alquiler — Woranz",
   description:
     "Completá tus datos y obtené tu garantía de alquiler en menos de 24hs. Sin garante, 100% online.",
-  canonicalPath: "/personas/coberturas/caucion-alquiler/preaprobacion",
+  canonicalPath: buildProductSubpath("personas", "caucion-alquiler", "preaprobacion"),
   noIndex: true,
 })
 

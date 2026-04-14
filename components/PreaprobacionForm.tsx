@@ -21,6 +21,7 @@ import { BreadcrumbStepper } from "@/components/ui/breadcrumb-stepper"
 import { EntityListItem } from "@/components/ui/entity-list"
 import { CiudadSearch } from "@/components/ui/georef-search"
 import { Input } from "@/components/ui/input"
+import { buildProductPath } from "@/lib/product-paths"
 import { cn } from "@/lib/utils"
 
 // ── Types ────────────────────────────────────────────────────────────
@@ -452,7 +453,7 @@ export function PreaprobacionForm({ quoter }: { quoter: QuoterData }) {
           en menos de 24hs.
         </p>
         <a
-          href="/personas/coberturas/caucion-alquiler"
+          href={buildProductPath("personas", "caucion-alquiler")}
           className="mt-8 inline-flex items-center justify-center rounded-xl bg-woranz-yellow px-6 py-3 text-sm font-semibold text-woranz-ink transition-colors hover:bg-woranz-yellow/80"
         >
           Volver al inicio

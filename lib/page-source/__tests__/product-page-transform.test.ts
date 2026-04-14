@@ -24,17 +24,17 @@ describe("transformSanityProduct", () => {
       {
         whatsappNumero: "5491112345678",
       },
-      createPageSourceContext(
-        "product",
-        "personas/seguro-de-hogar",
-        "/personas/coberturas/seguro-de-hogar",
-        false
-      )
+        createPageSourceContext(
+          "product",
+          "personas/seguro-de-hogar",
+          "/personas/seguro-de-hogar",
+          false
+        )
     )
 
     expect(page).toBeDefined()
     expect(page?.metadata).toMatchObject({
-      canonicalPath: "/personas/coberturas/seguro-de-hogar",
+      canonicalPath: "/personas/seguro-de-hogar",
       title: "Seguro de Hogar | Woranz",
       description: "SEO description",
     })
@@ -53,7 +53,7 @@ describe("transformSanityProduct", () => {
         createPageSourceContext(
           "product",
           "personas/seguro-de-hogar",
-          "/personas/coberturas/seguro-de-hogar",
+          "/personas/seguro-de-hogar",
           true
         )
       )
@@ -71,12 +71,12 @@ describe("transformSanityProduct", () => {
         secciones: [{ _type: "seccionCta" }],
       },
       undefined,
-      createPageSourceContext(
-        "product",
-        "empresas/accidentes-personales",
-        "/empresas/coberturas/accidentes-personales",
-        false
-      )
+        createPageSourceContext(
+          "product",
+          "empresas/accidentes-personales",
+          "/empresas/accidentes-personales",
+          false
+        )
     )
 
     expect(page).toBeDefined()
@@ -105,12 +105,12 @@ describe("transformSanityProduct", () => {
         ],
       },
       undefined,
-      createPageSourceContext(
-        "product",
-        "personas/seguro-de-hogar",
-        "/personas/coberturas/seguro-de-hogar",
-        false
-      )
+        createPageSourceContext(
+          "product",
+          "personas/seguro-de-hogar",
+          "/personas/seguro-de-hogar",
+          false
+        )
     )
 
     expect(page).toBeDefined()
@@ -142,12 +142,12 @@ describe("transformSanityProduct", () => {
         ],
       },
       undefined,
-      createPageSourceContext(
-        "product",
-        "empresas/incendio",
-        "/empresas/coberturas/incendio",
-        false
-      )
+        createPageSourceContext(
+          "product",
+          "empresas/incendio",
+          "/empresas/incendio",
+          false
+        )
     )
 
     expect(page).toBeDefined()
@@ -185,12 +185,12 @@ describe("transformSanityProduct", () => {
         ],
       },
       undefined,
-      createPageSourceContext(
-        "product",
-        "empresas/incendio",
-        "/empresas/coberturas/incendio",
-        false
-      )
+        createPageSourceContext(
+          "product",
+          "empresas/incendio",
+          "/empresas/incendio",
+          false
+        )
     )
 
     expect(page).toBeDefined()

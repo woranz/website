@@ -1,7 +1,8 @@
 import { APCotizacionExito } from "@/components/APCotizacionExito"
+import { buildProductPath } from "@/lib/product-paths"
 
 export default function CotizacionAPEmpresasExitoPage() {
   return (
-    <APCotizacionExito baseHref="/empresas/coberturas/accidentes-personales" />
+    <APCotizacionExito baseHref={buildProductPath("empresas", "accidentes-personales")} />
   )
 }

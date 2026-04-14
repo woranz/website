@@ -6,6 +6,7 @@ import { type Dispatch, type ReactNode, type SetStateAction, useEffect, useRef, 
 import { Input } from "@/components/ui/input"
 import { ArrowRight } from "lucide-react"
 
+import { buildProductSubpath } from "@/lib/product-paths"
 import { cn } from "@/lib/utils"
 import { PROVINCIAS, ProvinciaSearch } from "@/components/ui/georef-search"
 
@@ -36,7 +37,7 @@ function buildPreapprovalHref(params: {
     modoPago: params.modoPago,
     restitucion: params.restitucion ? "true" : "false",
   })
-  return `/personas/coberturas/caucion-alquiler/preaprobacion?${search.toString()}`
+  return `${buildProductSubpath("personas", "caucion-alquiler", "preaprobacion")}?${search.toString()}`
 }
 
 function AnimatedPrice({
