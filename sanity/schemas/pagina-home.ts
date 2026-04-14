@@ -6,6 +6,7 @@ import {
   seccionGridProductos,
   seccionCta,
 } from './secciones'
+import { seoField } from './fields/seo'
 
 export default defineType({
   name: 'paginaHome',
@@ -84,6 +85,7 @@ export default defineType({
         { name: 'href', title: 'Link', type: 'string' },
       ],
     }),
+    seoField,
     defineField({
       name: 'secciones',
       title: 'Secciones',

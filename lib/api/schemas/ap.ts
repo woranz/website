@@ -133,7 +133,7 @@ const baseContactSchema = z
   })
   .strict()
 
-const baseQuoteObjectSchema = z
+const baseQuoteSchema = z
   .object({
     idProvinciaRiesgo: numericIdSchema,
     vigenciaDesde: isoDateSchema,
@@ -141,24 +141,13 @@ const baseQuoteObjectSchema = z
     items: z.array(quoteItemSchema).min(1).max(700),
   })
   .strict()
-
-function withValidDateRange<T extends z.ZodTypeAny>(schema: T) {
-  return schema.refine(
-    (value) =>
-      typeof value === "object" &&
-      value !== null &&
-      "vigenciaDesde" in value &&
-      "vigenciaHasta" in value &&
-      new Date(String(value.vigenciaHasta)).getTime() >=
-        new Date(String(value.vigenciaDesde)).getTime(),
+  .refine(
+    (value) => new Date(value.vigenciaHasta).getTime() >= new Date(value.vigenciaDesde).getTime(),
     {
       message: "La vigencia es inválida.",
       path: ["vigenciaHasta"],
     }
   )
-}
-
-const baseQuoteSchema = withValidDateRange(baseQuoteObjectSchema)
 
 export const personaLookupSchema = z
   .object({
@@ -175,26 +164,21 @@ export const caucionLookupSchema = z
   })
   .strict()
 
-export const cotizacionOpcionesSchema = withValidDateRange(
-  baseQuoteObjectSchema
+export const cotizacionOpcionesSchema = baseQuoteSchema
   .extend({
     idCoberturaPaquete: numericIdSchema.optional(),
   })
   .strict()
-)
 
-export const cotizacionTriggerSchema = withValidDateRange(
-  baseQuoteObjectSchema
+export const cotizacionTriggerSchema = baseQuoteSchema
   .merge(baseContactSchema)
   .extend({
     idCoberturaPaquete: numericIdSchema.optional(),
     coberturas: z.array(coverageSchema).min(1).max(64),
   })
   .strict()
-)
 
-export const propuestaSchema = withValidDateRange(
-  baseQuoteObjectSchema
+export const propuestaSchema = baseQuoteSchema
   .merge(baseContactSchema)
   .extend({
     idCotizacion: numericIdSchema,
@@ -211,7 +195,6 @@ export const propuestaSchema = withValidDateRange(
     nomina: z.array(nominaItemSchema).max(700).default([]),
   })
   .strict()
-)
 
 export const propuestaConfirmarSchema = z
   .object({

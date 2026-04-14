@@ -95,7 +95,7 @@ const homes = [
         tituloMobile: 'Cuando lo necesites, estamos.',
         descripcion:
           'No somos un call center. Somos personas reales que te acompañan en cada paso.',
-        teamCount: '+21',
+        teamCount: '+20',
         teamLabel: 'personas cuidando de vos',
         ctaPrimario: { label: 'Ver seguros', href: '#coberturas' },
         ctaSecundario: { label: 'Hablar con alguien →' },
@@ -129,7 +129,7 @@ const homes = [
         tituloMobile: 'Tu empresa crece. Su cobertura también.',
         descripcion:
           'Empresas de todos los tamaños eligen Woranz para operar tranquilas.',
-        teamCount: '+9',
+        teamCount: '+20',
         teamLabel: 'personas para ayudarte',
         ctaPrimario: { label: 'Pedí tu propuesta' },
         ctaSecundario: { label: 'Agendá una llamada →' },
@@ -163,7 +163,7 @@ const homes = [
         tituloMobile: 'Tu cartera en un solo lugar.',
         descripcion:
           'Cotizá para tus clientes en segundos. Gestioná renovaciones, emisiones y cobranzas sin complicaciones.',
-        teamCount: '+21',
+        teamCount: '+20',
         teamLabel: 'personas apoyándote',
         ctaPrimario: { label: 'Empezar gratis' },
         ctaSecundario: { label: 'Hablá con nosotros →' },

@@ -13,6 +13,7 @@ import {
   seccionGridProductos,
   seccionCta,
 } from './secciones'
+import { seoField } from './fields/seo'
 
 export default defineType({
   name: 'producto',
@@ -137,6 +138,13 @@ export default defineType({
         }),
       ],
     }),
+    defineField({
+      name: 'ocultarCtaSecundario',
+      title: 'Ocultar CTA secundario del hero',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    seoField,
     defineField({
       name: 'secciones',
       title: 'Secciones de la página',

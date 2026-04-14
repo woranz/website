@@ -5,6 +5,13 @@ import { ArrowRight, CheckCircle, Loader2 } from "lucide-react"
 
 import { CiudadSearch, ProvinciaSearch } from "@/components/ui/georef-search"
 import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import type { FormConfig, FormFieldConfig } from "@/lib/forms/types"
 import { cn } from "@/lib/utils"
 
@@ -64,15 +71,15 @@ export function ContactForm({
   config,
   embedded = false,
   productName,
-  returnLabel,
   returnHref,
+  returnLabel,
   searchParams,
 }: {
   config: FormConfig
   embedded?: boolean
   productName?: string
-  returnLabel?: string
   returnHref?: string
+  returnLabel?: string
   searchParams?: Record<string, string | undefined>
 }) {
   const [values, setValues] = useState<Record<string, string>>(() => {
@@ -185,7 +192,7 @@ export function ContactForm({
   // ── Render ──
 
   return (
-    <div className={cn("mx-auto w-full", embedded ? "" : "max-w-page px-page-mobile md:px-page")}>
+    <div className="mx-auto w-full max-w-page px-page-mobile md:px-page">
       <div className={cn("mx-auto w-full max-w-xl pb-16", embedded ? "pt-0" : "pt-8 md:pt-10")}>
         {!embedded ? (
           <h1 className="text-center font-display text-[2rem] font-bold leading-tight tracking-tight text-woranz-ink lg:text-[2.25rem]">
@@ -225,7 +232,7 @@ export function ContactForm({
               </span>
             ) : (
               <>
-                {config.submitLabel ?? "Enviar solicitud"}
+                Enviar solicitud
                 <ArrowRight className="ml-2 h-4 w-4" />
               </>
             )}
@@ -275,27 +282,18 @@ function FormField({
           )}
         />
       ) : field.type === "select" ? (
-        <select
-          value={value}
-          onChange={(e) => {
-            onChange(e.target.value)
-            onBlur()
-          }}
-          onBlur={onBlur}
-          className={cn(
-            "flex h-12 w-full rounded-field border border-woranz-border bg-woranz-warm-2 px-4 text-sm text-woranz-slate transition-colors",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          )}
-        >
-          <option value="">
-            {field.placeholder ?? "Seleccioná una opción"}
-          </option>
-          {field.options?.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+        <Select value={value} onValueChange={(v) => { onChange(v); onBlur() }}>
+          <SelectTrigger className="h-12 bg-woranz-warm-2">
+            <SelectValue placeholder={field.placeholder ?? "Seleccioná una opción"} />
+          </SelectTrigger>
+          <SelectContent>
+            {field.options?.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       ) : field.type === "provincia-select" ? (
         <ProvinciaSearch
           value={value}

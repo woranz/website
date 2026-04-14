@@ -1,18 +1,17 @@
 import type { Metadata } from "next"
 
 import { APCotizacionForm } from "@/components/APCotizacionForm"
-import { SiteHeader, type SiteNavLink } from "@/components/site/header"
+import { SiteHeader } from "@/components/site/header"
+import { buildPageMetadata } from "@/lib/metadata"
+import { SUPPORT_NAVIGATION_LINKS } from "@/lib/site-links"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Cotización Accidentes Personales — Woranz",
   description:
     "Cotizá tu seguro de accidentes personales. Elegí tu plan, completá tus datos y pagá online.",
-}
-
-const SITE_NAVIGATION: SiteNavLink[] = [
-  { href: "#", label: "Nosotros" },
-  { href: "#", label: "Contacto" },
-]
+  canonicalPath: "/personas/coberturas/accidentes-personales/cotizacion",
+  noIndex: true,
+})
 
 export default async function CotizacionAPPage({
   searchParams,
@@ -31,7 +30,7 @@ export default async function CotizacionAPPage({
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
-      <SiteHeader links={SITE_NAVIGATION} />
+      <SiteHeader links={SUPPORT_NAVIGATION_LINKS} />
       <main className="flex-1">
         <APCotizacionForm quoter={quoter} />
       </main>
