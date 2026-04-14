@@ -53,6 +53,18 @@ const emailEntrySchema = z
   })
   .strict()
 
+const beneficiarioSchema = z
+  .object({
+    idTipoDocumento: numericIdSchema,
+    numeroDocumento: numericIdSchema,
+    nombre: trimmedStringSchema("Nombre inválido.", 120),
+    apellido: trimmedStringSchema("Apellido inválido.", 120),
+    idSexo: numericIdSchema,
+    idParentesco: numericIdSchema,
+    porcentaje: nonNegativeNumberSchema,
+  })
+  .strict()
+
 const domicilioSchema = z
   .record(z.string(), jsonValueSchema)
   .refine((value) => Object.keys(value).length <= 30, "Domicilio inválido.")
@@ -70,6 +82,13 @@ const physicalTomadorSchema = z
     sexo: optionalTrimmedStringSchema(16),
     fechaNacimiento: optionalTrimmedStringSchema(32),
     nacionalidad: optionalTrimmedStringSchema(32),
+    idTipoDocumento: numericIdSchema.optional(),
+    idSexo: numericIdSchema.optional(),
+    idEstadoCivil: numericIdSchema.optional(),
+    idCondFiscal: numericIdSchema.optional(),
+    idTipoSociedad: numericIdSchema.optional(),
+    entidadPublica: z.boolean().optional(),
+    cuit: z.string().trim().optional(),
   })
   .strict()
 
@@ -80,6 +99,10 @@ const juridicalTomadorSchema = z
     razonSocial: trimmedStringSchema("Razón social inválida.", 160),
     domicilio: domicilioSchema.optional(),
     emails: z.array(emailEntrySchema).max(5).optional(),
+    idTipoDocumento: numericIdSchema.optional(),
+    idCondFiscal: numericIdSchema.optional(),
+    idTipoSociedad: numericIdSchema.optional(),
+    entidadPublica: z.boolean().optional(),
   })
   .strict()
 
@@ -95,6 +118,12 @@ const physicalAseguradoSchema = z
     sexo: optionalTrimmedStringSchema(16),
     fechaNacimiento: optionalTrimmedStringSchema(32),
     nacionalidad: optionalTrimmedStringSchema(32),
+    idTipoDocumento: numericIdSchema.optional(),
+    idSexo: numericIdSchema.optional(),
+    idEstadoCivil: numericIdSchema.optional(),
+    idTipoBeneficiario: numericIdSchema.optional(),
+    cuit: z.string().trim().optional(),
+    beneficiarios: z.array(beneficiarioSchema).max(10).optional(),
   })
   .strict()
 
@@ -104,6 +133,8 @@ const juridicalAseguradoSchema = z
     cuit: cuitSchema,
     razonSocial: trimmedStringSchema("Razón social inválida.", 160),
     idOcupacion: numericIdSchema,
+    idTipoDocumento: numericIdSchema.optional(),
+    idTipoBeneficiario: numericIdSchema.optional(),
   })
   .strict()
 
@@ -173,8 +204,17 @@ export const cotizacionOpcionesSchema = baseQuoteSchema
 export const cotizacionTriggerSchema = baseQuoteSchema
   .merge(baseContactSchema)
   .extend({
+    idCotizacion: numericIdSchema.optional(),
     idCoberturaPaquete: numericIdSchema.optional(),
     coberturas: z.array(coverageSchema).min(1).max(64),
+    cantidad: numericIdSchema
+      .refine((value) => value >= 1 && value <= 700, "Cantidad inválida."),
+    tomador: propuestaTomadorSchema,
+    asegurados: z.array(propuestaAseguradoSchema).min(1).max(700),
+    domicilioRiesgo: domicilioSchema.default({}),
+    clausulaSubrogacion: z.boolean().default(false),
+    clausulaNoRepeticion: z.boolean().default(false),
+    nomina: z.array(nominaItemSchema).max(700).default([]),
   })
   .strict()
 

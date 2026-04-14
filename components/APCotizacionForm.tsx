@@ -298,6 +298,13 @@ type ProposalTomadorPayload =
       sexo?: string
       fechaNacimiento?: string
       nacionalidad?: string
+      idTipoDocumento?: number
+      idSexo?: number
+      idEstadoCivil?: number
+      idCondFiscal?: number
+      idTipoSociedad?: number
+      entidadPublica?: boolean
+      cuit?: string
     }
   | {
       idTipoPersona: 2
@@ -305,6 +312,10 @@ type ProposalTomadorPayload =
       razonSocial: string
       domicilio?: Record<string, unknown>
       emails: Array<{ idTipoEmail: number; email: string }>
+      idTipoDocumento?: number
+      idCondFiscal?: number
+      idTipoSociedad?: number
+      entidadPublica?: boolean
     }
 
 type ProposalAseguradoPayload =
@@ -316,12 +327,20 @@ type ProposalAseguradoPayload =
       sexo?: string
       fechaNacimiento?: string
       nacionalidad?: string
+      idTipoDocumento?: number
+      idSexo?: number
+      idEstadoCivil?: number
+      idTipoBeneficiario?: number
+      cuit?: string
+      beneficiarios?: Array<Record<string, unknown>>
     }
   | {
       idTipoPersona: 2
       cuit: string
       razonSocial: string
       idOcupacion: number
+      idTipoDocumento?: number
+      idTipoBeneficiario?: number
     }
 
 type MercadoPagoTomadorPayload =
@@ -357,6 +376,16 @@ function getRawObjectValue(
   return value as Record<string, unknown>
 }
 
+function getRawNumber(
+  raw: Record<string, unknown> | null,
+  key: string
+): number | undefined {
+  const value = raw?.[key]
+  if (typeof value === "number") return value
+  if (typeof value === "string" && /^\d+$/.test(value.trim())) return Number(value.trim())
+  return undefined
+}
+
 function buildTomadorPayload(
   persona: PersonaEntry,
   email: string
@@ -383,6 +412,10 @@ function buildTomadorPayload(
   const nacionalidad = getOptionalTrimmedValue(
     persona.raw ? getStringValue(persona.raw.nacionalidad) : ""
   )
+  const idSexo = getRawNumber(persona.raw, "idSexo") ?? getRawNumber(persona.raw, "sexo")
+  const cuit = getOptionalTrimmedValue(
+    persona.raw ? getStringValue(persona.raw.cuit) : ""
+  )
 
   return {
     numeroDocumento: parseInt(persona.dni, 10),
@@ -393,6 +426,8 @@ function buildTomadorPayload(
     ...(sexo ? { sexo } : {}),
     ...(fechaNacimiento ? { fechaNacimiento } : {}),
     ...(nacionalidad ? { nacionalidad } : {}),
+    ...(idSexo != null ? { idSexo } : {}),
+    ...(cuit ? { cuit } : {}),
   }
 }
 
@@ -418,6 +453,10 @@ function buildPersonaAseguradoPayload(
   const nacionalidad = getOptionalTrimmedValue(
     persona.raw ? getStringValue(persona.raw.nacionalidad) : ""
   )
+  const idSexo = getRawNumber(persona.raw, "idSexo") ?? getRawNumber(persona.raw, "sexo")
+  const cuit = getOptionalTrimmedValue(
+    persona.raw ? getStringValue(persona.raw.cuit) : ""
+  )
 
   return {
     numeroDocumento: parseInt(persona.dni, 10),
@@ -427,6 +466,8 @@ function buildPersonaAseguradoPayload(
     ...(sexo ? { sexo } : {}),
     ...(fechaNacimiento ? { fechaNacimiento } : {}),
     ...(nacionalidad ? { nacionalidad } : {}),
+    ...(idSexo != null ? { idSexo } : {}),
+    ...(cuit ? { cuit } : {}),
   }
 }
 
@@ -443,6 +484,11 @@ function buildListAseguradoPayload(
     }
   }
 
+  const idSexo = asegurado.gender ? Number(asegurado.gender) || undefined : undefined
+  const cuit = getOptionalTrimmedValue(
+    asegurado.raw ? getStringValue(asegurado.raw.cuit) : ""
+  )
+
   return {
     numeroDocumento: parseInt(asegurado.dni, 10),
     nombre: asegurado.nombre,
@@ -457,6 +503,8 @@ function buildListAseguradoPayload(
     ...(getOptionalTrimmedValue(asegurado.nationality)
       ? { nacionalidad: asegurado.nationality.trim() }
       : {}),
+    ...(idSexo != null ? { idSexo } : {}),
+    ...(cuit ? { cuit } : {}),
   }
 }
 
@@ -678,6 +726,7 @@ export function APCotizacionForm({
   const [manualAsegurado, setManualAsegurado] = useState<ManualAseguradoDraft>(emptyManualAsegurado())
   const [mismatchCount, setMismatchCount] = useState<number | null>(null)
 
+  const [opcionesIdCotizacion, setOpcionesIdCotizacion] = useState<number | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState("")
   const [submitStep, setSubmitStep] = useState("")
@@ -720,7 +769,10 @@ export function APCotizacionForm({
       .then((r) => r.json())
       .then((json) => {
         if (json.error) { setPlansError(json.error); return }
-        const valid = (json.data ?? []).filter((p: PlanOption) => p.premio && !p.error)
+        const data = json.data ?? {}
+        if (data.idCotizacion) setOpcionesIdCotizacion(data.idCotizacion)
+        const plansList = Array.isArray(data) ? data : (data.planes ?? data.opciones ?? [])
+        const valid = plansList.filter((p: PlanOption) => p.premio && !p.error)
         setPlans(valid)
         if (valid.length > 0) {
           const preservedPlanIdx = preferredPlanName
@@ -1150,34 +1202,45 @@ export function APCotizacionForm({
     setSubmitting(true)
     setSubmitError("")
     const solicitante = getPersonaDisplayName(tomador)
+    const tomadorPayload = buildTomadorPayload(tomador, email)
+    const idOcupacion = Number(quoter.actividad) || 1
+    let allAsegurados: ProposalAseguradoPayload[]
+    if (isMulti) {
+      allAsegurados = aseguradosList
+        .filter((a) => a.valid || a.manual)
+        .map((a) => buildListAseguradoPayload(a, idOcupacion))
+    } else if (esTomador) {
+      allAsegurados = [buildPersonaAseguradoPayload(tomador, idOcupacion)]
+    } else {
+      allAsegurados = [buildPersonaAseguradoPayload(asegurado, idOcupacion)]
+    }
+    const nominaPayload = (clausulaSubrogacion || clausulaNoRepeticion) ? nomina.filter((n) => n.valid).map((n) => ({ cuit: n.cuit, nombre: n.nombre })) : []
+    const domicilioRiesgo = "domicilio" in tomadorPayload ? tomadorPayload.domicilio ?? {} : {}
+
     try {
       setSubmitStep("Generando cotización...")
       const triggerRes = await fetch("/api/ap/cotizacion/trigger", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          idCoberturaPaquete: 498, idProvinciaRiesgo: Number(quoter.provincia) || 1,
+          ...(opcionesIdCotizacion != null && { idCotizacion: opcionesIdCotizacion }),
+          idCoberturaPaquete: 498,
+          idProvinciaRiesgo: Number(quoter.provincia) || 1,
           vigenciaDesde: desde, vigenciaHasta: hasta,
-          items: [{ idOcupacion: Number(quoter.actividad) || 1, cantidad: cantidadActual }],
-          coberturas: selectedPlan.coberturas, solicitante, mail: email,
-          telefonoArea: parseInt(telefonoArea, 10) || 0, telefonoNumero: parseInt(telefonoNumero, 10) || 0,
+          items: [{ idOcupacion, cantidad: cantidadActual }],
+          cantidad: cantidadActual,
+          coberturas: selectedPlan.coberturas,
+          tomador: tomadorPayload,
+          asegurados: allAsegurados,
+          domicilioRiesgo,
+          clausulaSubrogacion, clausulaNoRepeticion,
+          nomina: nominaPayload,
+          solicitante, mail: email,
+          telefonoArea: parseInt(telefonoArea, 10) || 0,
+          telefonoNumero: parseInt(telefonoNumero, 10) || 0,
         }),
       }).then((r) => r.json())
       if (triggerRes.error) throw new Error(triggerRes.error)
-      const { idCotizacion } = triggerRes.data
-
-      const tomadorPayload = buildTomadorPayload(tomador, email)
-      const idOcupacion = Number(quoter.actividad) || 1
-      let allAsegurados: ProposalAseguradoPayload[]
-      if (isMulti) {
-        allAsegurados = aseguradosList
-          .filter((a) => a.valid || a.manual)
-          .map((a) => buildListAseguradoPayload(a, idOcupacion))
-      } else if (esTomador) {
-        allAsegurados = [buildPersonaAseguradoPayload(tomador, idOcupacion)]
-      } else {
-        allAsegurados = [buildPersonaAseguradoPayload(asegurado, idOcupacion)]
-      }
-      const nominaPayload = (clausulaSubrogacion || clausulaNoRepeticion) ? nomina.filter((n) => n.valid).map((n) => ({ cuit: n.cuit, nombre: n.nombre })) : []
+      const idCotizacion = triggerRes.data?.idCotizacion ?? opcionesIdCotizacion
 
       setSubmitStep("Creando propuesta...")
       const propuestaRes = await fetch("/api/ap/propuesta", {
@@ -1194,7 +1257,7 @@ export function APCotizacionForm({
           coberturas: selectedPlan.coberturas,
           tomador: tomadorPayload,
           asegurados: allAsegurados,
-          domicilioRiesgo: "domicilio" in tomadorPayload ? tomadorPayload.domicilio ?? {} : {},
+          domicilioRiesgo,
           clausulaSubrogacion, clausulaNoRepeticion, nomina: nominaPayload, solicitante, mail: email,
           telefonoArea: parseInt(telefonoArea, 10) || 0, telefonoNumero: parseInt(telefonoNumero, 10) || 0,
         }),
@@ -1522,47 +1585,33 @@ export function APCotizacionForm({
                         <span className="text-red-500"> · {invalidAsegurados.length} con errores</span>
                       ) : null}
                     </span>
-                    {validAseguradosIndexed.length > 0 ? (
-                      <button
-                        type="button"
-                        onClick={() => setAseguradosExpanded((current) => !current)}
-                        className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium text-woranz-ink transition-colors hover:bg-woranz-warm-2"
-                      >
-                        Ver nombres
-                        <ChevronDown className={cn("h-4 w-4 shrink-0 text-woranz-muted transition-transform", aseguradosExpanded && "rotate-180")} />
-                      </button>
-                    ) : null}
                   </div>
                 </div>
 
                 {validAseguradosIndexed.length > 0 ? (
-                  <div className="rounded-xl border border-woranz-line bg-woranz-warm-1 p-3">
-                    {aseguradosExpanded ? (
-                      <div className="flex max-h-72 flex-wrap gap-2 overflow-y-auto rounded-lg bg-white p-3">
-                        {validAseguradosIndexed.map((a) => (
-                          <div
-                            key={`${a.documentType}-${a.dni}`}
-                            className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-woranz-line bg-woranz-warm-1 pl-3 pr-1.5 py-1.5"
-                          >
-                            <span className="truncate text-sm font-medium text-woranz-ink">
-                              {getAseguradoDisplayName(a)}
-                            </span>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="icon-xs"
-                              onClick={() => {
-                                setAseguradosList((prev) => prev.filter((_, idx) => idx !== a._idx))
-                                if (manualAseguradoIdx === a._idx) closeManualAsegurado()
-                              }}
-                              className="text-woranz-muted hover:text-red-500"
-                            >
-                              <Trash2 className="h-3.5 w-3.5" />
-                            </Button>
-                          </div>
-                        ))}
+                  <div className="flex max-h-72 flex-wrap gap-2 overflow-y-auto rounded-xl bg-woranz-warm-1 p-3">
+                    {validAseguradosIndexed.map((a) => (
+                      <div
+                        key={`${a.documentType}-${a.dni}`}
+                        className="inline-flex max-w-full items-center gap-1 rounded-full border border-woranz-warm-3 bg-white pl-2.5 pr-1 py-1"
+                      >
+                        <span className="truncate text-xs font-medium text-woranz-ink">
+                          {getAseguradoDisplayName(a)}
+                        </span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon-xs"
+                          onClick={() => {
+                            setAseguradosList((prev) => prev.filter((_, idx) => idx !== a._idx))
+                            if (manualAseguradoIdx === a._idx) closeManualAsegurado()
+                          }}
+                          className="text-woranz-muted hover:text-red-500"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
                       </div>
-                    ) : null}
+                    ))}
                   </div>
                 ) : null}
 
@@ -1672,27 +1721,15 @@ export function APCotizacionForm({
               {isMulti && validAsegurados.length > 0 ? (
                 <div className="flex flex-col gap-2">
                   <SummaryRow label="Asegurados" value={`${validAsegurados.length}`} />
-                  <div className="rounded-lg bg-woranz-warm-1 p-2">
-                    <button
-                      type="button"
-                      onClick={() => setResumenAseguradosExpanded((current) => !current)}
-                      className="flex w-full items-center justify-between gap-3 rounded-md bg-white px-3 py-2 text-left text-xs font-medium text-woranz-ink"
-                    >
-                      <span>Ver nombres</span>
-                      <ChevronDown className={cn("h-4 w-4 shrink-0 text-woranz-muted transition-transform", resumenAseguradosExpanded && "rotate-180")} />
-                    </button>
-                    {resumenAseguradosExpanded ? (
-                      <div className="mt-2 flex max-h-64 flex-wrap gap-2 overflow-y-auto">
-                        {validAsegurados.map((a) => (
-                          <div
-                            key={`${a.documentType}-${a.dni}`}
-                            className="rounded-full bg-white px-3 py-1.5 text-xs font-medium text-woranz-ink"
-                          >
-                            {getAseguradoDisplayName(a)}
-                          </div>
-                        ))}
+                  <div className="flex max-h-64 flex-wrap gap-2 overflow-y-auto rounded-lg bg-woranz-warm-1 p-2">
+                    {validAsegurados.map((a) => (
+                      <div
+                        key={`${a.documentType}-${a.dni}`}
+                        className="rounded-full border border-woranz-warm-3 bg-white px-2.5 py-1 text-xs font-medium text-woranz-ink"
+                      >
+                        {getAseguradoDisplayName(a)}
                       </div>
-                    ) : null}
+                    ))}
                   </div>
                 </div>
               ) : null}
@@ -2028,10 +2065,10 @@ export function APCotizacionForm({
           <DialogHeader>
             <DialogTitle>Actualizar cantidad de personas</DialogTitle>
             <DialogDescription>
-              Agregaste {mismatchCount ?? 0} asegurados y la cotización actual está calculada para {cantidadActual}. Si seguís, vamos a recalcular el precio y actualizar el footer.
+              Agregaste {mismatchCount ?? 0} asegurados y la cotización actual está calculada para {cantidadActual}. Si seguís, vamos a recalcular el precio.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
+          <DialogFooter className="mt-4">
             <Button type="button" variant="ghost" onClick={() => setMismatchCount(null)}>Cancelar</Button>
             <Button
               type="button"
