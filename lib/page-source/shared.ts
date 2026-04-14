@@ -100,14 +100,15 @@ export function resolveOwnedString({
 export function resolveSanityImage(
   source: SanityImageSource | undefined,
   fallback: string,
-  width = 1600
+  width = 1600,
+  quality = 90
 ) {
   if (!source) {
     return fallback
   }
 
   try {
-    return urlFor(source).width(width).auto("format").url()
+    return urlFor(source).width(width).quality(quality).auto("format").url()
   } catch {
     return fallback
   }
@@ -119,19 +120,21 @@ export function resolveOwnedImage({
   field,
   source,
   width = 1600,
+  quality = 90,
 }: {
   context: PageSourceContext
   fallback: string
   field: string
   source?: SanityImageSource
   width?: number
+  quality?: number
 }) {
   if (!source) {
     return useFallbackWithContext(context, field, fallback, "missing asset")
   }
 
   try {
-    return urlFor(source).width(width).auto("format").url()
+    return urlFor(source).width(width).quality(quality).auto("format").url()
   } catch {
     return useFallbackWithContext(context, field, fallback, "invalid asset")
   }
