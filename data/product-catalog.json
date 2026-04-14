@@ -881,6 +881,16 @@
         "descripcion": "Garantía para prestadores de servicios frente a clientes públicos o privados."
       }
     ],
+    "faqs": [
+      {
+        "pregunta": "¿Qué garantiza una caución de servicios?",
+        "respuesta": "El cumplimiento del contrato de servicios que firmaste con tu cliente. Si el pliego o contrato exige una garantía, la póliza responde según ese alcance."
+      },
+      {
+        "pregunta": "¿Sirve para contratos públicos y privados?",
+        "respuesta": "Sí. Se usa en ambos casos. Revisamos el texto del contrato o pliego y te decimos qué formato necesitás presentar."
+      }
+    ],
     "ctaTitulo": "Si ya tenés el contrato, hablemos.",
     "ctaSubtitulo": "Esta landing queda en borrador hasta confirmar variantes y montos típicos.",
     "ctaPrimario": {
@@ -910,6 +920,16 @@
         "descripcion": "Oferta, anticipo, cumplimiento y calidad para contratos de obra."
       }
     ],
+    "faqs": [
+      {
+        "pregunta": "¿Qué tipos de garantía puede incluir?",
+        "respuesta": "Oferta, anticipo financiero, cumplimiento de contrato y fondo de reparo. Depende de la etapa de la obra y de lo que pida el comitente."
+      },
+      {
+        "pregunta": "¿Conviene pedirla antes de adjudicar?",
+        "respuesta": "Sí. Si la licitación o el contrato ya exigen garantía, conviene resolverla cuanto antes para no frenar el inicio de la obra."
+      }
+    ],
     "ctaTitulo": "Resolvé la garantía sin inmovilizar capital.",
     "ctaSubtitulo": "Queda como draft hasta cerrar el mapa exacto de variantes.",
     "ctaPrimario": {
@@ -937,6 +957,16 @@
       {
         "titulo": "Cumplimiento de suministro",
         "descripcion": "Garantía para contratos de provisión de materiales o insumos."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Para qué contratos sirve?",
+        "respuesta": "Para contratos de provisión de materiales, mercadería o insumos, tanto con privados como con organismos públicos."
+      },
+      {
+        "pregunta": "¿Reemplaza inmovilizar capital?",
+        "respuesta": "Esa es la idea. Presentás una garantía sin dejar inmovilizada caja ni usar de más tu línea bancaria."
       }
     ],
     "ctaTitulo": "Si tu operación depende de una garantía, la destrabamos.",
@@ -980,6 +1010,16 @@
         "descripcion": "Cobertura ante obligaciones tributarias de aduana."
       }
     ],
+    "faqs": [
+      {
+        "pregunta": "¿Qué operaciones puede cubrir?",
+        "respuesta": "Importación temporaria, exportación, tránsito aduanero y otras obligaciones ante Aduana, según la operatoria."
+      },
+      {
+        "pregunta": "¿Por qué se usa una póliza y no el banco?",
+        "respuesta": "Porque te permite resolver la garantía sin consumir línea bancaria en una operación que ya demanda capital."
+      }
+    ],
     "ctaTitulo": "Liberá tu línea bancaria para lo que importa.",
     "ctaSubtitulo": "Emitimos rápido. Tu línea bancaria queda libre.",
     "ctaPrimario": {
@@ -1004,6 +1044,16 @@
       {
         "titulo": "Garantía habilitante",
         "descripcion": "Respaldo para actividades o profesiones reguladas que deben presentar una caución."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Para qué sirve esta caución?",
+        "respuesta": "Para actividades o profesiones que necesitan una caución para habilitarse, matricularse o seguir operando frente a un organismo."
+      },
+      {
+        "pregunta": "¿Cada organismo pide algo distinto?",
+        "respuesta": "Sí. Por eso miramos el requisito puntual antes de emitir. No todas las habilitaciones piden la misma póliza."
       }
     ],
     "ctaTitulo": "Si tu matrícula depende de una garantía, la resolvemos.",
@@ -1097,6 +1147,16 @@
         "descripcion": "Garantía para medidas cautelares sin inmovilizar activos."
       }
     ],
+    "faqs": [
+      {
+        "pregunta": "¿Cuándo se usa una caución judicial?",
+        "respuesta": "En sustitución de embargos, contracautelas, apelaciones y otras medidas donde el juzgado pide una garantía."
+      },
+      {
+        "pregunta": "¿Sirve para no inmovilizar fondos?",
+        "respuesta": "En muchos casos, sí. La póliza permite seguir operando sin dejar activos frenados mientras avanza el expediente."
+      }
+    ],
     "ctaTitulo": "Si el caso ya empezó, avancemos igual.",
     "ctaSubtitulo": "Tu operación sigue, la garantía se resuelve en paralelo.",
     "ctaPrimario": {
@@ -1117,6 +1177,16 @@
     "badge": "Tu Negocio",
     "headline": "Tu equipo cubierto, tu empresa funcionando.",
     "subtitulo": "Seguro de salud grupal para que tu gente esté bien y vos puedas enfocarte en hacer crecer el negocio.",
+    "faqs": [
+      {
+        "pregunta": "¿Es para todo el equipo o puede ser por grupos?",
+        "respuesta": "Se puede armar según la dotación y la necesidad de la empresa. No siempre tiene que entrar toda la nómina en el mismo esquema."
+      },
+      {
+        "pregunta": "¿Reemplaza la obra social o la prepaga?",
+        "respuesta": "Generalmente complementa la cobertura que ya tiene tu gente. El alcance final depende del plan que se contrate."
+      }
+    ],
     "ctaTitulo": "Si salud grupal entra en portfolio, esta página ya está pensada.",
     "ctaSubtitulo": "Se carga ahora como draft técnico hasta validar oferta real.",
     "ctaPrimario": {
@@ -1150,6 +1220,16 @@
     "productosRelacionados": [
       "empresas/incendio",
       "empresas/responsabilidad-civil"
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Cubre solo incendio?",
+        "respuesta": "No. También puede incluir responsabilidad civil, daños por agua y accidentes del personal del consorcio."
+      },
+      {
+        "pregunta": "¿Le sirve a cualquier edificio?",
+        "respuesta": "Se arma según el tipo de consorcio, su administración y las coberturas que necesite el edificio."
+      }
     ],
     "pendientesValidacion": [],
     "coberturas": [
@@ -1189,6 +1269,16 @@
     "productosRelacionados": [
       "empresas/caucion-alquiler-comercial",
       "empresas/responsabilidad-civil"
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Le sirve a cualquier rubro?",
+        "respuesta": "Se adapta al tipo de local y a cómo opera tu negocio. No necesita la misma póliza un kiosco que un restaurante o una tienda."
+      },
+      {
+        "pregunta": "¿Qué resuelve en una sola póliza?",
+        "respuesta": "Incendio, robo, responsabilidad civil, cristales y daños eléctricos, entre otras coberturas según el plan."
+      }
     ],
     "pendientesValidacion": [],
     "coberturas": [
@@ -1256,6 +1346,16 @@
       "empresas/hecho-por-humanos",
       "empresas/integral-de-comercio"
     ],
+    "faqs": [
+      {
+        "pregunta": "¿Qué pasa si un tercero me reclama?",
+        "respuesta": "La póliza te respalda frente a daños personales o materiales cubiertos por la variante que contrataste."
+      },
+      {
+        "pregunta": "¿Hay una sola RC?",
+        "respuesta": "No. Hay variantes para actividad general, productos, responsabilidad profesional, locativa y más. Se elige según el riesgo real de tu operación."
+      }
+    ],
     "pendientesValidacion": [],
     "coberturas": [
       {
@@ -1299,6 +1399,16 @@
       "empresas/integral-de-comercio",
       "empresas/integral-de-consorcio"
     ],
+    "faqs": [
+      {
+        "pregunta": "¿Cubre solo el edificio?",
+        "respuesta": "Puede cubrir edificio, mercadería, maquinaria, mobiliario y otros bienes de la operación, según cómo se arme la póliza."
+      },
+      {
+        "pregunta": "¿Se puede sumar pérdida de ingresos?",
+        "respuesta": "Según el plan, sí. En algunos casos se puede contemplar lucro cesante además del daño material."
+      }
+    ],
     "pendientesValidacion": [],
     "coberturas": [
       {
@@ -1336,6 +1446,16 @@
     },
     "productosRelacionados": [
       "empresas/responsabilidad-civil"
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Cubre drones además de aeronaves?",
+        "respuesta": "Sí. Dependiendo de la operación, puede contemplar drones, aeronaves tripuladas y responsabilidades asociadas."
+      },
+      {
+        "pregunta": "¿Incluye responsabilidad civil?",
+        "respuesta": "Sí. Es una de las coberturas clave para responder frente a terceros en tierra o durante la operación."
+      }
     ],
     "pendientesValidacion": [],
     "coberturas": [
@@ -1394,6 +1514,16 @@
     "productosRelacionados": [
       "empresas/responsabilidad-civil-uso-ia",
       "empresas/responsabilidad-civil"
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Qué significa “hecho por humanos”?",
+        "respuesta": "Que hay intervención humana verificable en un proceso, una decisión o una entrega. No queda todo librado a una automatización."
+      },
+      {
+        "pregunta": "¿A quién le sirve?",
+        "respuesta": "A equipos de atención, contenido, editorial, creatividad y procesos profesionales donde importa demostrar que hubo una persona responsable."
+      }
     ],
     "pendientesValidacion": [],
     "destacado": true,
@@ -1468,6 +1598,16 @@
     "productosRelacionados": [
       "empresas/hecho-por-humanos",
       "empresas/responsabilidad-civil"
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Cubre errores de un chatbot o de contenido generado con IA?",
+        "respuesta": "Sí, cuando ese uso genera un perjuicio reclamable y entra dentro del alcance de la póliza."
+      },
+      {
+        "pregunta": "¿Reemplaza una RC general o profesional?",
+        "respuesta": "No siempre. Muchas veces la cobertura por uso de IA complementa otras RC según cómo uses la tecnología en tu operación."
+      }
     ],
     "pendientesValidacion": [],
     "destacado": true,
@@ -1597,6 +1737,16 @@
         "descripcion": "Requisito regulatorio para operar en determinadas actividades."
       }
     ],
+    "faqs": [
+      {
+        "pregunta": "¿Qué tipos de garantías agrupa?",
+        "respuesta": "Oferta, cumplimiento de contrato, anticipo financiero, fondo de reparo y otras cauciones ligadas a licitaciones y contratos."
+      },
+      {
+        "pregunta": "¿Sirve solo para el Estado?",
+        "respuesta": "No. Se usa tanto en licitaciones públicas como en contratos privados que exigen una garantía de cumplimiento."
+      }
+    ],
     "ctaTitulo": "Tu operación no puede esperar.",
     "ctaSubtitulo": "Emitimos garantías con la agilidad que tu negocio necesita.",
     "ctaPrimario": {
@@ -1629,6 +1779,16 @@
       {
         "titulo": "Ajuste automático",
         "descripcion": "Se adapta automáticamente al saldo del crédito."
+      }
+    ],
+    "faqs": [
+      {
+        "pregunta": "¿Qué pasa si la persona titular fallece o queda con incapacidad total?",
+        "respuesta": "La cobertura cancela el saldo pendiente según las condiciones de la póliza."
+      },
+      {
+        "pregunta": "¿La suma se ajusta con el crédito?",
+        "respuesta": "Sí. Este seguro acompaña la evolución de la deuda para cubrir el saldo que corresponda en cada momento."
       }
     ],
     "ctaTitulo": "Protegé tu operación de crédito.",

@@ -3,6 +3,7 @@ import type { SanityImageSource } from "@sanity/image-url/lib/types/types"
 import {
   CTA_DEFAULTS,
   DEFAULT_PRODUCT_DESCRIPTION,
+  FEATURE_CAROUSEL_DEFAULTS,
   LEGACY_EMPRESAS_RELATED_PRODUCTS_TITLE,
   RELATED_PRODUCTS_DEFAULT_TITLE,
 } from "@/lib/page-source/fallbacks"
@@ -21,6 +22,7 @@ import {
   type SanitySeo,
   type SanitySlug,
 } from "@/lib/page-source/shared"
+import { getCatalogProduct } from "@/lib/product-catalog"
 import {
   PRODUCT_QUOTER_SECTION_ID,
   resolveProductCtaHref,
@@ -301,6 +303,126 @@ function resolveRelatedProductsTitle(
   }
 
   return normalizedTitle
+}
+
+function findLastSectionIndex(
+  sections: ProductPageSection[],
+  matcher: (section: ProductPageSection) => boolean
+) {
+  for (let index = sections.length - 1; index >= 0; index -= 1) {
+    if (matcher(sections[index])) {
+      return index
+    }
+  }
+
+  return -1
+}
+
+function insertSectionBeforeLastCta(
+  sections: ProductPageSection[],
+  section: ProductPageSection
+) {
+  const ctaIndex = findLastSectionIndex(
+    sections,
+    (candidate) => candidate.type === "cta"
+  )
+
+  if (ctaIndex === -1) {
+    return [...sections, section]
+  }
+
+  const nextSections = [...sections]
+  nextSections.splice(ctaIndex, 0, section)
+
+  return nextSections
+}
+
+function createFeatureCarouselSection(segment: "empresas" | "personas") {
+  const defaults = FEATURE_CAROUSEL_DEFAULTS[segment]
+
+  return {
+    type: "carousel" as const,
+    variant: "feature" as const,
+    title: defaults.title,
+    items: defaults.items,
+  }
+}
+
+function createFaqSection(items: FaqItem[]) {
+  return {
+    type: "faq" as const,
+    title: "Preguntas frecuentes",
+    mobileItems: items,
+    desktopColumns: splitIntoColumns(items),
+  }
+}
+
+function getCatalogFaqItems(segment: ProductSegment, slug: string) {
+  return mapFaqItems(getCatalogProduct(segment, slug)?.faqs)
+}
+
+function injectEmpresasFaqFallback(
+  sections: ProductPageSection[],
+  slug: string
+) {
+  if (sections.some((section) => section.type === "faq")) {
+    return sections
+  }
+
+  const faqItems = getCatalogFaqItems("empresas", slug)
+
+  if (faqItems.length === 0) {
+    return sections
+  }
+
+  return insertSectionBeforeLastCta(sections, createFaqSection(faqItems))
+}
+
+function repositionFeatureCarousel(
+  sections: ProductPageSection[],
+  segment: ProductSegment
+) {
+  if (segment !== "personas" && segment !== "empresas") {
+    return sections
+  }
+
+  const featureSections = sections.filter(
+    (section): section is Extract<ProductPageSection, { type: "carousel"; variant: "feature" }> =>
+      section.type === "carousel" && section.variant === "feature"
+  )
+  const remainingSections = sections.filter(
+    (section) => !(section.type === "carousel" && section.variant === "feature")
+  )
+  const sectionsToInsert =
+    featureSections.length > 0
+      ? featureSections
+      : [createFeatureCarouselSection(segment)]
+  const ctaIndex = findLastSectionIndex(
+    remainingSections,
+    (section) => section.type === "cta"
+  )
+
+  if (ctaIndex === -1) {
+    return [...remainingSections, ...sectionsToInsert]
+  }
+
+  const nextSections = [...remainingSections]
+  nextSections.splice(ctaIndex + 1, 0, ...sectionsToInsert)
+
+  return nextSections
+}
+
+function applySharedProductPageRollouts(
+  sections: ProductPageSection[],
+  segment: ProductSegment,
+  slug: string
+) {
+  const withFaqFallback =
+    segment === "empresas"
+      ? injectEmpresasFaqFallback(sections, slug)
+      : sections
+
+  return repositionFeatureCarousel(withFaqFallback, segment)
 }
 
 function transformSectionBlock(
@@ -586,8 +708,16 @@ export function transformSanityProduct(
     return undefined
   }
 
+  const normalizedSections = applySharedProductPageRollouts(
+    sections,
+    segment,
+    slug
+  )
+
   const defaultCtas = resolveDefaultCtaHrefs(settings)
-  const hasQuoteSection = sections.some((section) => section.type === "quote")
+  const hasQuoteSection = normalizedSections.some(
+    (section) => section.type === "quote"
+  )
   const ctaDefaults = CTA_DEFAULTS[segment]
   const whatsappHref = buildWhatsappCtaHref(
     sourceContext.path,
@@ -654,7 +784,7 @@ export function transformSanityProduct(
       imageSrc: heroImage,
       imageAlt: product.nombre?.trim() || title,
     },
-    sections,
+    sections: normalizedSections,
   }
 }
 
