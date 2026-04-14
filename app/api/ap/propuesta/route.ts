@@ -1,4 +1,5 @@
 import { RATE_LIMITS } from "@/lib/api/limits"
+import { QUOTE_DEFAULT, POLICY_DEFAULT, applyTomadorDefaults, applyAseguradoDefaults } from "@/lib/api/defaults/ap"
 import { checkRateLimit } from "@/lib/api/rate-limit"
 import { propuestaSchema } from "@/lib/api/schemas/ap"
 import {
@@ -9,20 +10,6 @@ import {
 } from "@/lib/api/request"
 import { getIdPlanComercial, woranzFetch } from "@/lib/woranz-api"
 import { getWoranzErrorMessage } from "@/lib/woranz-api"
-
-const POLICY_DEFAULTS = {
-  referencia: "Pago desde MercadoPago",
-  detalleRiesgo: "",
-  observaciones: "",
-  formaCobro: {
-    idFormaCobro: 1,
-    idTarjetaEmpresa: 0,
-    idTipoCuentaBancaria: 0,
-    cbu: 0,
-    numeroTarjeta: "",
-    fechaVTOTarjeta: "2022-12-31",
-  },
-}
 
 export async function POST(request: Request) {
   const rateLimit = checkRateLimit(request, RATE_LIMITS.apPropuesta)
@@ -46,14 +33,15 @@ export async function POST(request: Request) {
   try {
     const idPlanComercial = await getIdPlanComercial()
     const payload = {
-      ...POLICY_DEFAULTS,
+      ...POLICY_DEFAULT,
+      observaciones: "",
       idPlanComercial,
       idSeccion: 12,
-      idVigencia: 17,
+      idVigencia: QUOTE_DEFAULT.idVigencia,
       idCoberturaPaquete: 498,
-      idPersonaTipo: 1,
-      idCondicionFiscal: 1,
-      idFormaCobro: 1,
+      idPersonaTipo: QUOTE_DEFAULT.idPersonaTipo,
+      idCondicionFiscal: QUOTE_DEFAULT.idCondicionFiscal,
+      idFormaCobro: QUOTE_DEFAULT.idFormaCobro,
       idCotizacion: parsed.data.idCotizacion,
       idProvinciaRiesgo: parsed.data.idProvinciaRiesgo,
       vigenciaDesde: parsed.data.vigenciaDesde,
@@ -61,8 +49,8 @@ export async function POST(request: Request) {
       cantidad: parsed.data.cantidad,
       items: parsed.data.items,
       coberturas: parsed.data.coberturas,
-      tomador: parsed.data.tomador,
-      asegurados: parsed.data.asegurados,
+      tomador: applyTomadorDefaults(parsed.data.tomador),
+      asegurados: parsed.data.asegurados.map(applyAseguradoDefaults),
       domicilioRiesgo: parsed.data.domicilioRiesgo,
       clausulaSubrogacion: parsed.data.clausulaSubrogacion,
       clausulaNoRepeticion: parsed.data.clausulaNoRepeticion,
