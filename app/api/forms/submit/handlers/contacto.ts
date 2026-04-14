@@ -1,6 +1,7 @@
 import type { FormConfig } from "@/lib/forms/types"
 import { sendEmail } from "@/lib/email/send"
 import { sanitizeEmailHeaderValue } from "@/lib/email/sanitize"
+import { DEV_EMAIL, isNonProductionEnv } from "@/lib/email/dev-override"
 import {
   buildContactoEmail,
   type ContactoEmailData,
@@ -44,16 +45,12 @@ export async function handleContacto(
   const html = buildContactoEmail(emailData)
 
   await sendEmail({
-    to:
-      process.env.NODE_ENV === "development"
-        ? "marcos.moreira@woranz.com"
-        : config.destinatario,
-    cc:
-      process.env.NODE_ENV === "development"
-        ? undefined
-        : config.cc && config.cc.length > 0
-          ? config.cc
-          : undefined,
+    to: isNonProductionEnv() ? DEV_EMAIL : config.destinatario,
+    cc: isNonProductionEnv()
+      ? undefined
+      : config.cc && config.cc.length > 0
+        ? config.cc
+        : undefined,
     subject: sanitizeEmailHeaderValue(subject),
     html,
   })

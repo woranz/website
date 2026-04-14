@@ -1,6 +1,7 @@
 import type { CaucionPreaprobacionPayload } from "@/lib/api/schemas/forms"
 import { sendEmail, type EmailAttachment } from "@/lib/email/send"
 import { sanitizeEmailHeaderValue } from "@/lib/email/sanitize"
+import { DEV_EMAIL, isNonProductionEnv } from "@/lib/email/dev-override"
 import {
   buildPreaprobacionEmail,
   type PreaprobacionEmailData,
@@ -68,16 +69,12 @@ export async function handleCaucionPreaprobacion(
   const cc = getCcRecipients(data.ciudad)
 
   await sendEmail({
-    to:
-      process.env.NODE_ENV === "development"
-        ? "live@woranz.com"
-        : "alquileres@woranz.com",
-    cc:
-      process.env.NODE_ENV === "development"
-        ? undefined
-        : cc.length > 0
-          ? cc
-          : undefined,
+    to: isNonProductionEnv() ? DEV_EMAIL : "alquileres@woranz.com",
+    cc: isNonProductionEnv()
+      ? undefined
+      : cc.length > 0
+        ? cc
+        : undefined,
     subject: sanitizeEmailHeaderValue(
       `Pre-aprobación Caución — ${data.nombre} ${data.apellido} — DNI ${data.dni}`
     ),

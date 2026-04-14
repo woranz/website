@@ -1,6 +1,7 @@
 import type { AccidentesCotizacionPayload } from "@/lib/api/schemas/forms"
 import { sendEmail } from "@/lib/email/send"
 import { sanitizeEmailHeaderValue } from "@/lib/email/sanitize"
+import { DEV_EMAIL, isNonProductionEnv } from "@/lib/email/dev-override"
 import {
   buildAccidentesCotizacionEmail,
   type AccidentesCotizacionEmailData,
@@ -19,7 +20,7 @@ export async function handleAccidentesCotizacion(
   const html = buildAccidentesCotizacionEmail(data)
 
   await sendEmail({
-    to: "alquileres@woranz.com",
+    to: isNonProductionEnv() ? DEV_EMAIL : "alquileres@woranz.com",
     subject: sanitizeEmailHeaderValue(
       `Cotización Accidentes Personales — ${data.actividad} (${data.cantidad} persona${data.cantidad === "1" ? "" : "s"})`
     ),
