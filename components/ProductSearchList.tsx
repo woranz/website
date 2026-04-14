@@ -25,7 +25,7 @@ export function ProductSearchList({
 
   return (
     <section id="coberturas" className="w-full scroll-mt-20">
-      <div className="page-shell gap-8 px-page-mobile py-section-mobile md:gap-10 md:px-page-wide md:py-section">
+      <div className="page-shell section-gap section-padding px-page-mobile md:px-page-wide">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-8">
           <h2 className="section-title">{title}</h2>
           <div className="relative w-full md:max-w-sm">

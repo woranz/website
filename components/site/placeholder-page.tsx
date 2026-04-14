@@ -32,7 +32,7 @@ export function PlaceholderPage({
     <div className="flex min-h-screen flex-col bg-white">
       <SiteHeader links={SUPPORT_NAVIGATION_LINKS} />
       <main className="flex-1">
-        <section className="page-shell gap-8 px-page-mobile py-section-mobile md:px-page-wide md:py-section">
+        <section className="page-shell section-gap section-padding px-page-mobile md:px-page-wide">
           <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 rounded-3xl bg-woranz-warm-1 px-6 py-8 md:px-10 md:py-12">
             <span className="eyebrow-badge w-fit bg-white">{eyebrow}</span>
             <div className="flex flex-col gap-4">
