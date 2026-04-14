@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { ProductPageTemplate } from "@/components/templates/product-page"
-import { getAllProductPageParams, getProductPageByParams } from "@/lib/product-page-source"
+import { getAllProductPageParams, getProductPageByParams } from "@/lib/page-source/product-page-source"
 import { isProductSegment } from "@/lib/product-paths"
 
 type ProductPageRouteProps = {

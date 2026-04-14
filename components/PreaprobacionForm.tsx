@@ -39,6 +39,7 @@ type QuoterData = {
   alquiler: number
   duracion: number
   modoPago: string
+  restitucion: boolean
   idProductor: string
 }
 
@@ -189,6 +190,12 @@ function SidebarCard({ quoter }: { quoter: QuoterData }) {
           <span className="shrink-0 font-semibold text-woranz-ink">{pago}</span>
         </div>
         <div className="flex items-baseline justify-between gap-3 text-xs">
+          <span className="text-woranz-text">Restitución</span>
+          <span className="shrink-0 font-semibold text-woranz-ink">
+            {quoter.restitucion ? "Activa" : "No"}
+          </span>
+        </div>
+        <div className="flex items-baseline justify-between gap-3 text-xs">
           <span className="text-woranz-text">Provincia</span>
           <span className="shrink-0 font-semibold text-woranz-ink">{provincia}</span>
         </div>
@@ -199,6 +206,7 @@ function SidebarCard({ quoter }: { quoter: QuoterData }) {
 
 function MobileQuoterSummary({ quoter }: { quoter: QuoterData }) {
   const pago = quoter.modoPago === "cuotas" ? "6 cuotas" : "Contado"
+  const restitucion = quoter.restitucion ? " · Con restitución" : ""
 
   return (
     <div className="rounded-xl border border-woranz-line bg-woranz-warm-1 px-4 py-3 lg:hidden">
@@ -206,7 +214,7 @@ function MobileQuoterSummary({ quoter }: { quoter: QuoterData }) {
         <span className="font-semibold text-woranz-ink">
           {formatMoney(quoter.alquiler)}/mes
         </span>
-        {" · "}{quoter.duracion} meses · {pago}
+        {" · "}{quoter.duracion} meses · {pago}{restitucion}
       </p>
     </div>
   )
@@ -468,6 +476,7 @@ export function PreaprobacionForm({ quoter }: { quoter: QuoterData }) {
       fd.set("alquiler", quoter.alquiler.toString())
       fd.set("duracion", quoter.duracion.toString())
       fd.set("modoPago", quoter.modoPago)
+      fd.set("restitucion", quoter.restitucion ? "true" : "false")
       fd.set("ingresosMensuales", ingresosMensuales.toString())
       fd.set("ingresoFamiliar", ingresoFamiliar.toString())
       fd.set("inmobiliaria", inmobiliaria)

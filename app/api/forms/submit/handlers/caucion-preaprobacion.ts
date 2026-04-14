@@ -45,6 +45,7 @@ export async function handleCaucionPreaprobacion(formData: FormData) {
     alquiler: getString("alquiler"),
     duracion: getString("duracion"),
     modoPago: getString("modoPago"),
+    restitucion: getString("restitucion"),
     ingresosMensuales: getString("ingresosMensuales"),
     ingresoFamiliar: getString("ingresoFamiliar"),
     avalesDnis: formData.getAll("avalesDnis") as string[],

@@ -21,17 +21,20 @@ const MODOS_PAGO = [
 ]
 
 const TASA_BASE = 0.045
+const RESTITUCION_SURCHARGE = 0.3
 function buildPreapprovalHref(params: {
   provincia: string
   alquiler: number
   duracion: string
   modoPago: string
+  restitucion: boolean
 }) {
   const search = new URLSearchParams({
     provincia: params.provincia,
     alquiler: params.alquiler.toString(),
     duracion: params.duracion,
     modoPago: params.modoPago,
+    restitucion: params.restitucion ? "true" : "false",
   })
   return `/personas/coberturas/caucion-alquiler/preaprobacion?${search.toString()}`
 }
@@ -92,11 +95,13 @@ function calculatePrice({
   modoPago,
   provincia,
   duracion,
+  restitucion,
 }: {
   alquiler: number
   duracion: number
   modoPago: string
   provincia: string
+  restitucion: boolean
 }) {
   const selectedProvincia = PROVINCIAS.find((item) => item.value === provincia)
   const selectedModoPago = MODOS_PAGO.find((item) => item.value === modoPago)
@@ -106,9 +111,41 @@ function calculatePrice({
   const impuestos = primaBase * (selectedProvincia?.impuesto ?? 0.03)
   const subtotal = primaBase + impuestos
   const descuento = subtotal * (selectedModoPago?.descuento ?? 0)
-  const total = subtotal - descuento
+  const totalBase = subtotal - descuento
+  const total = restitucion
+    ? totalBase * (1 + RESTITUCION_SURCHARGE)
+    : totalBase
 
   return modoPago === "cuotas" ? Math.round(total / 6) : Math.round(total)
+}
+
+function RestitucionToggle({
+  checked,
+  onChange,
+}: {
+  checked: boolean
+  onChange: (value: boolean) => void
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      onClick={() => onChange(!checked)}
+      className={cn(
+        "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        checked ? "bg-woranz-ink" : "bg-woranz-warm-4"
+      )}
+    >
+      <span
+        className={cn(
+          "inline-block h-5 w-5 rounded-full bg-white transition-transform",
+          checked ? "translate-x-6" : "translate-x-1"
+        )}
+      />
+      <span className="sr-only">Activar restitución de la propiedad</span>
+    </button>
+  )
 }
 
 function handleMoneyInput(
@@ -205,15 +242,23 @@ function CaucionQuoterMobile() {
   const [alquiler, setAlquiler] = useState(500000)
   const [duracion, setDuracion] = useState("24")
   const [modoPago, setModoPago] = useState("cuotas")
+  const [restitucion, setRestitucion] = useState(false)
 
   const price = calculatePrice({
     alquiler,
     duracion: Number.parseInt(duracion, 10),
     modoPago,
     provincia,
+    restitucion,
   })
 
-  const preapprovalHref = buildPreapprovalHref({ provincia, alquiler, duracion, modoPago })
+  const preapprovalHref = buildPreapprovalHref({
+    provincia,
+    alquiler,
+    duracion,
+    modoPago,
+    restitucion,
+  })
 
   return (
     <div className="flex flex-col md:hidden">
@@ -268,6 +313,14 @@ function CaucionQuoterMobile() {
         <SegmentSelector options={MODOS_PAGO} value={modoPago} onSelect={setModoPago} />
       </div>
 
+      <div className="flex items-center justify-between gap-4 border-b border-woranz-warm-4 p-5">
+        <RowLabel
+          title="Restitución de la propiedad"
+          description="Cubre daños si devolvés la propiedad en mal estado."
+        />
+        <RestitucionToggle checked={restitucion} onChange={setRestitucion} />
+      </div>
+
       <PriceAction
         buttonLabel={<>Contratar ahora <ArrowRight className="ml-2 h-4 w-4" /></>}
         href={preapprovalHref}
@@ -289,15 +342,23 @@ function CaucionQuoterDesktop() {
   const [alquiler, setAlquiler] = useState(500000)
   const [duracion, setDuracion] = useState("24")
   const [modoPago, setModoPago] = useState("cuotas")
+  const [restitucion, setRestitucion] = useState(false)
 
   const price = calculatePrice({
     alquiler,
     duracion: Number.parseInt(duracion, 10),
     modoPago,
     provincia,
+    restitucion,
   })
 
-  const preapprovalHref = buildPreapprovalHref({ provincia, alquiler, duracion, modoPago })
+  const preapprovalHref = buildPreapprovalHref({
+    provincia,
+    alquiler,
+    duracion,
+    modoPago,
+    restitucion,
+  })
 
   return (
     <div className="hidden w-full flex-col md:flex">
@@ -350,6 +411,14 @@ function CaucionQuoterDesktop() {
           description="10% descuento al contado o con tarjeta en 6 cuotas sin interés :)"
         />
         <SegmentSelector options={MODOS_PAGO} value={modoPago} onSelect={setModoPago} />
+      </div>
+
+      <div className="flex items-center justify-between gap-6 border-b border-woranz-warm-4 px-6 py-5">
+        <RowLabel
+          title="Restitución de la propiedad"
+          description="Cubre daños si devolvés la propiedad en mal estado."
+        />
+        <RestitucionToggle checked={restitucion} onChange={setRestitucion} />
       </div>
 
       <PriceAction

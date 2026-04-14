@@ -5,7 +5,7 @@ import { ContratacionView } from "./contratacion-view"
 import { SiteHeader } from "@/components/site/header"
 import { getFormConfig } from "@/lib/forms/registry"
 import { buildPageMetadata } from "@/lib/metadata"
-import { getProductPageByParams } from "@/lib/product-page-source"
+import { getProductPageByParams } from "@/lib/page-source/product-page-source"
 import { isProductSegment } from "@/lib/product-paths"
 import { SUPPORT_NAVIGATION_LINKS } from "@/lib/site-links"
 

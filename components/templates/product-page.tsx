@@ -48,10 +48,7 @@ import type {
 import { getFormConfig } from "@/lib/forms/registry"
 import { cn } from "@/lib/utils"
 
-const PRODUCERS_HERO_CTA = {
-  href: "/productores/registro",
-  label: "Registrate como productor",
-} as const
+const PRODUCERS_REGISTRATION_HREF = "/productores/registro"
 
 const PRODUCT_COVERAGES_SECTION_ID = "coberturas"
 
@@ -93,9 +90,16 @@ function HeroActions({ page }: { page: ProductPageData }) {
       <div className="flex w-full flex-col items-center gap-4 pt-6 md:w-auto md:flex-row md:gap-6 md:pt-8 lg:pt-6">
         <ActionButton
           className="btn-primary-hero"
-          href={PRODUCERS_HERO_CTA.href}
-          label={PRODUCERS_HERO_CTA.label}
+          href={PRODUCERS_REGISTRATION_HREF}
+          label={page.hero.primaryCta}
         />
+        {page.hero.secondaryCta ? (
+          <ActionButton
+            className="btn-secondary-outline"
+            href={page.hero.secondaryCtaHref}
+            label={page.hero.secondaryCta}
+          />
+        ) : null}
       </div>
     )
   }
