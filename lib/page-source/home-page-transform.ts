@@ -18,7 +18,6 @@ import {
   type SanitySeo,
 } from "@/lib/page-source/shared"
 import type {
-  FeatureCarouselItem,
   ProductGridItem,
   ProductPageData,
   ProductPageSection,
@@ -142,29 +141,12 @@ function transformSection(
 
     case "seccionCarouselFeatures": {
       const defaults = FEATURE_CAROUSEL_DEFAULTS[segment]
-      const sanityItems = (section.items ?? []).filter(
-        (item) => item.imagen || item.texto
-      )
-
-      const items: FeatureCarouselItem[] =
-        sanityItems.length > 0
-          ? sanityItems.map((item, index) => ({
-              imageSrc: resolveSanityImage(
-                item.imagen,
-                defaults.items[index]?.imageSrc ?? "/images/feature-1.png",
-                1600
-              ),
-              text: item.texto?.trim() || defaults.items[index]?.text,
-              textMobile:
-                item.textoMobile?.trim() || defaults.items[index]?.textMobile,
-            }))
-          : defaults.items
 
       return {
         type: "carousel",
         variant: "feature",
         title: section.titulo?.trim() || defaults.title,
-        items,
+        items: defaults.items,
       }
     }
 
