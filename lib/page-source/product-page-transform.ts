@@ -626,7 +626,7 @@ export function transformSanityProduct(
     field: "heroImage",
     fallback: "/images/hero.png",
     source: product.heroImage,
-    width: 1600,
+    width: 2400,
   })
 
   return {

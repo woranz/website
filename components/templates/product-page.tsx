@@ -185,6 +185,7 @@ function HeroSection({ page }: { page: ProductPageData }) {
           alt={page.hero.imageAlt}
           fill
           priority
+          quality={90}
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 1200px"
         />

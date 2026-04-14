@@ -265,7 +265,7 @@ export function transformSanityHome(
     field: "heroImagen",
     fallback: "/images/hero.png",
     source: data.heroImagen,
-    width: 1600,
+    width: 2400,
   })
 
   return {
