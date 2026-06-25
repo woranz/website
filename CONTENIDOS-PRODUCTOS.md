@@ -4,7 +4,7 @@ Documento para definir el contenido de cada página de producto antes de diseña
 
 ---
 
-## Plantilla
+## Plantilla.
 
 ```
 ### [Nombre del Producto]
